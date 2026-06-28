@@ -3,7 +3,7 @@ import {
   BookOpen, Search, Award, CheckCircle2, XCircle, RotateCcw, 
   Check, ChevronLeft, ChevronRight, Info, ListFilter, Trophy, 
   Sparkles, BookOpenCheck, HelpCircle, AlertTriangle, Moon, Sun, 
-  Bookmark, LayoutDashboard, Shuffle
+  Bookmark, LayoutDashboard, Shuffle, ArrowRight, ArrowUp, ArrowDown
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { chaptersList, chaptersData } from "./chaptersData";
@@ -75,6 +75,21 @@ export default function App() {
   const itemsPerPage = isQuizSubmitted ? 999999 : 50;
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [jumpPageVal, setJumpPageVal] = useState<string>("");
+  const [jumpQuestionVal, setJumpQuestionVal] = useState<string>("");
+
+  const [isPastMiddle, setIsPastMiddle] = useState<boolean>(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (totalHeight <= 0) return;
+      setIsPastMiddle(scrollY > totalHeight / 2);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Custom confirmation modal state
   const [modalConfig, setModalConfig] = useState<{
@@ -511,6 +526,15 @@ export default function App() {
           "info",
           "Clear Filters & Jump"
         );
+      } else {
+        triggerConfirm(
+          "Invalid Question",
+          `Question #${qId} does not exist in the current chapter's question pool.`,
+          () => {},
+          "info",
+          "OK",
+          "Dismiss"
+        );
       }
     }
   };
@@ -574,19 +598,19 @@ export default function App() {
       <main className="max-w-[1400px] mx-auto px-4 md:px-6 py-6">
         
         {/* Core Double Tab Navigation layout */}
-        <div className="flex border-b border-slate-200 dark:border-slate-800 mb-6 bg-white dark:bg-slate-900 rounded-2xl p-1.5 shadow-sm">
+        <div className="flex border-b border-slate-200 dark:border-slate-800 mb-6 bg-white dark:bg-slate-900 rounded-2xl p-1 shadow-sm">
           <button
             id="tab-overview"
             onClick={() => {
               setActiveTab("overview");
             }}
-            className={`flex-1 py-3 px-4 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer ${
+            className={`flex-1 h-10 px-4 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer ${
               activeTab === "overview"
                 ? "bg-blue-600 text-white shadow-md shadow-blue-500/20"
                 : "text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50"
             }`}
           >
-            <LayoutDashboard className="w-4 h-4" />
+            <LayoutDashboard className="w-3.5 h-3.5" />
             Course Overview Dashboard
           </button>
           <button
@@ -594,13 +618,13 @@ export default function App() {
             onClick={() => {
               setActiveTab("practice");
             }}
-            className={`flex-1 py-3 px-4 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer ${
+            className={`flex-1 h-10 px-4 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer ${
               activeTab === "practice"
                 ? "bg-blue-600 text-white shadow-md shadow-blue-500/20"
                 : "text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50"
             }`}
           >
-            <BookOpen className="w-4 h-4" />
+            <BookOpen className="w-3.5 h-3.5" />
             Chapter Practice Center
           </button>
         </div>
@@ -807,20 +831,20 @@ export default function App() {
             >
               {/* 2. Compact Inline Chapter Switcher Row */}
               <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-4 shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 max-w-full overflow-hidden">
                   <BookOpenCheck className="w-4 h-4 text-blue-500 flex-shrink-0" />
-                  <span className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-100 font-display">
+                  <span className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-100 font-display truncate">
                     Ch {activeChapter}: {chaptersList.find(c => c.id === activeChapter)?.name.replace(/Chapter \d+:\s*/, "")}
                   </span>
                 </div>
                 
-                <div className="flex flex-wrap items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2 max-w-full overflow-hidden">
                   <span className="text-xs font-semibold text-slate-400 dark:text-slate-550 whitespace-nowrap hidden xs:inline">Directory:</span>
                   <select
                     id="chapterSelect"
                     value={activeChapter}
                     onChange={(e) => handleChapterChange(parseInt(e.target.value, 10))}
-                    className="bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 hover:border-blue-500 dark:hover:border-blue-400 text-slate-800 dark:text-slate-200 py-1.5 px-2.5 rounded-lg text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition cursor-pointer"
+                    className="w-full xs:w-auto max-w-full overflow-hidden text-ellipsis whitespace-nowrap bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 hover:border-blue-500 dark:hover:border-blue-400 text-slate-800 dark:text-slate-200 py-1.5 px-2.5 rounded-lg text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition cursor-pointer"
                   >
                     {chaptersList.map((ch) => {
                       const stat = chapterStats[ch.id];
@@ -850,7 +874,7 @@ export default function App() {
               </div>
 
                 {/* 2. Questions Listing Viewport */}
-                <div id="questions-viewport" className="flex flex-col gap-3.5">
+                <div id="questions-viewport" className="flex flex-col gap-3.5 pb-24">
                   <AnimatePresence mode="wait">
                     {currentVisibleSlice.length === 0 ? (
                       <motion.div
@@ -1006,63 +1030,29 @@ export default function App() {
 
                 {/* 3. Pagination Control Navigation */}
                 {filteredCount > 0 && !isQuizSubmitted && (
-                  <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 px-6 py-4 flex justify-between items-center shadow-sm">
+                  <div className="flex items-center justify-between p-2 text-xs text-slate-500">
                     <button
                       id="prevPageBtn"
                       disabled={currentPage === 1}
                       onClick={() => handlePageChange(-1)}
-                      className="px-4 py-2 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-750 dark:text-slate-350 disabled:opacity-40 disabled:hover:bg-white text-xs font-bold rounded-xl border border-slate-200 dark:border-slate-800 transition duration-150 flex items-center gap-1 cursor-pointer"
+                      className="px-3 py-1.5 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-350 disabled:opacity-40 disabled:hover:bg-white text-xs font-semibold rounded-lg border border-slate-200 dark:border-slate-800 transition duration-150 flex items-center gap-1 cursor-pointer"
                     >
-                      <ChevronLeft className="w-4 h-4" />
+                      <ChevronLeft className="w-3.5 h-3.5" />
                       Previous
                     </button>
 
-                    <div className="flex items-center gap-3">
-                      <span className="text-xs font-bold text-slate-500 dark:text-slate-400 font-mono tracking-tight">
-                        Page {currentPage} of {totalPages}
-                      </span>
-                      <div className="flex items-center gap-1.5 border-l border-slate-200 dark:border-slate-800 pl-3">
-                        <span className="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider">Go to:</span>
-                        <input
-                          id="pageJumpInput"
-                          type="number"
-                          min={1}
-                          max={totalPages}
-                          value={jumpPageVal}
-                          onChange={(e) => setJumpPageVal(e.target.value)}
-                          onKeyDown={(e) => {
-                            if (e.key === "Enter") {
-                              const pageNum = parseInt(jumpPageVal, 10);
-                              if (!isNaN(pageNum) && pageNum >= 1 && pageNum <= totalPages) {
-                                setCurrentPage(pageNum);
-                                window.scrollTo({ top: 0, behavior: "smooth" });
-                              } else {
-                                setJumpPageVal(currentPage.toString());
-                              }
-                            }
-                          }}
-                          onBlur={() => {
-                            const pageNum = parseInt(jumpPageVal, 10);
-                            if (!isNaN(pageNum) && pageNum >= 1 && pageNum <= totalPages) {
-                              setCurrentPage(pageNum);
-                              window.scrollTo({ top: 0, behavior: "smooth" });
-                            } else {
-                              setJumpPageVal(currentPage.toString());
-                            }
-                          }}
-                          className="w-14 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 py-1 px-1.5 rounded-lg text-xs font-mono font-bold text-center focus:outline-none focus:ring-1 focus:ring-blue-500"
-                        />
-                      </div>
-                    </div>
+                    <span className="font-bold font-mono tracking-tight text-slate-500 dark:text-slate-400">
+                      Page {currentPage} of {totalPages}
+                    </span>
 
                     <button
                       id="nextPageBtn"
                       disabled={currentPage === totalPages}
                       onClick={() => handlePageChange(1)}
-                      className="px-4 py-2 bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 dark:hover:bg-slate-755 text-white disabled:opacity-40 disabled:hover:bg-slate-900 text-xs font-bold rounded-xl transition duration-150 flex items-center gap-1 cursor-pointer"
+                      className="px-3 py-1.5 bg-slate-900 dark:bg-slate-850 hover:bg-slate-800 dark:hover:bg-slate-755 text-white disabled:opacity-40 disabled:hover:bg-slate-900 text-xs font-semibold rounded-lg transition duration-150 flex items-center gap-1 cursor-pointer"
                     >
                       Next
-                      <ChevronRight className="w-4 h-4" />
+                      <ChevronRight className="w-3.5 h-3.5" />
                     </button>
                   </div>
                 )}
@@ -1182,103 +1172,41 @@ export default function App() {
                           {selectionCount} Staged / {totalInPool} Total
                         </div>
                         {selectionCount < totalInPool && (
-                          <span className="text-[10px] text-amber-600 dark:text-amber-500 font-semibold hidden md:inline-flex items-center gap-1">
+                          <span className="text-[10px] text-amber-600 dark:text-amber-500 font-semibold inline-flex items-center gap-1">
                             <AlertTriangle className="w-3 h-3 flex-shrink-0" />
                             Unanswered will be marked incorrect.
                           </span>
                         )}
                       </div>
-
-                      <button
-                        id="submitQuizBtn"
-                        onClick={handleExecuteSubmission}
-                        className="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-lg shadow-sm hover:shadow transition duration-150 flex items-center gap-1.5 cursor-pointer"
-                      >
-                        <CheckCircle2 className="w-3.5 h-3.5" />
-                        Submit
-                      </button>
                     </div>
                   )}
                 </div>
 
-                {/* 6. Search & Filters Block */}
-                <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-6 md:p-8 shadow-sm">
-                  <span className="block text-xs font-bold text-slate-400 dark:text-slate-550 uppercase tracking-wider mb-4 flex items-center gap-1.5">
-                    <ListFilter className="w-4 h-4 text-blue-500" />
-                    Search & Filters Block
-                  </span>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label htmlFor="searchInput" className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                        <Search className="w-3.5 h-3.5 text-slate-500" />
-                        Search Question Keywords
-                      </label>
-                      <div className="relative">
-                        <input
-                          id="searchInput"
-                          type="text"
-                          value={searchQuery}
-                          onChange={(e) => {
-                            setSearchQuery(e.target.value);
-                            setCurrentPage(1);
-                          }}
-                          placeholder="Type words, keys or options..."
-                          className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 py-2.5 pl-9 pr-3 rounded-xl text-sm placeholder:text-slate-450 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition"
-                        />
-                        <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5 pointer-events-none" />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label htmlFor="statusFilter" className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                        <ListFilter className="w-3.5 h-3.5 text-slate-500" />
-                        Verification Status Filter
-                      </label>
-                      <select
-                        id="statusFilter"
-                        value={statusFilter}
-                        onChange={(e) => {
-                          setStatusFilter(e.target.value);
-                          setCurrentPage(1);
-                        }}
-                        className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 py-2.5 px-3 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition cursor-pointer"
-                      >
-                        <option value="all">All Questions ({totalInPool})</option>
-                        <option value="answered">Staged Choices ({selectionCount})</option>
-                        <option value="unanswered">Unanswered ({totalInPool - selectionCount})</option>
-                        <option value="bookmarked">Bookmarked ({activeChapterBookmarksCount})</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-
                 {/* 7. Current Diagnostic Metrics Block */}
-                <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-6 md:p-8 shadow-sm">
+                <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-4 md:p-8 shadow-sm">
                   <span className="block text-xs font-bold text-slate-400 dark:text-slate-550 uppercase tracking-wider mb-4 flex items-center gap-1.5">
                     <Trophy className="w-4 h-4 text-blue-500" />
                     Current Diagnostic Metrics
                   </span>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                    <div className="bg-slate-50 dark:bg-slate-800/25 border border-slate-100 dark:border-slate-800/50 p-4 rounded-xl text-center">
-                      <div className="text-2xl font-bold font-mono text-slate-800 dark:text-slate-100">{totalInPool}</div>
+                  <div className="grid grid-cols-4 gap-1.5 sm:gap-4">
+                    <div className="bg-slate-50 dark:bg-slate-800/25 border border-slate-100 dark:border-slate-800/50 p-2 sm:p-4 rounded-xl text-center">
+                      <div className="text-lg sm:text-2xl font-bold font-mono text-slate-800 dark:text-slate-100">{totalInPool}</div>
                       <div className="text-[10px] font-semibold text-slate-400 uppercase tracking-tight mt-1">Total Pool</div>
                     </div>
-                    <div className="bg-slate-50 dark:bg-slate-800/25 border border-slate-100 dark:border-slate-800/50 p-4 rounded-xl text-center">
-                      <div className="text-2xl font-bold font-mono text-blue-600 dark:text-blue-400">{filteredCount}</div>
+                    <div className="bg-slate-50 dark:bg-slate-800/25 border border-slate-100 dark:border-slate-800/50 p-2 sm:p-4 rounded-xl text-center">
+                      <div className="text-lg sm:text-2xl font-bold font-mono text-blue-600 dark:text-blue-400">{filteredCount}</div>
                       <div className="text-[10px] font-semibold text-slate-400 uppercase tracking-tight mt-1">Filtered</div>
                     </div>
-                    <div className="bg-slate-50 dark:bg-slate-800/25 border border-slate-100 dark:border-slate-800/50 p-4 rounded-xl text-center">
-                      <div className="text-2xl font-bold font-mono text-indigo-600 dark:text-indigo-400">{selectionCount}</div>
+                    <div className="bg-slate-50 dark:bg-slate-800/25 border border-slate-100 dark:border-slate-800/50 p-2 sm:p-4 rounded-xl text-center">
+                      <div className="text-lg sm:text-2xl font-bold font-mono text-indigo-600 dark:text-indigo-400">{selectionCount}</div>
                       <div className="text-[10px] font-semibold text-slate-400 uppercase tracking-tight mt-1">Staged</div>
                     </div>
-                    <div className="bg-slate-50 dark:bg-slate-800/25 border border-slate-100 dark:border-slate-800/50 p-4 rounded-xl text-center flex flex-col justify-center items-center">
+                    <div className="bg-slate-50 dark:bg-slate-800/25 border border-slate-100 dark:border-slate-800/50 p-2 sm:p-4 rounded-xl text-center flex flex-col justify-center items-center">
                       {isQuizSubmitted ? (
-                        <div className="text-2xl font-bold font-mono text-emerald-600 dark:text-emerald-400">{gradePercent}%</div>
+                        <div className="text-lg sm:text-2xl font-bold font-mono text-emerald-600 dark:text-emerald-400">{gradePercent}%</div>
                       ) : (
-                        <div className="text-slate-400 font-medium text-xs flex items-center justify-center gap-1.5 h-8">
-                           <Trophy className="w-4 h-4 text-slate-400 dark:text-slate-500" />
-                           Practicing
+                        <div className="text-slate-400 font-medium text-[10px] sm:text-xs flex items-center justify-center gap-1 h-6 sm:h-8">
+                           Quiz Mode
                         </div>
                       )}
                       <div className="text-[10px] font-semibold text-slate-400 uppercase tracking-tight mt-1">Exam Grade</div>
@@ -1299,44 +1227,46 @@ export default function App() {
                   {questions.length === 0 ? (
                     <div className="text-center text-xs text-slate-400 dark:text-slate-550 py-4">No questions loaded</div>
                   ) : (
-                    <div className="grid grid-cols-5 sm:grid-cols-10 gap-2" id="questionNavMatrix">
-                      {questions.map((q) => {
-                        const isStaged = !!userSelections[q.id];
-                        const isCorrect = userSelections[q.id] === q.answer;
-                        const isFilteredOut = !filteredQuestions.some(fq => fq.id === q.id);
+                    <div className="max-h-[220px] overflow-y-auto pr-2">
+                      <div className="grid grid-cols-5 md:grid-cols-10 gap-2" id="questionNavMatrix">
+                        {questions.map((q) => {
+                          const isStaged = !!userSelections[q.id];
+                          const isCorrect = userSelections[q.id] === q.answer;
+                          const isFilteredOut = !filteredQuestions.some(fq => fq.id === q.id);
 
-                        let btnClass = "bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-800";
-                        
-                        if (isQuizSubmitted) {
-                          if (isCorrect) {
-                              btnClass = "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 border-emerald-300 dark:border-emerald-800/50 hover:bg-emerald-100 dark:hover:bg-emerald-900/30";
-                          } else if (isStaged) {
-                              btnClass = "bg-red-50 dark:bg-red-950/20 text-red-700 dark:text-red-400 border-red-350 dark:border-red-900/40 hover:bg-red-100 dark:hover:bg-red-900/20";
+                          let btnClass = "bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-800";
+                          
+                          if (isQuizSubmitted) {
+                            if (isCorrect) {
+                                btnClass = "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 border-emerald-300 dark:border-emerald-800/50 hover:bg-emerald-100 dark:hover:bg-emerald-900/30";
+                            } else if (isStaged) {
+                                btnClass = "bg-red-50 dark:bg-red-950/20 text-red-700 dark:text-red-400 border-red-350 dark:border-red-900/40 hover:bg-red-100 dark:hover:bg-red-900/20";
+                            } else {
+                                btnClass = "bg-rose-50 dark:bg-rose-950/10 text-rose-700 dark:text-rose-400 border-rose-350 dark:border-rose-900/30 hover:bg-rose-100 dark:hover:bg-rose-900/10";
+                            }
                           } else {
-                              btnClass = "bg-rose-50 dark:bg-rose-950/10 text-rose-700 dark:text-rose-400 border-rose-350 dark:border-rose-900/30 hover:bg-rose-100 dark:hover:bg-rose-900/10";
+                            if (isStaged) {
+                                btnClass = "bg-indigo-100 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 border-indigo-400 dark:border-indigo-800 hover:bg-indigo-200 dark:hover:bg-indigo-900/40";
+                            }
                           }
-                        } else {
-                          if (isStaged) {
-                              btnClass = "bg-indigo-100 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 border-indigo-400 dark:border-indigo-800 hover:bg-indigo-200 dark:hover:bg-indigo-900/40";
+
+                          if (isFilteredOut) {
+                            btnClass += " opacity-25";
                           }
-                        }
 
-                        if (isFilteredOut) {
-                          btnClass += " opacity-25";
-                        }
-
-                        return (
-                          <button
-                            key={q.id}
-                            id={`nav-btn-${q.id}`}
-                            onClick={() => handleJumpToQuestion(q.id)}
-                            className={`p-1.5 text-xs font-bold font-mono text-center rounded-lg border transition duration-150 cursor-pointer ${btnClass}`}
-                            title={`Go to Question #${q.id}`}
-                          >
-                            {q.id}
-                          </button>
-                        );
-                      })}
+                          return (
+                            <button
+                              key={q.id}
+                              id={`nav-btn-${q.id}`}
+                              onClick={() => handleJumpToQuestion(q.id)}
+                              className={`h-8 w-full text-xs font-bold font-mono flex items-center justify-center rounded-lg border transition duration-150 cursor-pointer ${btnClass}`}
+                              title={`Go to Question #${q.id}`}
+                            >
+                              {q.id}
+                            </button>
+                          );
+                        })}
+                      </div>
                     </div>
                   )}
 
@@ -1455,6 +1385,75 @@ export default function App() {
           </div>
         )}
       </AnimatePresence>
+
+      {/* Floating Navigation & Actions shortcuts panel */}
+      {activeTab === "practice" && totalInPool > 0 && (
+        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 w-[92%] max-w-[380px] bg-white dark:bg-slate-900 shadow-xl border border-slate-200 dark:border-slate-800 rounded-full py-1.5 px-3 flex items-center justify-between gap-2 z-50">
+          {/* 1. Submit Button: compact, rounded green pill */}
+          {!isQuizSubmitted ? (
+            <button
+              type="button"
+              onClick={handleExecuteSubmission}
+              className="h-8 px-3 text-xs bg-emerald-600 hover:bg-emerald-700 text-white rounded-full font-medium flex items-center justify-center cursor-pointer active:scale-95 transition-all"
+            >
+              Submit
+            </button>
+          ) : (
+            <div className="flex items-center gap-1 text-[11px] font-bold text-emerald-600 dark:text-emerald-400 pl-1.5 font-sans">
+              <CheckCircle2 className="w-3.5 h-3.5" />
+              <span>Graded</span>
+            </div>
+          )}
+
+          {/* 2. Jumper Input + Go Button (No Labels) */}
+          <form 
+            onSubmit={(e) => {
+              e.preventDefault();
+              const num = parseInt(jumpQuestionVal, 10);
+              if (!isNaN(num) && num > 0) {
+                handleJumpToQuestion(num);
+                setJumpQuestionVal("");
+              }
+            }}
+            className="flex items-center gap-1"
+          >
+            <input
+              type="text"
+              inputMode="numeric"
+              placeholder="#"
+              value={jumpQuestionVal}
+              onChange={(e) => setJumpQuestionVal(e.target.value.replace(/\D/g, ''))}
+              className="h-8 w-12 text-xs text-center border border-slate-200 dark:border-slate-800 rounded-md bg-slate-50 dark:bg-slate-950 focus:border-blue-500 outline-none text-slate-800 dark:text-slate-100"
+            />
+            <button
+              type="submit"
+              className="h-8 px-2.5 text-xs rounded-md bg-blue-600 hover:bg-blue-700 text-white font-medium transition-all flex items-center justify-center cursor-pointer active:scale-95"
+            >
+              Go
+            </button>
+          </form>
+
+          {/* 3. Scroll Toggle Button */}
+          <button
+            type="button"
+            onClick={() => {
+              if (isPastMiddle) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              } else {
+                window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+              }
+            }}
+            title={isPastMiddle ? "Scroll to Top" : "Scroll to Bottom"}
+            className="h-8 w-8 text-xs bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 rounded-full flex items-center justify-center text-slate-700 dark:text-slate-300 active:scale-95 cursor-pointer transition-all"
+          >
+            {isPastMiddle ? (
+              <ArrowUp className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+            ) : (
+              <ArrowDown className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+            )}
+          </button>
+        </div>
+      )}
     </div>
   );
 }
