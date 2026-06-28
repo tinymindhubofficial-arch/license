@@ -3,7 +3,7 @@ import {
   BookOpen, Search, Award, CheckCircle2, XCircle, RotateCcw, 
   Check, ChevronLeft, ChevronRight, Info, ListFilter, Trophy, 
   Sparkles, BookOpenCheck, HelpCircle, AlertTriangle, Moon, Sun, 
-  Bookmark, LayoutDashboard, Shuffle, ArrowRight
+  Bookmark, LayoutDashboard, Shuffle, ArrowRight, ArrowUp, ArrowDown
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { chaptersList, chaptersData } from "./chaptersData";
@@ -76,6 +76,20 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [jumpPageVal, setJumpPageVal] = useState<string>("");
   const [jumpQuestionVal, setJumpQuestionVal] = useState<string>("");
+
+  const [isPastMiddle, setIsPastMiddle] = useState<boolean>(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (totalHeight <= 0) return;
+      setIsPastMiddle(scrollY > totalHeight / 2);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Custom confirmation modal state
   const [modalConfig, setModalConfig] = useState<{
@@ -860,7 +874,7 @@ export default function App() {
               </div>
 
                 {/* 2. Questions Listing Viewport */}
-                <div id="questions-viewport" className="flex flex-col gap-3.5">
+                <div id="questions-viewport" className="flex flex-col gap-3.5 pb-24">
                   <AnimatePresence mode="wait">
                     {currentVisibleSlice.length === 0 ? (
                       <motion.div
@@ -1309,44 +1323,46 @@ export default function App() {
                   {questions.length === 0 ? (
                     <div className="text-center text-xs text-slate-400 dark:text-slate-550 py-4">No questions loaded</div>
                   ) : (
-                    <div className="grid grid-cols-5 sm:grid-cols-10 gap-2" id="questionNavMatrix">
-                      {questions.map((q) => {
-                        const isStaged = !!userSelections[q.id];
-                        const isCorrect = userSelections[q.id] === q.answer;
-                        const isFilteredOut = !filteredQuestions.some(fq => fq.id === q.id);
+                    <div className="max-h-[220px] overflow-y-auto pr-2">
+                      <div className="grid grid-cols-5 md:grid-cols-10 gap-2" id="questionNavMatrix">
+                        {questions.map((q) => {
+                          const isStaged = !!userSelections[q.id];
+                          const isCorrect = userSelections[q.id] === q.answer;
+                          const isFilteredOut = !filteredQuestions.some(fq => fq.id === q.id);
 
-                        let btnClass = "bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-800";
-                        
-                        if (isQuizSubmitted) {
-                          if (isCorrect) {
-                              btnClass = "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 border-emerald-300 dark:border-emerald-800/50 hover:bg-emerald-100 dark:hover:bg-emerald-900/30";
-                          } else if (isStaged) {
-                              btnClass = "bg-red-50 dark:bg-red-950/20 text-red-700 dark:text-red-400 border-red-350 dark:border-red-900/40 hover:bg-red-100 dark:hover:bg-red-900/20";
+                          let btnClass = "bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-800";
+                          
+                          if (isQuizSubmitted) {
+                            if (isCorrect) {
+                                btnClass = "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 border-emerald-300 dark:border-emerald-800/50 hover:bg-emerald-100 dark:hover:bg-emerald-900/30";
+                            } else if (isStaged) {
+                                btnClass = "bg-red-50 dark:bg-red-950/20 text-red-700 dark:text-red-400 border-red-350 dark:border-red-900/40 hover:bg-red-100 dark:hover:bg-red-900/20";
+                            } else {
+                                btnClass = "bg-rose-50 dark:bg-rose-950/10 text-rose-700 dark:text-rose-400 border-rose-350 dark:border-rose-900/30 hover:bg-rose-100 dark:hover:bg-rose-900/10";
+                            }
                           } else {
-                              btnClass = "bg-rose-50 dark:bg-rose-950/10 text-rose-700 dark:text-rose-400 border-rose-350 dark:border-rose-900/30 hover:bg-rose-100 dark:hover:bg-rose-900/10";
+                            if (isStaged) {
+                                btnClass = "bg-indigo-100 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 border-indigo-400 dark:border-indigo-800 hover:bg-indigo-200 dark:hover:bg-indigo-900/40";
+                            }
                           }
-                        } else {
-                          if (isStaged) {
-                              btnClass = "bg-indigo-100 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 border-indigo-400 dark:border-indigo-800 hover:bg-indigo-200 dark:hover:bg-indigo-900/40";
+
+                          if (isFilteredOut) {
+                            btnClass += " opacity-25";
                           }
-                        }
 
-                        if (isFilteredOut) {
-                          btnClass += " opacity-25";
-                        }
-
-                        return (
-                          <button
-                            key={q.id}
-                            id={`nav-btn-${q.id}`}
-                            onClick={() => handleJumpToQuestion(q.id)}
-                            className={`p-1.5 text-xs font-bold font-mono text-center rounded-lg border transition duration-150 cursor-pointer ${btnClass}`}
-                            title={`Go to Question #${q.id}`}
-                          >
-                            {q.id}
-                          </button>
-                        );
-                      })}
+                          return (
+                            <button
+                              key={q.id}
+                              id={`nav-btn-${q.id}`}
+                              onClick={() => handleJumpToQuestion(q.id)}
+                              className={`h-8 w-full text-xs font-bold font-mono flex items-center justify-center rounded-lg border transition duration-150 cursor-pointer ${btnClass}`}
+                              title={`Go to Question #${q.id}`}
+                            >
+                              {q.id}
+                            </button>
+                          );
+                        })}
+                      </div>
                     </div>
                   )}
 
@@ -1466,40 +1482,74 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Floating Go to Question navigation bar */}
-      <form 
-        onSubmit={(e) => {
-          e.preventDefault();
-          const num = parseInt(jumpQuestionVal, 10);
-          if (!isNaN(num) && num > 0) {
-            handleJumpToQuestion(num);
-            setJumpQuestionVal("");
-          }
-        }}
-        className="fixed bottom-6 right-6 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md rounded-xl border border-slate-200/80 dark:border-slate-800 p-1.5 pl-3 shadow-xl flex items-center gap-2 transition-all hover:border-blue-500/50"
-      >
-        <span className="text-[11px] font-bold font-mono text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-          Go to
-        </span>
-        <div className="relative flex items-center">
-          <span className="absolute left-2 text-xs font-mono font-bold text-slate-400">#</span>
-          <input
-            type="text"
-            inputMode="numeric"
-            placeholder="ID"
-            value={jumpQuestionVal}
-            onChange={(e) => setJumpQuestionVal(e.target.value.replace(/\D/g, ''))}
-            className="w-16 h-8 pl-5 pr-1.5 text-xs font-semibold font-mono bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-blue-500 rounded-lg outline-none text-slate-800 dark:text-slate-100"
-          />
+      {/* Floating Navigation & Actions shortcuts panel */}
+      {activeTab === "practice" && totalInPool > 0 && (
+        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 w-[92%] max-w-[380px] bg-white dark:bg-slate-900 shadow-xl border border-slate-200 dark:border-slate-800 rounded-full py-1.5 px-3 flex items-center justify-between gap-2 z-50">
+          {/* 1. Submit Button: compact, rounded green pill */}
+          {!isQuizSubmitted ? (
+            <button
+              type="button"
+              onClick={handleExecuteSubmission}
+              className="h-8 px-3 text-xs bg-emerald-600 hover:bg-emerald-700 text-white rounded-full font-medium flex items-center justify-center cursor-pointer active:scale-95 transition-all"
+            >
+              Submit
+            </button>
+          ) : (
+            <div className="flex items-center gap-1 text-[11px] font-bold text-emerald-600 dark:text-emerald-400 pl-1.5 font-sans">
+              <CheckCircle2 className="w-3.5 h-3.5" />
+              <span>Graded</span>
+            </div>
+          )}
+
+          {/* 2. Jumper Input + Go Button (No Labels) */}
+          <form 
+            onSubmit={(e) => {
+              e.preventDefault();
+              const num = parseInt(jumpQuestionVal, 10);
+              if (!isNaN(num) && num > 0) {
+                handleJumpToQuestion(num);
+                setJumpQuestionVal("");
+              }
+            }}
+            className="flex items-center gap-1"
+          >
+            <input
+              type="text"
+              inputMode="numeric"
+              placeholder="#"
+              value={jumpQuestionVal}
+              onChange={(e) => setJumpQuestionVal(e.target.value.replace(/\D/g, ''))}
+              className="h-8 w-12 text-xs text-center border border-slate-200 dark:border-slate-800 rounded-md bg-slate-50 dark:bg-slate-950 focus:border-blue-500 outline-none text-slate-800 dark:text-slate-100"
+            />
+            <button
+              type="submit"
+              className="h-8 px-2.5 text-xs rounded-md bg-blue-600 hover:bg-blue-700 text-white font-medium transition-all flex items-center justify-center cursor-pointer active:scale-95"
+            >
+              Go
+            </button>
+          </form>
+
+          {/* 3. Scroll Toggle Button */}
+          <button
+            type="button"
+            onClick={() => {
+              if (isPastMiddle) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              } else {
+                window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+              }
+            }}
+            title={isPastMiddle ? "Scroll to Top" : "Scroll to Bottom"}
+            className="h-8 w-8 text-xs bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 rounded-full flex items-center justify-center text-slate-700 dark:text-slate-300 active:scale-95 cursor-pointer transition-all"
+          >
+            {isPastMiddle ? (
+              <ArrowUp className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+            ) : (
+              <ArrowDown className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+            )}
+          </button>
         </div>
-        <button
-          type="submit"
-          className="h-8 px-3 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg shadow-sm transition-all flex items-center gap-1 cursor-pointer"
-        >
-          <span>Go</span>
-          <ArrowRight className="w-3 h-3" />
-        </button>
-      </form>
+      )}
     </div>
   );
 }

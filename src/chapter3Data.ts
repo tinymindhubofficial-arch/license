@@ -214,7 +214,7 @@ export const chapter3Questions: Question[] = [
       "c": "remain identical",
       "d": "vary unpredictably based on environment"
     },
-    "answer": "a",
+    "answer": "d",
     "tag": "Fluid Properties"
   },
   {
