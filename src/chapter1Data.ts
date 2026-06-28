@@ -32,7 +32,7 @@ export const chapter1Questions: Question[] = [
     { id: 29, text: "The pigment used in paints for corrosive resistance, is", options: { a: "white lead-", b: "ferrous oxide", c: "zinc white", d: "red lead" }, answer: "d" },
     { id: 30, text: "Which of the following ingredients imparts red color to the clay bricks?", options: { a: "Silica", b: "Iron oxide", c: "Lime", d: "Aluminum" }, answer: "b" },
     { id: 31, text: "Which of the following is not a type of hydraulic cement?", options: { a: "Ordinary portland cement", b: "Portland pozzolana cement", c: "Portland slag cement", d: "Hydration of lime" }, answer: "d" },
-    { id: 32, text: "The operation of removal of impurities of clay adhering to iron ore is known as", options: { a: "calcination", b: "purification", c: "pressing", d: "refining" }, answer: "c" },
+    { id: 32, text: "The operation of removal of impurities of clay adhering to iron ore is known as", options: { a: "calcination", b: "purification", c: "dressing", d: "refining" }, answer: "c" },
     { id: 33, text: "Swelling in brick is also known as", options: { a: "chuff", b: "bloating", c: "effloresce", d: "lamination" }, answer: "b" },
     { id: 34, text: "The process of cement hydration involves", options: { a: "drying of cement", b: "evaporation of water", c: "mixing with water to form a paste", d: "freezing of cement" }, answer: "b" },
     { id: 35, text: "The property of the material that enables it to be drawn out or elongated to an appreciable extent is called", options: { a: "malleability", b: "ductility", c: "brittle", d: "plasticity" }, answer: "b" },
