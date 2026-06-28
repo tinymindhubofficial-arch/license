@@ -67,12 +67,12 @@ export default function App() {
     return saved === "true";
   });
 
-  // Filter and page states (using 10 items per page)
+  // Filter and page states (using 20 items per page)
   const [searchQuery, setSearchQuery] = useState<string>(" ");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [reviewFilter, setReviewFilter] = useState<'all' | 'incorrect' | 'correct'>('all');
   
-  const itemsPerPage = 10;
+  const itemsPerPage = 20;
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [jumpPageVal, setJumpPageVal] = useState<string>("");
 
@@ -893,18 +893,21 @@ export default function App() {
                             transition={{ duration: 0.2, delay: qIndex * 0.05 }}
                             className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200/80 dark:border-slate-800 p-4 sm:p-5 shadow-sm relative overflow-hidden"
                           >
-                            {/* Upper Info Header Line */}
-                            <div className="flex justify-between items-center text-xs text-slate-400 mb-3 pb-2 border-b border-slate-100 dark:border-slate-800/80">
-                              <div className="flex items-center gap-2">
-                                <span className="font-mono text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">
-                                  Question Unit Matrix #{q.id}
-                                </span>
+                            {/* Combined Header & Question Info */}
+                            <div className="flex justify-between items-start gap-4 mb-4">
+                              <div className="flex-1">
+                                <h3 className="text-[14px] sm:text-[15px] font-semibold text-slate-800 dark:text-slate-100 leading-relaxed font-display inline">
+                                  <span className="font-mono text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider mr-1.5">
+                                    Q. {q.id}
+                                  </span>
+                                  {q.text}
+                                </h3>
                                 
                                 {/* Star / Bookmark Toggle Button */}
                                 <button
                                   id={`bookmark-btn-${q.id}`}
                                   onClick={() => toggleBookmark(activeChapter, q.id)}
-                                  className="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-all duration-150 group cursor-pointer"
+                                  className="inline-flex items-center p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-all duration-150 group cursor-pointer ml-1.5 align-middle"
                                   title={isStarred ? "Remove Bookmark" : "Bookmark Question"}
                                 >
                                   <Bookmark
@@ -917,7 +920,7 @@ export default function App() {
                                 </button>
                               </div>
 
-                              <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold ${
+                              <span className={`shrink-0 px-2.5 py-0.5 rounded-full text-[11px] font-bold ${
                                 isQuizSubmitted 
                                   ? isCorrect 
                                     ? "bg-emerald-50 dark:bg-emerald-950/20 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/50" 
@@ -935,11 +938,6 @@ export default function App() {
                                     : "Awaiting Input"}
                               </span>
                             </div>
-
-                            {/* Question Text */}
-                            <h3 className="text-[14px] sm:text-[15px] font-semibold text-slate-800 dark:text-slate-100 leading-relaxed mb-4 font-display">
-                              {q.text}
-                            </h3>
 
                             {/* Options Buttons Stack */}
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
