@@ -3,7 +3,7 @@ import {
   BookOpen, Search, Award, CheckCircle2, XCircle, RotateCcw, 
   Check, ChevronLeft, ChevronRight, Info, ListFilter, Trophy, 
   Sparkles, BookOpenCheck, HelpCircle, AlertTriangle, Moon, Sun, 
-  Bookmark, LayoutDashboard
+  Bookmark, LayoutDashboard, Shuffle
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { chaptersList, chaptersData } from "./chaptersData";
@@ -61,12 +61,20 @@ export default function App() {
   // Sandboxed state for active chapter's submission state
   const [isQuizSubmitted, setIsQuizSubmitted] = useState<boolean>(false);
 
-  // Filter and page states (using exactly 5 items per page)
+  // Persistent Shuffle Mode state
+  const [isShuffleMode, setIsShuffleMode] = useState<boolean>(() => {
+    const saved = localStorage.getItem("civil_quiz_shuffle_mode");
+    return saved === "true";
+  });
+
+  // Filter and page states (using 10 items per page)
   const [searchQuery, setSearchQuery] = useState<string>(" ");
   const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [reviewFilter, setReviewFilter] = useState<'all' | 'incorrect' | 'correct'>('all');
   
-  const itemsPerPage = 5;
+  const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [jumpPageVal, setJumpPageVal] = useState<string>("");
 
   // Custom confirmation modal state
   const [modalConfig, setModalConfig] = useState<{
@@ -126,17 +134,31 @@ export default function App() {
     // Clear filters when chapter changes
     setSearchQuery("");
     setStatusFilter("all");
+    setReviewFilter("all");
   }, [activeChapter]);
 
-  // Persist page number positioning when currentPage changes
-  useEffect(() => {
-    localStorage.setItem(`civil_quiz_page_ch_${activeChapter}`, currentPage.toString());
-  }, [currentPage, activeChapter]);
+
 
   // Load questions for the active chapter
   const questions = useMemo(() => {
-    return chaptersData[activeChapter] || [];
-  }, [activeChapter]);
+    const originalQuestions = chaptersData[activeChapter] || [];
+    if (!isShuffleMode) {
+      return originalQuestions;
+    }
+    
+    // Stable shuffle for active chapter questions
+    const shuffled = [...originalQuestions].sort(() => Math.random() - 0.5);
+    
+    // Stable shuffle for multiple-choice options inside each question
+    return shuffled.map((q) => {
+      const optionKeys = Object.keys(q.options);
+      const shuffledKeys = [...optionKeys].sort(() => Math.random() - 0.5);
+      return {
+        ...q,
+        _shuffledOptionKeys: shuffledKeys,
+      };
+    });
+  }, [activeChapter, isShuffleMode]);
 
   // Handle option selection
   const handleSelectOption = (qId: number, optionKey: string) => {
@@ -168,9 +190,39 @@ export default function App() {
         matchesStatus = !!bookmarks[`${activeChapter}-${q.id}`];
       }
 
-      return matchesSearch && matchesStatus;
+      let matchesReview = true;
+      if (isQuizSubmitted) {
+        const isCorrect = selection === q.answer;
+        if (reviewFilter === "incorrect") {
+          matchesReview = !isCorrect;
+        } else if (reviewFilter === "correct") {
+          matchesReview = isCorrect;
+        }
+      }
+
+      return matchesSearch && matchesStatus && matchesReview;
     });
-  }, [questions, searchQuery, statusFilter, userSelections, bookmarks, activeChapter]);
+  }, [questions, searchQuery, statusFilter, userSelections, bookmarks, activeChapter, isQuizSubmitted, reviewFilter]);
+
+  // Compute Total Correct, Total Incorrect, and Not Submitted counts
+  const postSubmitMetrics = useMemo(() => {
+    let correct = 0;
+    let incorrect = 0;
+    let unanswered = 0;
+
+    questions.forEach((q) => {
+      const selection = userSelections[q.id];
+      if (!selection) {
+        unanswered++;
+      } else if (selection === q.answer) {
+        correct++;
+      } else {
+        incorrect++;
+      }
+    });
+
+    return { correct, incorrect, unanswered };
+  }, [questions, userSelections]);
 
   // Metrics computation for active chapter
   const correctCount = useMemo(() => {
@@ -360,8 +412,51 @@ export default function App() {
     );
   };
 
-  // Navigation & matrix interaction helper (maximum 5 items per page)
+  // Safely change chapter with confirmation warning if active, unsubmitted answers exist
+  const handleChapterChange = (nextChId: number, targetTab?: string) => {
+    if (!isQuizSubmitted && selectionCount > 0) {
+      const confirmAbandon = window.confirm(
+        `Are you sure you want to switch to Chapter ${nextChId}? Your unsaved staged answers in Chapter ${activeChapter} will be lost.`
+      );
+      if (!confirmAbandon) {
+        return;
+      }
+    }
+    setActiveChapter(nextChId);
+    if (targetTab) {
+      setActiveTab(targetTab);
+    }
+  };
+
+  // Toggle Shuffle Exam mode and clear selections
+  const handleToggleShuffle = () => {
+    const nextVal = !isShuffleMode;
+    setIsShuffleMode(nextVal);
+    localStorage.setItem("civil_quiz_shuffle_mode", nextVal.toString());
+    
+    // Clear active staged answers as required
+    setUserSelections({});
+    localStorage.removeItem(`civil_quiz_selections_ch_${activeChapter}`);
+    
+    // Reset to page 1
+    setCurrentPage(1);
+  };
+
+  // Navigation & matrix interaction helper (maximum 10 items per page)
   const totalPages = Math.ceil(filteredCount / itemsPerPage) || 1;
+
+  // Persist page number positioning when currentPage changes
+  useEffect(() => {
+    localStorage.setItem(`civil_quiz_page_ch_${activeChapter}`, currentPage.toString());
+    setJumpPageVal(currentPage.toString());
+  }, [currentPage, activeChapter]);
+
+  // Ensure currentPage does not exceed totalPages when list of questions shrinks
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages);
+    }
+  }, [totalPages, currentPage]);
   const currentVisibleSlice = useMemo(() => {
     const start = (currentPage - 1) * itemsPerPage;
     return filteredQuestions.slice(start, start + itemsPerPage);
@@ -371,7 +466,7 @@ export default function App() {
     const targetPage = currentPage + direction;
     if (targetPage >= 1 && targetPage <= totalPages) {
       setCurrentPage(targetPage);
-      window.scrollTo({ top: 200, behavior: "smooth" });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
@@ -664,8 +759,7 @@ export default function App() {
                         {/* Action Jump Button */}
                         <button
                           onClick={() => {
-                            setActiveChapter(ch.id);
-                            setActiveTab("practice");
+                            handleChapterChange(ch.id, "practice");
                           }}
                           className={`w-full py-2.5 px-4 rounded-xl text-xs font-bold transition duration-150 flex items-center justify-center gap-1.5 cursor-pointer mt-4 ${
                             stat.isSubmitted
@@ -706,240 +800,54 @@ export default function App() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.25 }}
-              className="grid grid-cols-1 lg:grid-cols-4 gap-6"
+              className="flex flex-col gap-4 max-w-3xl w-full mx-auto"
             >
-              
-              {/* Column 1: Sidebar Control Panel */}
-              <section id="sidebarPanel" className="lg:col-span-1 w-full">
-                
-                {/* Unified Sidebar Card */}
-                <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm overflow-hidden divide-y divide-slate-100 dark:divide-slate-800/80">
-                  
-                  {/* Widget 1: Dynamic Chapter Selection */}
-                  <div className="p-5">
-                    <label htmlFor="chapterSelect" className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                      <BookOpenCheck className="w-3.5 h-3.5 text-blue-600" />
-                      Select Chapter Directory
-                    </label>
-                    <select
-                      id="chapterSelect"
-                      value={activeChapter}
-                      onChange={(e) => setActiveChapter(parseInt(e.target.value, 10))}
-                      className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 hover:border-blue-500 dark:hover:border-blue-400 text-slate-800 dark:text-slate-200 py-2.5 px-3 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition cursor-pointer"
-                    >
-                      {chaptersList.map((ch) => {
-                        const stat = chapterStats[ch.id];
-                        const prefix = stat?.isSubmitted ? `[Graded: ${stat.score}%]` : stat?.selectedCount > 0 ? `[Staged: ${stat.selectedCount}/${stat.totalCount}]` : `[Open]`;
-                        return (
-                          <option key={ch.id} value={ch.id}>
-                            Ch {ch.id}: {ch.name.replace(/Chapter \d+:\s*/, "")} {prefix}
-                          </option>
-                        );
-                      })}
-                    </select>
-
-                    {/* Active Chapter Details display */}
-                    <div className="mt-4 bg-slate-50/80 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800/50 p-3 rounded-xl text-xs text-slate-600 dark:text-slate-400">
-                      <div className="font-semibold text-slate-800 dark:text-slate-200 text-[13px] flex items-center justify-between">
-                        <span>Practice Focus:</span>
-                        <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400">Ch {activeChapter} of 10</span>
-                      </div>
-                      <p className="mt-1 leading-relaxed">{chaptersList.find(c => c.id === activeChapter)?.description}</p>
-                      <div className="mt-2.5 pt-2 border-t border-slate-250 dark:border-slate-800/50 flex justify-between items-center text-[11px]">
-                        <span>Total questions available:</span>
-                        <strong className="text-slate-800 dark:text-slate-200 font-mono text-[12px]">{totalInPool}</strong>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Widget 2: Search Directory & Status Filter */}
-                  <div className="p-5 flex flex-col gap-4">
-                    <div>
-                      <label htmlFor="searchInput" className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                        <Search className="w-3.5 h-3.5 text-slate-500" />
-                        Search Question Keywords
-                      </label>
-                      <div className="relative">
-                        <input
-                          id="searchInput"
-                          type="text"
-                          value={searchQuery}
-                          onChange={(e) => {
-                            setSearchQuery(e.target.value);
-                            setCurrentPage(1);
-                          }}
-                          placeholder="Type words, keys or options..."
-                          className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 py-2.5 pl-9 pr-3 rounded-xl text-sm placeholder:text-slate-450 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition"
-                        />
-                        <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5 pointer-events-none" />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label htmlFor="statusFilter" className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                        <ListFilter className="w-3.5 h-3.5 text-slate-500" />
-                        Verification Status Filter
-                      </label>
-                      <select
-                        id="statusFilter"
-                        value={statusFilter}
-                        onChange={(e) => {
-                          setStatusFilter(e.target.value);
-                          setCurrentPage(1);
-                        }}
-                        className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 py-2.5 px-3 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition cursor-pointer"
-                      >
-                        <option value="all">All Questions ({totalInPool})</option>
-                        <option value="answered">Staged Choices ({selectionCount})</option>
-                        <option value="unanswered">Unanswered ({totalInPool - selectionCount})</option>
-                        <option value="bookmarked">Bookmarked ({activeChapterBookmarksCount})</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  {/* Widget 3: Engine Metrics Bento Box */}
-                  <div className="p-5">
-                    <span className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
-                      Current Diagnostic Metrics
-                    </span>
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="bg-slate-50 dark:bg-slate-800/25 border border-slate-100 dark:border-slate-800 p-3 rounded-xl text-center">
-                        <div className="text-xl font-bold font-mono text-slate-800 dark:text-slate-100">{totalInPool}</div>
-                        <div className="text-[10px] font-semibold text-slate-400 uppercase tracking-tight mt-0.5">Total Pool</div>
-                      </div>
-                      <div className="bg-slate-50 dark:bg-slate-800/25 border border-slate-100 dark:border-slate-800 p-3 rounded-xl text-center">
-                        <div className="text-xl font-bold font-mono text-blue-600 dark:text-blue-400">{filteredCount}</div>
-                        <div className="text-[10px] font-semibold text-slate-400 uppercase tracking-tight mt-0.5">Filtered</div>
-                      </div>
-                      <div className="bg-slate-50 dark:bg-slate-800/25 border border-slate-100 dark:border-slate-800 p-3 rounded-xl text-center">
-                        <div className="text-xl font-bold font-mono text-indigo-600 dark:text-indigo-400">{selectionCount}</div>
-                        <div className="text-[10px] font-semibold text-slate-400 uppercase tracking-tight mt-0.5">Staged</div>
-                      </div>
-                      <div className="bg-slate-50 dark:bg-slate-800/25 border border-slate-100 dark:border-slate-800 p-3 rounded-xl text-center flex flex-col justify-center items-center">
-                        {isQuizSubmitted ? (
-                          <div className="text-xl font-bold font-mono text-emerald-600 dark:text-emerald-400">{gradePercent}%</div>
-                        ) : (
-                          <div className="text-slate-400 font-medium text-xs flex items-center justify-center gap-1.5 h-7">
-                            <Trophy className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
-                            Practicing
-                          </div>
-                        )}
-                        <div className="text-[10px] font-semibold text-slate-400 uppercase tracking-tight">Exam Grade</div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Widget 4: Question Navigation Matrix */}
-                  <div className="p-5">
-                    <span className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center justify-between">
-                      <span>Quiz Navigation Grid</span>
-                      <span className="text-[11px] font-mono text-slate-500 dark:text-slate-450">{filteredCount} displayed</span>
-                    </span>
-                    
-                    <div className="max-h-[240px] overflow-y-auto border border-slate-100 dark:border-slate-800/80 p-2.5 rounded-xl bg-slate-50/50 dark:bg-slate-900/40">
-                      {questions.length === 0 ? (
-                        <div className="text-center text-xs text-slate-400 dark:text-slate-550 py-4">No questions loaded</div>
-                      ) : (
-                        <div className="grid grid-cols-5 gap-2" id="questionNavMatrix">
-                          {questions.map((q) => {
-                            const isStaged = !!userSelections[q.id];
-                            const isCorrect = userSelections[q.id] === q.answer;
-                            const isFilteredOut = !filteredQuestions.some(fq => fq.id === q.id);
-
-                            let btnClass = "bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-800";
-                            
-                            if (isQuizSubmitted) {
-                              if (isCorrect) {
-                                  btnClass = "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 border-emerald-300 dark:border-emerald-800/50 hover:bg-emerald-100 dark:hover:bg-emerald-900/30";
-                              } else if (isStaged) {
-                                  btnClass = "bg-red-50 dark:bg-red-950/20 text-red-700 dark:text-red-400 border-red-300 dark:border-red-800/40 hover:bg-red-100 dark:hover:bg-red-900/20";
-                              } else {
-                                  btnClass = "bg-rose-50 dark:bg-rose-950/10 text-rose-700 dark:text-rose-400 border-rose-350 dark:border-rose-900/30 hover:bg-rose-100 dark:hover:bg-rose-900/10";
-                              }
-                            } else {
-                              if (isStaged) {
-                                  btnClass = "bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-300 border-blue-400 dark:border-blue-800 hover:bg-blue-100 dark:hover:bg-blue-900/30";
-                              }
-                            }
-
-                            if (isFilteredOut) {
-                              btnClass += " opacity-25";
-                            }
-
-                            return (
-                              <button
-                                key={q.id}
-                                id={`nav-btn-${q.id}`}
-                                onClick={() => handleJumpToQuestion(q.id)}
-                                className={`py-1.5 px-0.5 text-[11px] font-bold font-mono text-center rounded-lg border transition duration-150 cursor-pointer ${btnClass}`}
-                                title={`Go to Question #${q.id}`}
-                              >
-                                {q.id}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      )}
-                    </div>
-                    <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1.5 text-[10px] text-slate-400 font-semibold px-0.5">
-                      <span className="flex items-center gap-1">
-                        <span className="w-2.5 h-2.5 bg-blue-100 dark:bg-blue-950/30 border border-blue-400 dark:border-blue-800 rounded-sm"></span> Staged
-                      </span>
-                      {isQuizSubmitted ? (
-                        <>
-                          <span className="flex items-center gap-1">
-                            <span className="w-2.5 h-2.5 bg-emerald-100 dark:bg-emerald-950/30 border border-emerald-300 dark:border-emerald-800/50 rounded-sm"></span> Correct
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <span className="w-2.5 h-2.5 bg-red-100 dark:bg-red-950/20 border border-red-350 dark:border-red-900/40 rounded-sm"></span> Wrong
-                          </span>
-                        </>
-                      ) : (
-                        <span className="flex items-center gap-1 text-[9px] italic font-normal text-slate-400 dark:text-slate-500">
-                          Submit sheet to evaluate correct answers.
-                        </span>
-                      )}
-                    </div>
-                  </div>
-
+              {/* 2. Compact Inline Chapter Switcher Row */}
+              <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-4 shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+                <div className="flex items-center gap-2">
+                  <BookOpenCheck className="w-4 h-4 text-blue-500 flex-shrink-0" />
+                  <span className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-100 font-display">
+                    Ch {activeChapter}: {chaptersList.find(c => c.id === activeChapter)?.name.replace(/Chapter \d+:\s*/, "")}
+                  </span>
                 </div>
-
-              </section>
-
-              {/* Column 2: Main Workspace Content */}
-              <section id="mainWorkspace" className="lg:col-span-3 flex flex-col gap-6 max-w-4xl w-full">
                 
-                {/* 1. Progress and Diagnostic Banner */}
-                <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 shadow-sm">
-                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-3">
-                    <div className="flex items-center gap-2">
-                      <Sparkles className="w-4 h-4 text-blue-500" />
-                      <span className="text-sm font-bold text-slate-800 dark:text-slate-100 tracking-tight">Active Progress Tracker</span>
-                    </div>
-                    <span className="text-xs font-bold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-full font-mono">
-                      {isQuizSubmitted ? "Evaluation Completed" : `${selectionPercent}% of chapter staged`}
-                    </span>
-                  </div>
-                  
-                  <div className="w-full bg-slate-100 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden">
-                    <motion.div
-                      className={`h-full ${isQuizSubmitted ? 'bg-emerald-500' : 'bg-blue-600'}`}
-                      initial={{ width: 0 }}
-                      animate={{ width: `${isQuizSubmitted ? 100 : selectionPercent}%` }}
-                      transition={{ duration: 0.4, ease: "easeOut" }}
-                    />
-                  </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-xs font-semibold text-slate-400 dark:text-slate-550 whitespace-nowrap hidden xs:inline">Directory:</span>
+                  <select
+                    id="chapterSelect"
+                    value={activeChapter}
+                    onChange={(e) => handleChapterChange(parseInt(e.target.value, 10))}
+                    className="bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 hover:border-blue-500 dark:hover:border-blue-400 text-slate-800 dark:text-slate-200 py-1.5 px-2.5 rounded-lg text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition cursor-pointer"
+                  >
+                    {chaptersList.map((ch) => {
+                      const stat = chapterStats[ch.id];
+                      const prefix = stat?.isSubmitted ? `[Graded: ${stat.score}%]` : stat?.selectedCount > 0 ? `[Draft]` : `[Open]`;
+                      return (
+                        <option key={ch.id} value={ch.id}>
+                          Ch {ch.id}: {ch.name.replace(/Chapter \d+:\s*/, "")} {prefix}
+                        </option>
+                      );
+                    })}
+                  </select>
 
-                  <div className="flex justify-between items-center text-xs text-slate-450 dark:text-slate-450 mt-2">
-                    <span>Diagnostic Progress</span>
-                    <span className="font-semibold text-slate-600 dark:text-slate-300">
-                      {isQuizSubmitted ? "Answers Checked & Verified" : `${selectionCount} / ${totalInPool} Answers Selected`}
-                    </span>
-                  </div>
+                  <button
+                    onClick={handleToggleShuffle}
+                    className={`flex items-center gap-1.5 py-1.5 px-2.5 rounded-lg text-xs font-semibold border transition duration-150 cursor-pointer ${
+                      isShuffleMode
+                        ? "bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 dark:text-indigo-400 border-indigo-200 dark:border-indigo-800/80 hover:bg-indigo-100 dark:hover:bg-indigo-900/30 font-bold"
+                        : "bg-slate-50 dark:bg-slate-800/30 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800"
+                    }`}
+                    title="Toggle Random/Shuffle Question & Options Order"
+                  >
+                    <Shuffle className={`w-3.5 h-3.5 ${isShuffleMode ? "animate-pulse" : ""}`} />
+                    <span>Shuffle Exam</span>
+                    <span className={`w-1.5 h-1.5 rounded-full ${isShuffleMode ? "bg-indigo-500 animate-ping" : "bg-slate-300 dark:bg-slate-600"}`}></span>
+                  </button>
                 </div>
+              </div>
 
                 {/* 2. Questions Listing Viewport */}
-                <div id="questions-viewport" className="flex flex-col gap-5">
+                <div id="questions-viewport" className="flex flex-col gap-3.5">
                   <AnimatePresence mode="wait">
                     {currentVisibleSlice.length === 0 ? (
                       <motion.div
@@ -983,10 +891,10 @@ export default function App() {
                             initial={{ opacity: 0, y: 15 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.2, delay: qIndex * 0.05 }}
-                            className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-6 md:p-8 shadow-sm relative overflow-hidden"
+                            className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200/80 dark:border-slate-800 p-4 sm:p-5 shadow-sm relative overflow-hidden"
                           >
                             {/* Upper Info Header Line */}
-                            <div className="flex justify-between items-center text-xs text-slate-400 mb-4 pb-3 border-b border-slate-100 dark:border-slate-800/80">
+                            <div className="flex justify-between items-center text-xs text-slate-400 mb-3 pb-2 border-b border-slate-100 dark:border-slate-800/80">
                               <div className="flex items-center gap-2">
                                 <span className="font-mono text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">
                                   Question Unit Matrix #{q.id}
@@ -1029,13 +937,16 @@ export default function App() {
                             </div>
 
                             {/* Question Text */}
-                            <h3 className="text-[16px] md:text-[18px] font-semibold text-slate-800 dark:text-slate-100 leading-relaxed mb-6 font-display">
+                            <h3 className="text-[14px] sm:text-[15px] font-semibold text-slate-800 dark:text-slate-100 leading-relaxed mb-4 font-display">
                               {q.text}
                             </h3>
 
                             {/* Options Buttons Stack */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                              {Object.entries(q.options).map(([key, value]) => {
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+                              {(() => {
+                                const optionKeys = q._shuffledOptionKeys || Object.keys(q.options);
+                                return optionKeys.map((key) => [key, q.options[key]]);
+                              })().map(([key, value], index) => {
                                 const isThisSelected = currentSelection === key;
                                 const isThisCorrect = key === q.answer;
 
@@ -1066,10 +977,10 @@ export default function App() {
                                     id={`opt-btn-${q.id}-${key}`}
                                     disabled={isQuizSubmitted}
                                     onClick={() => handleSelectOption(q.id, key)}
-                                    className={`flex items-center text-left p-4 rounded-xl border text-sm transition duration-150 cursor-pointer ${optClass}`}
+                                    className={`flex items-center text-left py-2 px-3 rounded-lg border text-xs transition duration-150 cursor-pointer ${optClass}`}
                                   >
-                                    <span className={`w-8 h-8 rounded-full border flex items-center justify-center font-bold text-xs mr-3.5 flex-shrink-0 transition duration-150 ${prefixClass}`}>
-                                      {key.toUpperCase()}
+                                    <span className={`w-6 h-6 rounded-full border flex items-center justify-center font-bold text-[10px] mr-2.5 flex-shrink-0 transition duration-150 ${prefixClass}`}>
+                                      {String.fromCharCode(65 + index)}
                                     </span>
                                     <span className="leading-relaxed">{value}</span>
                                     
@@ -1084,19 +995,7 @@ export default function App() {
                               })}
                             </div>
 
-                            {/* Evaluation Explanation Feedback Notice */}
-                            {isQuizSubmitted && (
-                              <motion.div
-                                initial={{ opacity: 0, height: 0 }}
-                                animate={{ opacity: 1, height: "auto" }}
-                                className="mt-5 bg-teal-50 dark:bg-teal-950/20 border-l-4 border-teal-500 p-4 rounded-r-xl text-xs text-teal-850 dark:text-teal-300 leading-relaxed flex items-start gap-2.5"
-                              >
-                                <Info className="w-4 h-4 text-teal-600 dark:text-teal-400 mt-0.5 flex-shrink-0" />
-                                <div>
-                                  <strong className="font-semibold">System Validation Engine Reference:</strong> Correct target key verified as <span className="bg-teal-200/60 dark:bg-teal-800/40 px-1.5 py-0.5 rounded font-bold">[{q.answer.toUpperCase()}]</span>. Placed within structural engineering design guidelines.
-                                </div>
-                              </motion.div>
-                            )}
+
                           </motion.div>
                         );
                       })
@@ -1117,9 +1016,43 @@ export default function App() {
                       Previous
                     </button>
 
-                    <span className="text-xs font-bold text-slate-500 dark:text-slate-400 font-mono tracking-tight">
-                      Page {currentPage} of {totalPages}
-                    </span>
+                    <div className="flex items-center gap-3">
+                      <span className="text-xs font-bold text-slate-500 dark:text-slate-400 font-mono tracking-tight">
+                        Page {currentPage} of {totalPages}
+                      </span>
+                      <div className="flex items-center gap-1.5 border-l border-slate-200 dark:border-slate-800 pl-3">
+                        <span className="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider">Go to:</span>
+                        <input
+                          id="pageJumpInput"
+                          type="number"
+                          min={1}
+                          max={totalPages}
+                          value={jumpPageVal}
+                          onChange={(e) => setJumpPageVal(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              const pageNum = parseInt(jumpPageVal, 10);
+                              if (!isNaN(pageNum) && pageNum >= 1 && pageNum <= totalPages) {
+                                setCurrentPage(pageNum);
+                                window.scrollTo({ top: 0, behavior: "smooth" });
+                              } else {
+                                setJumpPageVal(currentPage.toString());
+                              }
+                            }
+                          }}
+                          onBlur={() => {
+                            const pageNum = parseInt(jumpPageVal, 10);
+                            if (!isNaN(pageNum) && pageNum >= 1 && pageNum <= totalPages) {
+                              setCurrentPage(pageNum);
+                              window.scrollTo({ top: 0, behavior: "smooth" });
+                            } else {
+                              setJumpPageVal(currentPage.toString());
+                            }
+                          }}
+                          className="w-14 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 py-1 px-1.5 rounded-lg text-xs font-mono font-bold text-center focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        />
+                      </div>
+                    </div>
 
                     <button
                       id="nextPageBtn"
@@ -1134,89 +1067,298 @@ export default function App() {
                 )}
 
                 {/* 4. Action submission dashboard */}
-                <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-6 md:p-8 shadow-sm flex flex-col items-center justify-center text-center">
+                <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-4 shadow-sm flex flex-col gap-4">
                   {isQuizSubmitted ? (
-                    <div className="w-full">
-                      <div className="w-16 h-16 bg-emerald-50 dark:bg-emerald-950/20 rounded-full flex items-center justify-center mx-auto mb-4 border border-emerald-200 dark:border-emerald-800/40">
-                        <Trophy className="w-8 h-8 text-emerald-600 dark:text-emerald-400 animate-bounce" />
-                      </div>
-                      <h2 className="text-lg md:text-xl font-bold text-slate-850 dark:text-slate-100 font-display">Chapter Exam Evaluation Finalized</h2>
-                      <p className="text-xs text-slate-450 dark:text-slate-450 mt-1 max-w-md mx-auto">
-                        Your answers for Chapter {activeChapter} have been graded by the system check module. Accuracy, grades, and matrices are persistent in local memory.
-                      </p>
-                      
-                      {/* Detailed Grade Report */}
-                      <div className="mt-6 max-w-md mx-auto bg-slate-50 dark:bg-slate-800/30 rounded-2xl border border-slate-200/60 dark:border-slate-800 p-4 grid grid-cols-3 gap-2">
-                        <div className="text-center border-r border-slate-200 dark:border-slate-800">
-                          <div className="text-lg font-bold font-mono text-slate-700 dark:text-slate-200">{correctCount}</div>
-                          <div className="text-[10px] text-slate-450 font-semibold uppercase">Correct</div>
+                    <div className="flex flex-col gap-3.5">
+                      {/* Top Row: Title, Score & Actions */}
+                      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pb-3 border-b border-slate-100 dark:border-slate-800/60">
+                        <div className="flex items-center gap-2.5 text-left w-full sm:w-auto">
+                          <Trophy className="w-5 h-5 text-emerald-500 animate-pulse flex-shrink-0" />
+                          <div>
+                            <h3 className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-100 leading-tight font-display">Exam Evaluation Graded</h3>
+                            <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5">
+                              Chapter {activeChapter} score: <strong className="font-mono text-slate-600 dark:text-slate-350">{correctCount}/{totalInPool} ({gradePercent}%)</strong>
+                            </p>
+                          </div>
                         </div>
-                        <div className="text-center border-r border-slate-200 dark:border-slate-800">
-                          <div className="text-lg font-bold font-mono text-slate-700 dark:text-slate-200">{totalInPool - correctCount}</div>
-                          <div className="text-[10px] text-slate-450 font-semibold uppercase">Failed</div>
-                        </div>
-                        <div className="text-center">
-                          <div className="text-lg font-bold font-mono text-emerald-600 dark:text-emerald-400">{gradePercent}%</div>
-                          <div className="text-[10px] text-slate-455 font-semibold uppercase">Score</div>
+                        
+                        <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+                          <button
+                            id="resetChProgressBtn"
+                            onClick={handleResetCurrentChapter}
+                            className="px-3 py-1.5 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 text-[11px] font-bold rounded-lg border border-slate-200 dark:border-slate-800 transition duration-150 flex items-center gap-1 cursor-pointer"
+                          >
+                            <RotateCcw className="w-3 h-3" />
+                            Retake
+                          </button>
+                          {activeChapter < 10 && (
+                            <button
+                              id="nextChapterBtn"
+                              onClick={() => {
+                                setActiveChapter(activeChapter + 1);
+                                window.scrollTo({ top: 0, behavior: "smooth" });
+                              }}
+                              className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-bold rounded-lg shadow-sm hover:shadow transition duration-150 flex items-center gap-1 cursor-pointer"
+                            >
+                              Next Chapter
+                              <ChevronRight className="w-3 h-3" />
+                            </button>
+                          )}
                         </div>
                       </div>
 
-                      <div className="mt-6 flex flex-wrap justify-center gap-3">
-                        <button
-                          id="resetChProgressBtn"
-                          onClick={handleResetCurrentChapter}
-                          className="px-4 py-2.5 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-bold rounded-xl border border-slate-200 dark:border-slate-800 transition duration-150 flex items-center gap-1.5 cursor-pointer"
-                        >
-                          <RotateCcw className="w-3.5 h-3.5" />
-                          Retake Chapter Exam
-                        </button>
-                        {activeChapter < 10 && (
+                      {/* Bottom Row: Scorecard metrics & Smart Review Filters */}
+                      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 text-xs">
+                        {/* Counts Badge Indicator Row */}
+                        <div className="flex flex-wrap items-center gap-2.5 w-full md:w-auto">
+                          <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Results:</span>
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/20 text-emerald-600 dark:text-emerald-400 font-medium font-mono text-[10px] border border-emerald-100 dark:border-emerald-900/30">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                            {postSubmitMetrics.correct} Correct
+                          </span>
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-red-50 dark:bg-red-950/20 text-red-600 dark:text-red-400 font-medium font-mono text-[10px] border border-red-100 dark:border-red-900/30">
+                            <span className="w-1.5 h-1.5 rounded-full bg-red-500"></span>
+                            {postSubmitMetrics.incorrect} Incorrect
+                          </span>
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-medium font-mono text-[10px] border border-slate-200 dark:border-slate-700">
+                            <span className="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+                            {postSubmitMetrics.unanswered} Not Submitted
+                          </span>
+                        </div>
+
+                        {/* Review Filters Toggle Group */}
+                        <div className="flex items-center gap-1 bg-slate-50 dark:bg-slate-950 p-1 rounded-lg border border-slate-200/60 dark:border-slate-800 w-full md:w-auto">
                           <button
-                            id="nextChapterBtn"
+                            id="reviewFilterAll"
                             onClick={() => {
-                              setActiveChapter(activeChapter + 1);
-                              window.scrollTo({ top: 0, behavior: "smooth" });
+                              setReviewFilter("all");
+                              setCurrentPage(1);
                             }}
-                            className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-sm hover:shadow transition duration-150 flex items-center gap-1.5 cursor-pointer"
+                            className={`px-2.5 py-1 rounded text-[10px] font-bold transition-all cursor-pointer ${
+                              reviewFilter === "all"
+                                ? "bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 shadow-sm"
+                                : "text-slate-400 hover:text-slate-600 dark:text-slate-550"
+                            }`}
                           >
-                            Go to Next Chapter
-                            <ChevronRight className="w-3.5 h-3.5" />
+                            All ({totalInPool})
                           </button>
-                        )}
+                          <button
+                            id="reviewFilterIncorrect"
+                            onClick={() => {
+                              setReviewFilter("incorrect");
+                              setCurrentPage(1);
+                            }}
+                            className={`px-2.5 py-1 rounded text-[10px] font-bold transition-all cursor-pointer flex items-center gap-1 ${
+                              reviewFilter === "incorrect"
+                                ? "bg-red-500 text-white shadow-sm"
+                                : "text-red-600 dark:text-red-450 hover:bg-red-500/10"
+                            }`}
+                            title="Show unanswered or wrongly selected questions"
+                          >
+                            Incorrect & Unanswered Only ({postSubmitMetrics.incorrect + postSubmitMetrics.unanswered})
+                          </button>
+                          <button
+                            id="reviewFilterCorrect"
+                            onClick={() => {
+                              setReviewFilter("correct");
+                              setCurrentPage(1);
+                            }}
+                            className={`px-2.5 py-1 rounded text-[10px] font-bold transition-all cursor-pointer flex items-center gap-1 ${
+                              reviewFilter === "correct"
+                                ? "bg-emerald-500 text-white shadow-sm"
+                                : "text-emerald-600 dark:text-emerald-450 hover:bg-emerald-500/10"
+                            }`}
+                          >
+                            Correct Only ({postSubmitMetrics.correct})
+                          </button>
+                        </div>
                       </div>
                     </div>
                   ) : (
-                    <div className="w-full">
-                      <div className="w-14 h-14 bg-blue-50 dark:bg-blue-950/20 rounded-full flex items-center justify-center mx-auto mb-4 border border-blue-200 dark:border-blue-800/40">
-                        <BookOpenCheck className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-                      </div>
-                      <h2 className="text-md md:text-lg font-bold text-slate-850 dark:text-slate-100 font-display">Finish Chapter Diagnostic Session?</h2>
-                      <p className="text-xs text-slate-450 dark:text-slate-450 mt-1 max-w-md mx-auto mb-6">
-                        Ready to evaluate your staged selections? The portal will instantly verify your answers and lock options.
-                      </p>
-                      
-                      {selectionCount < totalInPool && (
-                        <div className="mb-6 max-w-sm mx-auto bg-amber-50 dark:bg-amber-950/15 border border-amber-200 dark:border-amber-900/40 rounded-xl p-3 flex items-start gap-2 text-left">
-                          <AlertTriangle className="w-4 h-4 text-amber-600 dark:text-amber-500 mt-0.5 flex-shrink-0" />
-                          <span className="text-[11px] text-amber-800 dark:text-amber-400 leading-relaxed font-medium">
-                            <strong>Incomplete selections:</strong> You have only staged {selectionCount} out of {totalInPool} choices. Unanswered questions will mark as incorrect upon evaluation.
-                          </span>
+                    <div className="flex flex-row items-center justify-between gap-3 w-full">
+                      <div className="flex items-center gap-2">
+                        <div className="px-2.5 py-1 bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900/40 text-blue-700 dark:text-blue-300 font-mono text-xs font-bold rounded-lg">
+                          {selectionCount} Staged / {totalInPool} Total
                         </div>
-                      )}
+                        {selectionCount < totalInPool && (
+                          <span className="text-[10px] text-amber-600 dark:text-amber-500 font-semibold hidden md:inline-flex items-center gap-1">
+                            <AlertTriangle className="w-3 h-3 flex-shrink-0" />
+                            Unanswered will be marked incorrect.
+                          </span>
+                        )}
+                      </div>
 
                       <button
                         id="submitQuizBtn"
                         onClick={handleExecuteSubmission}
-                        className="px-8 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm rounded-xl shadow-md hover:shadow-lg transition duration-150 flex items-center gap-2 mx-auto cursor-pointer"
+                        className="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-lg shadow-sm hover:shadow transition duration-150 flex items-center gap-1.5 cursor-pointer"
                       >
-                        <CheckCircle2 className="w-4 h-4" />
-                        Submit Entire Chapter Exam
+                        <CheckCircle2 className="w-3.5 h-3.5" />
+                        Submit
                       </button>
                     </div>
                   )}
                 </div>
 
-              </section>
+                {/* 6. Search & Filters Block */}
+                <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-6 md:p-8 shadow-sm">
+                  <span className="block text-xs font-bold text-slate-400 dark:text-slate-550 uppercase tracking-wider mb-4 flex items-center gap-1.5">
+                    <ListFilter className="w-4 h-4 text-blue-500" />
+                    Search & Filters Block
+                  </span>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="searchInput" className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                        <Search className="w-3.5 h-3.5 text-slate-500" />
+                        Search Question Keywords
+                      </label>
+                      <div className="relative">
+                        <input
+                          id="searchInput"
+                          type="text"
+                          value={searchQuery}
+                          onChange={(e) => {
+                            setSearchQuery(e.target.value);
+                            setCurrentPage(1);
+                          }}
+                          placeholder="Type words, keys or options..."
+                          className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 py-2.5 pl-9 pr-3 rounded-xl text-sm placeholder:text-slate-450 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition"
+                        />
+                        <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5 pointer-events-none" />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label htmlFor="statusFilter" className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                        <ListFilter className="w-3.5 h-3.5 text-slate-500" />
+                        Verification Status Filter
+                      </label>
+                      <select
+                        id="statusFilter"
+                        value={statusFilter}
+                        onChange={(e) => {
+                          setStatusFilter(e.target.value);
+                          setCurrentPage(1);
+                        }}
+                        className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 py-2.5 px-3 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition cursor-pointer"
+                      >
+                        <option value="all">All Questions ({totalInPool})</option>
+                        <option value="answered">Staged Choices ({selectionCount})</option>
+                        <option value="unanswered">Unanswered ({totalInPool - selectionCount})</option>
+                        <option value="bookmarked">Bookmarked ({activeChapterBookmarksCount})</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 7. Current Diagnostic Metrics Block */}
+                <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-6 md:p-8 shadow-sm">
+                  <span className="block text-xs font-bold text-slate-400 dark:text-slate-550 uppercase tracking-wider mb-4 flex items-center gap-1.5">
+                    <Trophy className="w-4 h-4 text-blue-500" />
+                    Current Diagnostic Metrics
+                  </span>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <div className="bg-slate-50 dark:bg-slate-800/25 border border-slate-100 dark:border-slate-800/50 p-4 rounded-xl text-center">
+                      <div className="text-2xl font-bold font-mono text-slate-800 dark:text-slate-100">{totalInPool}</div>
+                      <div className="text-[10px] font-semibold text-slate-400 uppercase tracking-tight mt-1">Total Pool</div>
+                    </div>
+                    <div className="bg-slate-50 dark:bg-slate-800/25 border border-slate-100 dark:border-slate-800/50 p-4 rounded-xl text-center">
+                      <div className="text-2xl font-bold font-mono text-blue-600 dark:text-blue-400">{filteredCount}</div>
+                      <div className="text-[10px] font-semibold text-slate-400 uppercase tracking-tight mt-1">Filtered</div>
+                    </div>
+                    <div className="bg-slate-50 dark:bg-slate-800/25 border border-slate-100 dark:border-slate-800/50 p-4 rounded-xl text-center">
+                      <div className="text-2xl font-bold font-mono text-indigo-600 dark:text-indigo-400">{selectionCount}</div>
+                      <div className="text-[10px] font-semibold text-slate-400 uppercase tracking-tight mt-1">Staged</div>
+                    </div>
+                    <div className="bg-slate-50 dark:bg-slate-800/25 border border-slate-100 dark:border-slate-800/50 p-4 rounded-xl text-center flex flex-col justify-center items-center">
+                      {isQuizSubmitted ? (
+                        <div className="text-2xl font-bold font-mono text-emerald-600 dark:text-emerald-400">{gradePercent}%</div>
+                      ) : (
+                        <div className="text-slate-400 font-medium text-xs flex items-center justify-center gap-1.5 h-8">
+                           <Trophy className="w-4 h-4 text-slate-400 dark:text-slate-500" />
+                           Practicing
+                        </div>
+                      )}
+                      <div className="text-[10px] font-semibold text-slate-400 uppercase tracking-tight mt-1">Exam Grade</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 8. Quiz Navigation Grid */}
+                <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-6 md:p-8 shadow-sm">
+                  <span className="block text-xs font-bold text-slate-400 dark:text-slate-550 uppercase tracking-wider mb-4 flex items-center justify-between">
+                    <span className="flex items-center gap-1.5">
+                      <LayoutDashboard className="w-4 h-4 text-blue-500" />
+                      Quiz Navigation Grid
+                    </span>
+                    <span className="text-xs font-mono text-slate-500 dark:text-slate-450">{filteredCount} of {totalInPool} displayed</span>
+                  </span>
+                  
+                  {questions.length === 0 ? (
+                    <div className="text-center text-xs text-slate-400 dark:text-slate-550 py-4">No questions loaded</div>
+                  ) : (
+                    <div className="grid grid-cols-5 sm:grid-cols-10 gap-2" id="questionNavMatrix">
+                      {questions.map((q) => {
+                        const isStaged = !!userSelections[q.id];
+                        const isCorrect = userSelections[q.id] === q.answer;
+                        const isFilteredOut = !filteredQuestions.some(fq => fq.id === q.id);
+
+                        let btnClass = "bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-800";
+                        
+                        if (isQuizSubmitted) {
+                          if (isCorrect) {
+                              btnClass = "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 border-emerald-300 dark:border-emerald-800/50 hover:bg-emerald-100 dark:hover:bg-emerald-900/30";
+                          } else if (isStaged) {
+                              btnClass = "bg-red-50 dark:bg-red-950/20 text-red-700 dark:text-red-400 border-red-350 dark:border-red-900/40 hover:bg-red-100 dark:hover:bg-red-900/20";
+                          } else {
+                              btnClass = "bg-rose-50 dark:bg-rose-950/10 text-rose-700 dark:text-rose-400 border-rose-350 dark:border-rose-900/30 hover:bg-rose-100 dark:hover:bg-rose-900/10";
+                          }
+                        } else {
+                          if (isStaged) {
+                              btnClass = "bg-indigo-100 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 border-indigo-400 dark:border-indigo-800 hover:bg-indigo-200 dark:hover:bg-indigo-900/40";
+                          }
+                        }
+
+                        if (isFilteredOut) {
+                          btnClass += " opacity-25";
+                        }
+
+                        return (
+                          <button
+                            key={q.id}
+                            id={`nav-btn-${q.id}`}
+                            onClick={() => handleJumpToQuestion(q.id)}
+                            className={`p-1.5 text-xs font-bold font-mono text-center rounded-lg border transition duration-150 cursor-pointer ${btnClass}`}
+                            title={`Go to Question #${q.id}`}
+                          >
+                            {q.id}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800/60 flex flex-wrap gap-x-4 gap-y-1.5 text-[10px] text-slate-400 font-semibold">
+                    <span className="flex items-center gap-1.5">
+                      <span className="w-2.5 h-2.5 bg-indigo-100 dark:bg-indigo-950/40 border border-indigo-400 dark:border-indigo-800 rounded-sm"></span> Staged Selection
+                    </span>
+                    {isQuizSubmitted ? (
+                      <>
+                        <span className="flex items-center gap-1.5">
+                          <span className="w-2.5 h-2.5 bg-emerald-100 dark:bg-emerald-950/30 border border-emerald-300 dark:border-emerald-800/50 rounded-sm"></span> Correct
+                        </span>
+                        <span className="flex items-center gap-1.5">
+                          <span className="w-2.5 h-2.5 bg-red-100 dark:bg-red-955/20 border border-red-350 dark:border-red-900/40 rounded-sm"></span> Wrong Selection
+                        </span>
+                      </>
+                    ) : (
+                      <span className="italic font-normal text-slate-400 dark:text-slate-500">
+                        Submit entire sheet above to view evaluation grades on this matrix.
+                      </span>
+                    )}
+                  </div>
+                </div>
 
             </motion.div>
           )}

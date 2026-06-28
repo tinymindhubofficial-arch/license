@@ -15,6 +15,7 @@ export interface Question {
   };
   answer: string;
   tag?: string;
+  _shuffledOptionKeys?: string[];
 }
 
 export type UserSelections = Record<number, string>;
