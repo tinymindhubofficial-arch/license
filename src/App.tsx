@@ -3,7 +3,7 @@ import {
   BookOpen, Search, Award, CheckCircle2, XCircle, RotateCcw, 
   Check, ChevronLeft, ChevronRight, Info, ListFilter, Trophy, 
   Sparkles, BookOpenCheck, HelpCircle, AlertTriangle, Moon, Sun, 
-  Bookmark, LayoutDashboard, Shuffle
+  Bookmark, LayoutDashboard, Shuffle, ArrowRight
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { chaptersList, chaptersData } from "./chaptersData";
@@ -67,14 +67,15 @@ export default function App() {
     return saved === "true";
   });
 
-  // Filter and page states (using 20 items per page)
+  // Filter and page states (using 50 items per page during active exam, unlimited during review)
   const [searchQuery, setSearchQuery] = useState<string>(" ");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [reviewFilter, setReviewFilter] = useState<'all' | 'incorrect' | 'correct'>('all');
   
-  const itemsPerPage = 20;
+  const itemsPerPage = isQuizSubmitted ? 999999 : 50;
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [jumpPageVal, setJumpPageVal] = useState<string>("");
+  const [jumpQuestionVal, setJumpQuestionVal] = useState<string>("");
 
   // Custom confirmation modal state
   const [modalConfig, setModalConfig] = useState<{
@@ -458,9 +459,12 @@ export default function App() {
     }
   }, [totalPages, currentPage]);
   const currentVisibleSlice = useMemo(() => {
+    if (isQuizSubmitted) {
+      return filteredQuestions;
+    }
     const start = (currentPage - 1) * itemsPerPage;
     return filteredQuestions.slice(start, start + itemsPerPage);
-  }, [filteredQuestions, currentPage]);
+  }, [filteredQuestions, currentPage, itemsPerPage, isQuizSubmitted]);
 
   const handlePageChange = (direction: number) => {
     const targetPage = currentPage + direction;
@@ -507,6 +511,15 @@ export default function App() {
           },
           "info",
           "Clear Filters & Jump"
+        );
+      } else {
+        triggerConfirm(
+          "Invalid Question",
+          `Question #${qId} does not exist in the current chapter's question pool.`,
+          () => {},
+          "info",
+          "OK",
+          "Dismiss"
         );
       }
     }
@@ -1002,7 +1015,7 @@ export default function App() {
                 </div>
 
                 {/* 3. Pagination Control Navigation */}
-                {filteredCount > 0 && (
+                {filteredCount > 0 && !isQuizSubmitted && (
                   <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 px-6 py-4 flex justify-between items-center shadow-sm">
                     <button
                       id="prevPageBtn"
@@ -1452,6 +1465,41 @@ export default function App() {
           </div>
         )}
       </AnimatePresence>
+
+      {/* Floating Go to Question navigation bar */}
+      <form 
+        onSubmit={(e) => {
+          e.preventDefault();
+          const num = parseInt(jumpQuestionVal, 10);
+          if (!isNaN(num) && num > 0) {
+            handleJumpToQuestion(num);
+            setJumpQuestionVal("");
+          }
+        }}
+        className="fixed bottom-6 right-6 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md rounded-xl border border-slate-200/80 dark:border-slate-800 p-1.5 pl-3 shadow-xl flex items-center gap-2 transition-all hover:border-blue-500/50"
+      >
+        <span className="text-[11px] font-bold font-mono text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+          Go to
+        </span>
+        <div className="relative flex items-center">
+          <span className="absolute left-2 text-xs font-mono font-bold text-slate-400">#</span>
+          <input
+            type="text"
+            inputMode="numeric"
+            placeholder="ID"
+            value={jumpQuestionVal}
+            onChange={(e) => setJumpQuestionVal(e.target.value.replace(/\D/g, ''))}
+            className="w-16 h-8 pl-5 pr-1.5 text-xs font-semibold font-mono bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-blue-500 rounded-lg outline-none text-slate-800 dark:text-slate-100"
+          />
+        </div>
+        <button
+          type="submit"
+          className="h-8 px-3 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg shadow-sm transition-all flex items-center gap-1 cursor-pointer"
+        >
+          <span>Go</span>
+          <ArrowRight className="w-3 h-3" />
+        </button>
+      </form>
     </div>
   );
 }
