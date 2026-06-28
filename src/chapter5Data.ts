@@ -1,7 +1,7 @@
 import { Question } from "./types";
 
-export const chapter5Questions: Question[] =
-            { id: 1, text: "Which of the following load combination is not possible?", options: { a: "Dead load + Imposed load + Wind load", b: "Dead load + Imposed load + Earthquake load", c: "Dead load + Wind load + Earthquake load", d: "Dead load + Imposed load" }, answer: "c", tag: "Loads & Codes" },
+export const chapter5Questions: Question[] = [
+  { id: 1, text: "Which of the following load combination is not possible?", options: { a: "Dead load + Imposed load + Wind load", b: "Dead load + Imposed load + Earthquake load", c: "Dead load + Wind load + Earthquake load", d: "Dead load + Imposed load" }, answer: "c", tag: "Loads & Codes" },
             { id: 2, text: "The snow load is calculated as", options: { a: "S = μ * S₀", b: "S = μ / S₀", c: "S₀ = μ * S", d: "S = μ * S₀²" }, answer: "a", tag: "Loads & Codes" },
             { id: 3, text: "In roof truss, the value of snow load is taken as", options: { a: "1.5 N/m²", b: "2.5 N/m²", c: "3.5 N/m²", d: "4.5 N/m²" }, answer: "b", tag: "Loads & Codes" },
             { id: 4, text: "What is permanent action according to the classification of actions by the IS code?", options: { a: "Due to self-weight", b: "Due to construction and service stage loads", c: "Due to accidents", d: "Due to earthquake loads" }, answer: "a", tag: "Loads & Codes" },
@@ -111,7 +111,7 @@ export const chapter5Questions: Question[] =
             { id: 108, text: "The lowest edge of the sloping surface of roof is called", options: { a: "ridge", b: "rafters", c: "pitch", d: "eves" }, answer: "d", tag: "Timber & Seismic" },
             { id: 109, text: "Strength of timber is maximum in the direction", options: { a: "parallel to grain", b: "perpendicular to the grain", c: "across grain", d: "same in everywhere" }, answer: "a", tag: "Timber & Seismic" },
             { id: 110, text: "Which NBC code deals with earthquake resistant design for low strength masonry?", options: { a: "NBC-202", b: "NBC-203", c: "NBC-204", d: "NBC-205" }, answer: "b", tag: "Timber & Seismic" },
-            { id: 111, text: "The law that governs the standards of construction of structural and non-structural buildings in Nepal is", options: { a: "building bylaws", b: "building specification", b: "building code", d: "none of the above" }, answer: "b", tag: "Timber & Seismic" },
+            { id: 111, text: "The law that governs the standards of construction of structural and non-structural buildings in Nepal is", options: { a: "building bylaws", b: "building specification", c: "building code", d: "none of the above" }, answer: "b", tag: "Timber & Seismic" },
             { id: 112, text: "When purlins are placed between panel points the principal rafter is to be designed for", options: { a: "axial compression and tension", b: "axial compression", c: "axial compression and bending moment", d: "axial tension and bending moment" }, answer: "c", tag: "Timber & Seismic" },
             { id: 113, text: "In non-parallel system of seismic design, 100% design seismic force of one direction and X% design seismic force of orthogonal direction is considered. The value of X is", options: { a: "10", b: "20", c: "30", d: "40" }, answer: "c", tag: "Timber & Seismic" },
             { id: 114, text: "The timber piece whose thickness and breadth should not exceed 50 mm is called", options: { a: "blank", b: "batten", c: "baulk", d: "board" }, answer: "b", tag: "Timber & Seismic" },
