@@ -67,12 +67,12 @@ export default function App() {
     return saved === "true";
   });
 
-  // Filter and page states (using 20 items per page)
+  // Filter and page states (using 50 items per page during active exam, unlimited during review)
   const [searchQuery, setSearchQuery] = useState<string>(" ");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [reviewFilter, setReviewFilter] = useState<'all' | 'incorrect' | 'correct'>('all');
   
-  const itemsPerPage = 20;
+  const itemsPerPage = isQuizSubmitted ? 999999 : 50;
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [jumpPageVal, setJumpPageVal] = useState<string>("");
 
@@ -458,9 +458,12 @@ export default function App() {
     }
   }, [totalPages, currentPage]);
   const currentVisibleSlice = useMemo(() => {
+    if (isQuizSubmitted) {
+      return filteredQuestions;
+    }
     const start = (currentPage - 1) * itemsPerPage;
     return filteredQuestions.slice(start, start + itemsPerPage);
-  }, [filteredQuestions, currentPage]);
+  }, [filteredQuestions, currentPage, itemsPerPage, isQuizSubmitted]);
 
   const handlePageChange = (direction: number) => {
     const targetPage = currentPage + direction;
@@ -1002,7 +1005,7 @@ export default function App() {
                 </div>
 
                 {/* 3. Pagination Control Navigation */}
-                {filteredCount > 0 && (
+                {filteredCount > 0 && !isQuizSubmitted && (
                   <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 px-6 py-4 flex justify-between items-center shadow-sm">
                     <button
                       id="prevPageBtn"
