@@ -28,7 +28,7 @@ export const chapter2Questions: Question[] = [
   { id: 25, text: "Density bottle method is used to measure", options: { a: "moisture content of soil", b: "specific gravity of soil", c: "density of air", d: "none of the above" }, answer: "b", tag: "Soil Gravity" },
   { id: 26, text: "In light compaction, the weight of the rammer recommended for standard proctor test is", options: { a: "2.0 kg", b: "2.4 kg", c: "2.6 kg", d: "4.9 kg" }, answer: "c", tag: "Compaction" },
   { id: 27, text: "What is the formula for seepage discharge in flow net?", options: { a: "q = khNf/Nd", b: "q = khNd/Nf", c: "q = kh", d: "q = kNf/Nd" }, answer: "a", tag: "Seepage" },
-  { id: 28, text: "Relative compaction is defined as", options: { a: "γd.max / γd", b: "γd / γd.max", c: "γd / γd.min", d: "γd.min / γd" }, answer: "c", tag: "Compaction" },
+  { id: 28, text: "Relative compaction is defined as", options: { a: "γd.max / γd", b: "γd / γd.max", c: "γd / γd.min", d: "γd.min / γd" }, answer: "b", tag: "Compaction" },
   { id: 29, text: "Which roller is used for compacting clayey soils?", options: { a: "Vibratory", b: "Smooth wheeled", c: "Sheep footed", d: "Pneumatic tyred" }, answer: "c", tag: "Compaction" },
   { id: 30, text: "Which of the following has greater fineness modulus?", options: { a: "Clay", b: "Fine sand", c: "Medium sand", d: "Coarse sand" }, answer: "d", tag: "Fineness Modulus" },
   { id: 31, text: "Falling head permeability test can be used for", options: { a: "coarse-grained soil", b: "less permeable soil", c: "clayey soil", d: "all of the mentioned" }, answer: "b", tag: "Permeability" },
@@ -51,7 +51,7 @@ export const chapter2Questions: Question[] = [
   { id: 48, text: "The Oedometer is used for", options: { a: "compaction", b: "consolidation", c: "permeability", d: "void ratio" }, answer: "b", tag: "Consolidation" },
   { id: 49, text: "Cm is also called", options: { a: "cohesion value of soil", b: "applied shear stress", c: "direct stress on soil", d: "shear strength of soil" }, answer: "b", tag: "Soil Mechanics" },
   { id: 50, text: "The ratio of settlement at any time 't' to the final settlement, is known as", options: { a: "co-efficient of consolidation", b: "degree of consolidation", c: "consolidation index", d: "settlement ratio" }, answer: "b", tag: "Consolidation" },
-  { id: 51, text: "Water is flowing at a rate of 0.04 m³/s in a soil sample with a thickness of 12 m and cross-sectional area of 50 m². If the coefficient of permeability is 1.6×10⁻³ m/s, what is the seepage pressure?", options: { a: "50.76 kN/m²", b: "52.34 kN/m²", c: "55.34 kN/m²", d: "58.86 kN/m²" }, answer: "d", tag: "Seepage" },
+  { id: 51, text: "Water is flowing at a rate of 0.04 m³/s in a soil sample with a thickness of 12 m and cross-sectional area of 50 m². If the coefficient of permeability is 1.6×10⁻³ m/s, what is the seepage pressure?", options: { a: "50.76 kN/m²", b: "52.34 kN/m²", c: "55.34 kN/m²", d: "5,886 kN/m²" }, answer: "d", tag: "Seepage" },
   { id: 52, text: "The void ratio of a soil is 0.68 and specific gravity is 2.68. The critical gradient for quick sand condition is", options: { a: "1.5", b: "1", c: "2", d: "0" }, answer: "b", tag: "Quick Sand" },
   { id: 53, text: "The densification of a soil by means of mechanical manipulation is called", options: { a: "compressibility", b: "soil stabilization", c: "compression", d: "compaction" }, answer: "d", tag: "Compaction" },
   { id: 54, text: "The seepage pressure in a gravity dam can be controlled with", options: { a: "installing a drainage gallery", b: "using pressure relief wells", c: "constructing an upstream impervious blanket", d: "all of the above" }, answer: "d", tag: "Seepage Control" },
@@ -125,7 +125,7 @@ export const chapter2Questions: Question[] = [
   { id: 124, text: "Which of the following is not among the common types of Mat foundation?", options: { a: "Flat plate type", b: "Box structures", c: "Mats on piles", d: "Double flat plate thickened" }, answer: "d", tag: "Foundations" },
   { id: 125, text: "If there are 2 or more columns in a foundation, then what is the name of foundation?", options: { a: "Combined footing", b: "Mat foundation", c: "Raft footing", d: "Pile foundation" }, answer: "a", tag: "Foundations" },
   { id: 126, text: "How much minimum depth below soil, footing is provided?", options: { a: "400 mm", b: "500 mm", c: "600 mm", d: "300 mm" }, answer: "b", tag: "Foundations" },
-  { id: 127, text: "The quantum of water contained in the soil pores, which cannot be extracted by gravity drainage, is called", options: { a: "capillary water", b: "pellicular water", c: "hygroscopic water", d: "none of the above" }, answer: "a", tag: "Capillarity" },
+  { id: 127, text: "The quantum of water contained in the soil pores, which cannot be extracted by gravity drainage, is called", options: { a: "capillary water", b: "pellicular water", c: "hygroscopic water", d: "none of the above" }, answer: "b", tag: "Capillarity" },
   { id: 128, text: "The .........type of footing is preferred if two nearby separate footings are about to overlap.", options: { a: "spread footing", b: "raft footing", c: "combined footing", d: "eccentric footing" }, answer: "c", tag: "Foundations" },
   { id: 129, text: "The minimum depth of foundation in clayey soil is", options: { a: "0.5 m", b: "0.7 m", c: "0.9 m", d: "1.2 m" }, answer: "c", tag: "Foundations" },
   { id: 130, text: "The type of footing used when the two columns carry equal loads is", options: { a: "trapezoidal", b: "raft", c: "rectangle", d: "strap" }, answer: "c", tag: "Foundations" },
@@ -168,5 +168,5 @@ export const chapter2Questions: Question[] = [
   { id: 168, text: "Darcy law is valid for", options: { a: "fully saturated soils", b: "partially saturated soils", c: "fully saturated soil and steady flow", d: "fully saturated soil and unsteady flow" }, answer: "c", tag: "Permeability" },
   { id: 169, text: "An object weighs 50 N in water and 80 N in an oil of relative density 0.80. Its volume in litres is", options: { a: "15.3", b: "60", c: "30.6", d: "50" }, answer: "a", tag: "Fluid Mechanics" },
   { id: 170, text: "What is the maximum permissible settlement for isolated foundation on clay as per I.S. code?", options: { a: "20 mm", b: "100 mm", c: "65 mm", d: "40 mm" }, answer: "c", tag: "Foundations" },
-  { id: 171, text: "Which is not stage of soil exploration?", options: { a: "Direct method", b: "Preliminary", c: "Detailed", d: "Exploration during construction" }, answer: "a", tag: "Soil Exploration" }
+  { id: 171, text: "Which is not stage of soil exploration?", options: { a: "Direct method", b: "Preliminary", c: "Detailed", d: "Exploration during construction" }, answer: "d", tag: "Soil Exploration" }
 ];
