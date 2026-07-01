@@ -126,10 +126,10 @@ export const fasttrack3Questions: Question[] = [
     "id": 12,
     "text": "The dimension of kinematic viscosity is:",
     "options": {
-      "a": "M1L2T−1M^1 L^2 T^{-1}M1L2T−1",
-      "b": "M0L2T−1M^0 L^2 T^{-1}M0L2T−1",
-      "c": "M0L0T0M^0 L^0 T^0M0L0T0",
-      "d": "ML−1T−1M L^{-1} T^{-1}ML−1T−1"
+      "a": "$M^1 L^2 T^{-1}$",
+      "b": "$M^0 L^2 T^{-1}$",
+      "c": "$M^0 L^0 T^0$",
+      "d": "$M^1 L^{-1} T^{-1}$"
     },
     "answer": "b"
   },
@@ -148,10 +148,10 @@ export const fasttrack3Questions: Question[] = [
     "id": 14,
     "text": "The dimensional formula of velocity gradient is:",
     "options": {
-      "a": "M1L0T−1M^1 L^0 T^{-1}M1L0T−1",
-      "b": "M0L0T−1M^0 L^0 T^{-1}M0L0T−1",
-      "c": "M0L0T1M^0 L^0 T^1M0L0T1",
-      "d": "MLT−1M L T^{-1}MLT−1"
+      "a": "$M^1 L^0 T^{-1}$",
+      "b": "$M^0 L^0 T^{-1}$",
+      "c": "$M^0 L^0 T^1$",
+      "d": "$M^1 L^1 T^{-1}$"
     },
     "answer": "b"
   },
@@ -190,12 +190,12 @@ export const fasttrack3Questions: Question[] = [
   },
   {
     "id": 18,
-    "text": "If the critical shear stress of a channel is TcT_cTc, then the average value of shear stress required to move the grain on the bank is:",
+    "text": "If the critical shear stress of a channel is $T_c$, then the average value of shear stress required to move the grain on the bank is:",
     "options": {
-      "a": "0.25Tc0.25 T_c0.25Tc",
-      "b": "0.5Tc0.5 T_c0.5Tc",
-      "c": "0.75Tc0.75 T_c0.75Tc",
-      "d": "TcT_cTc"
+      "a": "$0.25 T_c$",
+      "b": "$0.50 T_c$",
+      "c": "$0.75 T_c$",
+      "d": "$1.00 T_c$"
     },
     "answer": "c"
   },
@@ -212,12 +212,12 @@ export const fasttrack3Questions: Question[] = [
   },
   {
     "id": 20,
-    "text": "The value of pressure inside a soap bubble having radius RRR is:",
+    "text": "The value of pressure inside a soap bubble having radius $R$ is:",
     "options": {
-      "a": "2TR\frac{2T}{R}R2T",
-      "b": "4TR\frac{4T}{R}R4T",
-      "c": "T2R\frac{T}{2R}2RT",
-      "d": "TR\frac{T}{R}RT"
+      "a": "$\\frac{2T}{R}$",
+      "b": "$\\frac{4T}{R}$",
+      "c": "$\\frac{T}{2R}$",
+      "d": "$\\frac{T}{R}$"
     },
     "answer": "b"
   },
@@ -234,12 +234,12 @@ export const fasttrack3Questions: Question[] = [
   },
   {
     "id": 22,
-    "text": "The relation between absolute pressure [Pabs][P_{abs}][Pabs], atmospheric pressure [Patm][P_{atm}][Patm], and gauge pressure [Pgauge][P_{gauge}][Pgauge] is:",
+    "text": "The relation between absolute pressure ($P_{abs}$), atmospheric pressure ($P_{atm}$), and gauge pressure ($P_{gauge}$) is:",
     "options": {
-      "a": "Pabs=Pgauge+PatmP_{abs} = P_{gauge} + P_{atm}Pabs=Pgauge+Patm",
-      "b": "Pabs=Patm−PgaugeP_{abs} = P_{atm} - P_{gauge}Pabs=Patm−Pgauge",
-      "c": "Pabs=Patm×PgaugeP_{abs} = P_{atm} \times P_{gauge}Pabs=Patm×Pgauge",
-      "d": "Pabs=Pgauge−PatmP_{abs} = P_{gauge} - P_{atm}Pabs=Pgauge−Patm"
+      "a": "$P_{abs} = P_{gauge} + P_{atm}$",
+      "b": "$P_{abs} = P_{atm} - P_{gauge}$",
+      "c": "$P_{abs} = P_{atm} \\times P_{gauge}$",
+      "d": "$P_{abs} = P_{gauge} - P_{atm}$"
     },
     "answer": "a"
   },
@@ -256,12 +256,12 @@ export const fasttrack3Questions: Question[] = [
   },
   {
     "id": 24,
-    "text": "Force on hemispherical part if pressure acted is PoP_oPo:",
+    "text": "Force on hemispherical part if pressure acted is $P_o$:",
     "options": {
-      "a": "πr2Po\pi r^2 P_oπr2Po",
-      "b": "2πr2Po2 \pi r^2 P_o2πr2Po",
-      "c": "4πr2Po4 \pi r^2 P_o4πr2Po",
-      "d": "πrPo\pi r P_oπrPo"
+      "a": "$\\pi r^2 P_o$",
+      "b": "$2 \\pi r^2 P_o$",
+      "c": "$4 \\pi r^2 P_o$",
+      "d": "$\\pi r P_o$"
     },
     "answer": "a"
   },
@@ -291,10 +291,10 @@ export const fasttrack3Questions: Question[] = [
     "id": 27,
     "text": "The correct expression for metacentric height is:",
     "options": {
-      "a": "GM=I/V−BGGM = I/V - BGGM=I/V−BG",
-      "b": "GM=BG−I/VGM = BG - I/VGM=BG−I/V",
-      "c": "GM=V/I+BGGM = V/I + BGGM=V/I+BG",
-      "d": "GM=BG−V/IGM = BG - V/IGM=BG−V/I"
+      "a": "$GM = \\frac{I}{V} - BG$",
+      "b": "$GM = BG - \\frac{I}{V}$",
+      "c": "$GM = \\frac{V}{I} + BG$",
+      "d": "$GM = BG - \\frac{V}{I}$"
     },
     "answer": "a"
   },
@@ -335,10 +335,10 @@ export const fasttrack3Questions: Question[] = [
     "id": 31,
     "text": "The incompressibility condition in Navier-Stokes equation is:",
     "options": {
-      "a": "∇⋅u=1\nabla \cdot \mathbf{u} = 1∇⋅u=1",
-      "b": "∇×u=0\nabla \times \mathbf{u} = 0∇×u=0",
-      "c": "∇⋅u=0\nabla \cdot \mathbf{u} = 0∇⋅u=0",
-      "d": "∇u=0\nabla \mathbf{u} = 0∇u=0"
+      "a": "∇·u = 1",
+      "b": "∇×u = 0",
+      "c": "∇·u = 0",
+      "d": "∇u = 0"
     },
     "answer": "c"
   },
@@ -379,16 +379,16 @@ export const fasttrack3Questions: Question[] = [
     "id": 35,
     "text": "The equation of continuity for a fluid that is compressible and flow that is steady is:",
     "options": {
-      "a": "P1A1V1=P2A2V2P_1 A_1 V_1 = P_2 A_2 V_2P1A1V1=P2A2V2",
-      "b": "A1V1=A2V2A_1 V_1 = A_2 V_2A1V1=A2V2",
-      "c": "P1V1=P2V2P_1 V_1 = P_2 V_2P1V1=P2V2",
-      "d": "ρ1A1V1=ρ2A2V2\rho_1 A_1 V_1 = \rho_2 A_2 V_2ρ1A1V1=ρ2A2V2"
+      "a": "$P_1 A_1 V_1 = P_2 A_2 V_2$",
+      "b": "$A_1 V_1 = A_2 V_2$",
+      "c": "$P_1 V_1 = P_2 V_2$",
+      "d": "$\\rho_1 A_1 V_1 = \\rho_2 A_2 V_2$"
     },
     "answer": "d"
   },
   {
     "id": 36,
-    "text": "If the area changes from A1A_1A1 to A2A_2A2 and velocity of flow changes from V1V_1V1 to V2V_2V2, then A1V1=A2V2A_1 V_1 = A_2 V_2A1V1=A2V2 is called:",
+    "text": "If the area changes from A₁ to A₂ and velocity of flow changes from V₁ to V₂, then A₁ V₁ = A₂ V₂ is called:",
     "options": {
       "a": "Bernoulli's equation",
       "b": "Equation of Continuity",
@@ -423,10 +423,10 @@ export const fasttrack3Questions: Question[] = [
     "id": 39,
     "text": "The coefficient of friction for laminar flow is:",
     "options": {
-      "a": "16Re\frac{16}{Re}Re16",
-      "b": "64Re\frac{64}{Re}Re64",
-      "c": "10Re\frac{10}{Re}Re10",
-      "d": "8Re\frac{8}{Re}Re8"
+      "a": "$\\frac{16}{Re}$",
+      "b": "$\\frac{64}{Re}$",
+      "c": "$\\frac{10}{Re}$",
+      "d": "$\\frac{8}{Re}$"
     },
     "answer": "a"
   },
@@ -434,9 +434,9 @@ export const fasttrack3Questions: Question[] = [
     "id": 40,
     "text": "The dimension of Manning’s roughness coefficient is:",
     "options": {
-      "a": "L0.33T−1L^{0.33} T^{-1}L0.33T−1",
-      "b": "L−0.33T−1L^{-0.33} T^{-1}L−0.33T−1",
-      "c": "L0.5T−1L^{0.5} T^{-1}L0.5T−1",
+      "a": "$L^{0.33} T^{-1}$",
+      "b": "$L^{-0.33} T$",
+      "c": "$L^{0.5} T^{-1}$",
       "d": "Dimensionless"
     },
     "answer": "b"
@@ -478,12 +478,12 @@ export const fasttrack3Questions: Question[] = [
     "id": 44,
     "text": "The force exerted by a jet of water on a stationary vertical plate in the direction of jet is:",
     "options": {
-      "a": "ρaV2\rho a V^2ρaV2",
-      "b": "ρV2\rho V^2ρV2",
-      "c": "paV2p a V^2paV2",
-      "d": "ρAV2\rho A V^2ρAV2"
+      "a": "$\\rho a V^2$",
+      "b": "$\\rho V^2$",
+      "c": "$P a V^2$",
+      "d": "$\\rho a V$"
     },
-    "answer": "c"
+    "answer": "a"
   },
   {
     "id": 45,
@@ -531,7 +531,7 @@ export const fasttrack3Questions: Question[] = [
   },
   {
     "id": 49,
-    "text": "The head loss formula h=fLQ212.1D5h = \frac{f L Q^2}{12.1 D^5}h=12.1D5fLQ2 is given by:",
+    "text": "The head loss formula $h = \\frac{f L Q^2}{12.1 D^5}$ is given by:",
     "options": {
       "a": "Hazen-Williams equation",
       "b": "Darcy-Weisbach equation",
@@ -544,10 +544,10 @@ export const fasttrack3Questions: Question[] = [
     "id": 50,
     "text": "Formula for sudden expansion loss is:",
     "options": {
-      "a": "(V1−V2)22g\frac{(V_1 - V_2)^2}{2g}2g(V1−V2)2",
-      "b": "(V2−V1)22g\frac{(V_2 - V_1)^2}{2g}2g(V2−V1)2",
-      "c": "V122g\frac{V_1^2}{2g}2gV12",
-      "d": "V222g\frac{V_2^2}{2g}2gV22"
+      "a": "$\\frac{(V_1 - V_2)^2}{2g}$",
+      "b": "$\\frac{(V_2 - V_1)^2}{2g}$",
+      "c": "$\\frac{V_1^2}{2g}$",
+      "d": "$\\frac{V_2^2}{2g}$"
     },
     "answer": "a"
   },
@@ -619,12 +619,12 @@ export const fasttrack3Questions: Question[] = [
   },
   {
     "id": 57,
-    "text": "The Darcy-Weisbach formula for head loss hrh_rhr due to friction is given by:",
+    "text": "The Darcy-Weisbach formula for head loss $h_r$ due to friction is given by:",
     "options": {
-      "a": "fLv22gd\frac{f L v^2}{2g d}2gdfLv2",
-      "b": "fLv2gd\frac{f L v}{2g d}2gdfLv",
-      "c": "fLv2gd\frac{f L v^2}{g d}gdfLv2",
-      "d": "fLv2d2g\frac{f L v^2 d}{2g}2gfLv2d"
+      "a": "$\\frac{f L v^2}{2g d}$",
+      "b": "$\\frac{f L v}{2g d}$",
+      "c": "$\\frac{f L v^2}{g d}$",
+      "d": "$\\frac{f L v^2 d}{2g}$"
     },
     "answer": "a"
   },
@@ -643,10 +643,10 @@ export const fasttrack3Questions: Question[] = [
     "id": 59,
     "text": "The hydraulic radius for a wide rectangular channel section is approximately:",
     "options": {
-      "a": "y/2y/2y/2",
-      "b": "yyy",
-      "c": "2y2y2y",
-      "d": "y2y^2y2"
+      "a": "$\\frac{y}{2}$",
+      "b": "$y$",
+      "c": "$2y$",
+      "d": "$y^2$"
     },
     "answer": "b"
   },
@@ -665,10 +665,10 @@ export const fasttrack3Questions: Question[] = [
     "id": 61,
     "text": "The value of hydraulic radius in the most economical triangular channel section is:",
     "options": {
-      "a": "y/22y/2 \sqrt{2}y/22",
-      "b": "y/2y/2y/2",
-      "c": "yyy",
-      "d": "y/4y/4y/4"
+      "a": "$\\frac{y}{2\\sqrt{2}}$",
+      "b": "$\\frac{y}{2}$",
+      "c": "$y$",
+      "d": "$\\frac{y}{4}$"
     },
     "answer": "a"
   },
@@ -718,18 +718,18 @@ export const fasttrack3Questions: Question[] = [
   },
   {
     "id": 66,
-    "text": "The formula for sequent depth ratio V2/V1V_2/V_1V2/V1 is:",
+    "text": "The formula for sequent depth ratio $\\frac{y_2}{y_1}$ is:",
     "options": {
-      "a": "0.5(8f2+1−1)0.5 \left( \sqrt{8f^2 + 1} - 1 \right)0.5(8f2+1−1)",
-      "b": "0.5(8f2−1+1)0.5 \left( \sqrt{8f^2 - 1} + 1 \right)0.5(8f2−1+1)",
-      "c": "0.5(8f2+1+1)0.5 \left( \sqrt{8f^2 + 1} + 1 \right)0.5(8f2+1+1)",
-      "d": "8f2+1\sqrt{8f^2 + 1}8f2+1"
+      "a": "$0.5 \\times (\\sqrt{8Fr^2 + 1} - 1)$",
+      "b": "$0.5 \\times (\\sqrt{8Fr^2 - 1} + 1)$",
+      "c": "$0.5 \\times (\\sqrt{8Fr^2 + 1} + 1)$",
+      "d": "$\\sqrt{8Fr^2 + 1}$"
     },
     "answer": "a"
   },
   {
     "id": 67,
-    "text": "The Froude number FrFrFr range for steady hydraulic jump is:",
+    "text": "The Froude number $F_r$ range for steady hydraulic jump is:",
     "options": {
       "a": "1–3",
       "b": "4.5–9",
@@ -740,7 +740,7 @@ export const fasttrack3Questions: Question[] = [
   },
   {
     "id": 68,
-    "text": "If Manning’s n is doubled, the slope SSS should be changed by:",
+    "text": "If Manning’s $n$ is doubled, the slope $S$ should be changed by:",
     "options": {
       "a": "Double",
       "b": "Halved",
@@ -753,10 +753,10 @@ export const fasttrack3Questions: Question[] = [
     "id": 69,
     "text": "Condition for supercritical flow is:",
     "options": {
-      "a": "Fr<1Fr < 1Fr<1",
-      "b": "Fr=1Fr = 1Fr=1",
-      "c": "Fr>1Fr > 1Fr>1",
-      "d": "Fr=0Fr = 0Fr=0"
+      "a": "$F_r < 1$",
+      "b": "$F_r = 1$",
+      "c": "$F_r > 1$",
+      "d": "$F_r = 0$"
     },
     "answer": "c"
   },
@@ -784,12 +784,12 @@ export const fasttrack3Questions: Question[] = [
   },
   {
     "id": 72,
-    "text": "Weighted perimeter PPP for trapezoidal section with bottom width BBB, flow depth yyy, and side slope zzz is:",
+    "text": "Weighted perimeter $P$ for trapezoidal section with bottom width $B$, flow depth $y$, and side slope $z$ is:",
     "options": {
-      "a": "B+2y1+z2B + 2y \sqrt{1 + z^2}B+2y1+z2",
-      "b": "B+y1+z2B + y \sqrt{1 + z^2}B+y1+z2",
-      "c": "B+2y(1+z2)B + 2y (1 + z^2)B+2y(1+z2)",
-      "d": "B+y(1+z2)B + y (1 + z^2)B+y(1+z2)"
+      "a": "$B + 2y \\sqrt{1 + z^2}$",
+      "b": "$B + y \\sqrt{1 + z^2}$",
+      "c": "$B + 2y (1 + z^2)$",
+      "d": "$B + y (1 + z^2)$"
     },
     "answer": "a"
   },
@@ -852,21 +852,21 @@ export const fasttrack3Questions: Question[] = [
     "id": 78,
     "text": "The discharge over an ogee weir is proportional to:",
     "options": {
-      "a": "HHH",
-      "b": "H1/2H^{1/2}H1/2",
-      "c": "H3/2H^{3/2}H3/2",
-      "d": "H2H^2H2"
+      "a": "$H$",
+      "b": "$H^{0.5}$",
+      "c": "$H^{1.5}$",
+      "d": "$H^2$"
     },
     "answer": "c"
   },
   {
     "id": 79,
-    "text": "Froude number for a triangular channel with side slope 2H:1V and depth yyy is:",
+    "text": "Froude number for a triangular channel with side slope $2H:1V$ and depth $y$ is:",
     "options": {
-      "a": "Vgy/2\frac{V}{\sqrt{g y / 2}}gy/2V",
-      "b": "V2gy\frac{V}{\sqrt{2 g y}}2gyV",
-      "c": "Vgy\frac{V}{\sqrt{g y}}gyV",
-      "d": "Vgy/4\frac{V}{\sqrt{g y / 4}}gy/4V"
+      "a": "$\\frac{V}{\\sqrt{gy/2}}$",
+      "b": "$\\frac{V}{\\sqrt{2gy}}$",
+      "c": "$\\frac{V}{\\sqrt{gy}}$",
+      "d": "$\\frac{V}{\\sqrt{gy/4}}$"
     },
     "answer": "a"
   },

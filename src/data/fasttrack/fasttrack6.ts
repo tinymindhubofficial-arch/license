@@ -197,7 +197,7 @@ export const fasttrack6Questions: Question[] = [
       "c": "No effect on pH",
       "d": "Fluctuating pH"
     },
-    "answer": "b"
+    "answer": "a"
   },
   {
     "id": 19,
@@ -703,7 +703,7 @@ export const fasttrack6Questions: Question[] = [
       "c": "1 hour",
       "d": "24 hours"
     },
-    "answer": "b"
+    "answer": "d"
   },
   {
     "id": 65,

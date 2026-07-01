@@ -258,10 +258,10 @@ export const fasttrack2Questions: Question[] = [
     "id": 24,
     "text": "The discharge (q) through a flow net is given by:",
     "options": {
-      "a": "q=kh⋅Nd/Nfq = kh \cdot Nd/Nfq=kh⋅Nd/Nf",
-      "b": "q=k⋅h⋅Nf/Ndq = k \cdot h \cdot Nf/Ndq=k⋅h⋅Nf/Nd",
-      "c": "q=k⋅h⋅Lq = k \cdot h \cdot Lq=k⋅h⋅L",
-      "d": "q=k/Nd⋅h⋅Nfq = k/Nd \cdot h \cdot Nfq=k/Nd⋅h⋅Nf"
+      "a": "q = k · h · (N_d / N_f)",
+      "b": "q = k · h · (N_f / N_d)",
+      "c": "q = k · h · L",
+      "d": "q = (k / N_d) · h · N_f"
     },
     "answer": "b"
   },
@@ -269,10 +269,10 @@ export const fasttrack2Questions: Question[] = [
     "id": 25,
     "text": "Relative compaction is defined as:",
     "options": {
-      "a": "emine\frac{e_{min}}{e}eemin",
-      "b": "γdγsat\frac{\gamma_d}{\gamma_{sat}}γsatγd",
-      "c": "γdγd,max\frac{\gamma_d}{\gamma_{d,max}}γd,maxγd",
-      "d": "γd,maxγd\frac{\gamma_{d,max}}{\gamma_d}γdγd,max"
+      "a": "e_min / e",
+      "b": "γ_d / γ_sat",
+      "c": "γ_d / γ_d,max",
+      "d": "γ_d,max / γ_d"
     },
     "answer": "c"
   },
@@ -632,9 +632,9 @@ export const fasttrack2Questions: Question[] = [
     "id": 58,
     "text": "Relation between principal and normal stress:",
     "options": {
-      "a": "σ₁ + σ₃",
-      "b": "σ1+σ32±(σ1−σ32)2+τ2\frac{σ₁ + σ₃}{2} \pm \sqrt{ \left( \frac{σ₁ - σ₃}{2} \right)^2 + τ^2 }2σ1+σ3±(2σ1−σ3)2+τ2",
-      "c": "σ₁ - σ₃",
+      "a": "$\\sigma_1 + \\sigma_3$",
+      "b": "$\\frac{\\sigma_1 + \\sigma_3}{2} \\pm \\sqrt{\\left(\\frac{\\sigma_1 - \\sigma_3}{2}\\right)^2 + \\tau^2}$",
+      "c": "$\\sigma_1 - \\sigma_3$",
       "d": "Not related"
     },
     "answer": "b"
@@ -643,10 +643,10 @@ export const fasttrack2Questions: Question[] = [
     "id": 59,
     "text": "Critical gradient in soil is:",
     "options": {
-      "a": "G / (1 + e)",
-      "b": "(G - 1) / (1 + e)",
-      "c": "G - 1",
-      "d": "1 / G"
+      "a": "$\\frac{G}{1 + e}$",
+      "b": "$\\frac{G - 1}{1 + e}$",
+      "c": "$G - 1$",
+      "d": "$\\frac{1}{G}$"
     },
     "answer": "b"
   },
@@ -654,10 +654,10 @@ export const fasttrack2Questions: Question[] = [
     "id": 60,
     "text": "For cohesionless soil:",
     "options": {
-      "a": "qu(f)=qu(p)⋅Bf/Bpqu(f) = qu(p) \cdot Bf / Bpqu(f)=qu(p)⋅Bf/Bp",
-      "b": "qu(f)=qu(p)⋅Bp/Bfqu(f) = qu(p) \cdot Bp / Bfqu(f)=qu(p)⋅Bp/Bf",
-      "c": "qu(f)=qu(p)2qu(f) = qu(p)^2qu(f)=qu(p)2",
-      "d": "qu(f)=qu(p)/2qu(f) = qu(p)/2qu(f)=qu(p)/2"
+      "a": "$q_u(f) = q_u(p) \\cdot \\frac{B_f}{B_p}$",
+      "b": "$q_u(f) = q_u(p) \\cdot \\frac{B_p}{B_f}$",
+      "c": "$q_u(f) = [q_u(p)]^2$",
+      "d": "$q_u(f) = \\frac{q_u(p)}{2}$"
     },
     "answer": "a"
   },
@@ -665,10 +665,10 @@ export const fasttrack2Questions: Question[] = [
     "id": 61,
     "text": "Corrected area at any strain in UCC is:",
     "options": {
-      "a": "A0(1+e)A_0(1 + e)A0(1+e)",
-      "b": "A0/(1−ϵ)A_0 / (1 - \epsilon)A0/(1−ϵ)",
-      "c": "A0(1−ϵ)A_0(1 - \epsilon)A0(1−ϵ)",
-      "d": "A0/ϵA_0 / \epsilonA0/ϵ"
+      "a": "$A_0 \\cdot (1 + e)$",
+      "b": "$\\frac{A_0}{1 - \\varepsilon}$",
+      "c": "$A_0 \\cdot (1 - \\varepsilon)$",
+      "d": "$\\frac{A_0}{\\varepsilon}$"
     },
     "answer": "b"
   },
@@ -687,10 +687,10 @@ export const fasttrack2Questions: Question[] = [
     "id": 63,
     "text": "Shear strength from Vane shear test:",
     "options": {
-      "a": "S=T/πD2HS = T / \pi D^2 HS=T/πD2H",
-      "b": "S=T/(πD2(H/2+D/6))S = T / (\pi D^2 (H/2 + D/6))S=T/(πD2(H/2+D/6))",
-      "c": "S=T/(πDH)S = T / (\pi D H)S=T/(πDH)",
-      "d": "S=T/(2πD2)S = T / (2\pi D^2)S=T/(2πD2)"
+      "a": "$S = \\frac{T}{\\pi D^2 H}$",
+      "b": "$S = \\frac{T}{\\pi D^2 (H/2 + D/6)}$",
+      "c": "$S = \\frac{T}{\\pi D H}$",
+      "d": "$S = \\frac{T}{2 \\pi D^2}$"
     },
     "answer": "b"
   },
@@ -698,10 +698,10 @@ export const fasttrack2Questions: Question[] = [
     "id": 64,
     "text": "Angle of rigid cone under foundation:",
     "options": {
-      "a": "30° + φ",
-      "b": "45° + φ",
-      "c": "45° + φ/2",
-      "d": "60° + φ/2"
+      "a": "$30^\\circ + \\varphi$",
+      "b": "$45^\\circ + \\varphi$",
+      "c": "$45^\\circ + \\frac{\\varphi}{2}$",
+      "d": "$60^\\circ + \\frac{\\varphi}{2}$"
     },
     "answer": "c"
   },
@@ -764,10 +764,10 @@ export const fasttrack2Questions: Question[] = [
     "id": 70,
     "text": "Formula for area ratio of sampler is:",
     "options": {
-      "a": "D22−D12D12×100\frac{D_2^2 - D_1^2}{D_1^2} \times 100D12D22−D12×100",
-      "b": "D12−D22D22×100\frac{D_1^2 - D_2^2}{D_2^2} \times 100D22D12−D22×100",
-      "c": "D1D2×100\frac{D_1}{D_2} \times 100D2D1×100",
-      "d": "D2D1×100\frac{D_2}{D_1} \times 100D1D2×100"
+      "a": "[(D₂² - D₁²) / D₁²] × 100",
+      "b": "[(D₁² - D₂²) / D₂²] × 100",
+      "c": "(D₁ / D₂) × 100",
+      "d": "(D₂ / D₁) × 100"
     },
     "answer": "a"
   },

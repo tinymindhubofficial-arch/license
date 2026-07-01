@@ -860,7 +860,7 @@
       "c": "(1+e)/(1-G)",
       "d": "(1+e)/(G-2)"
     },
-    "answer": "c",
+    "answer": "b",
     "tag": "Seepage"
   },
   {
@@ -1208,7 +1208,7 @@
       "c": "type of boring",
       "d": "load of structure"
     },
-    "answer": "b",
+    "answer": "c",
     "tag": "Soil Exploration"
   },
   {
@@ -1784,7 +1784,7 @@
       "c": "Handling of and sampling of soil is easy.",
       "d": "Shear strength cannot be determined."
     },
-    "answer": "d",
+    "answer": "a",
     "tag": "Soil Shear Strength"
   },
   {
@@ -2012,7 +2012,7 @@
       "c": "Detailed",
       "d": "Exploration during construction"
     },
-    "answer": "d",
+    "answer": "a",
     "tag": "Soil Exploration"
   }
 ]

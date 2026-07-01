@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { 
   BookOpen, Search, Award, CheckCircle2, XCircle, RotateCcw, 
   Check, ChevronLeft, ChevronRight, Info, ListFilter, Trophy, 
@@ -8,10 +8,12 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { chaptersList, chaptersData } from "./data/chapters/chaptersData";
+import { necModelQuestions } from "./data/nec/necModelQuestionsData";
 import { practiceSets } from "./data/sets/practiceSetsData";
 import { extraQuestionSets } from "./data/extra/extraQuestionsData";
 import { fasttrackChaptersList, fasttrackData } from "./data/fasttrack/fasttrackData";
 import { Question, UserSelections } from "./types";
+import { LatexText } from "./components/LatexText";
 
 function safeParseJSON<T>(val: string | null, fallback: T): T {
   if (!val) return fallback;
@@ -135,20 +137,25 @@ export default function App() {
     ];
   }, []);
 
-  // 2. Active Mode (chapter | set | extra | fasttrack), Tab & Chapter selections
-  const [activeMode, setActiveMode] = useState<"chapter" | "set" | "extra" | "fasttrack">((() => {
+  // 2. Active Mode (nec | chapter | set | extra | fasttrack), Tab & Chapter selections
+  const [activeMode, setActiveMode] = useState<"nec" | "chapter" | "set" | "extra" | "fasttrack">((() => {
     const saved = localStorage.getItem("civil_quiz_active_mode");
     return (saved as any) || "chapter";
   }));
 
-  const selectPathway = (mode: "chapter" | "set" | "extra" | "fasttrack") => {
+  const selectPathway = (mode: "nec" | "chapter" | "set" | "extra" | "fasttrack") => {
     setActiveMode(mode);
     localStorage.setItem("civil_quiz_active_mode", mode);
     setShowLandingPage(false);
-    setSelectedSubTarget(false); // Reset to show selection index
-    // Automatically transition to the practice tab if on overview and selecting set or extra questions or fasttrack
-    if (mode !== "chapter" && activeTab === "overview") {
+    if (mode === "nec") {
+      setSelectedSubTarget(true);
       setActiveTab("practice");
+    } else {
+      setSelectedSubTarget(false); // Reset to show selection index
+      // Automatically transition to the practice tab if on overview and selecting set or extra questions or fasttrack
+      if (mode !== "chapter" && activeTab === "overview") {
+        setActiveTab("practice");
+      }
     }
   };
 
@@ -259,7 +266,7 @@ export default function App() {
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [reviewFilter, setReviewFilter] = useState<'all' | 'incorrect' | 'correct'>('all');
   
-  const itemsPerPage = activeMode === "fasttrack" ? 999999 : (isQuizSubmitted ? 999999 : 50);
+  const itemsPerPage = isQuizSubmitted ? 999999 : 50;
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [jumpPageVal, setJumpPageVal] = useState<string>("");
   const [jumpQuestionVal, setJumpQuestionVal] = useState<string>("");
@@ -277,6 +284,18 @@ export default function App() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Track if we are currently performing a targeted jump to question to avoid scrolling to top
+  const isJumpingRef = useRef(false);
+
+  // Automatic scroll-to-top whenever the page/tab/topic/resource changes
+  useEffect(() => {
+    if (isJumpingRef.current) {
+      isJumpingRef.current = false;
+      return;
+    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [currentPage, activeChapter, activeSetId, activeExtraId, activeFastTrackChapter, activeMode, activeTab]);
 
   // Custom confirmation modal state
   const [modalConfig, setModalConfig] = useState<{
@@ -327,7 +346,16 @@ export default function App() {
     localStorage.setItem("civil_quiz_active_chapter", activeChapter.toString());
     localStorage.setItem("civil_quiz_active_fasttrack_chapter", activeFastTrackChapter.toString());
     
-    if (activeMode === "chapter") {
+    if (activeMode === "nec") {
+      const savedSelections = localStorage.getItem(`civil_quiz_selections_nec`);
+      setUserSelections(safeParseJSON(savedSelections, {}));
+
+      const savedSubmitted = localStorage.getItem(`civil_quiz_submitted_nec`);
+      setIsQuizSubmitted(safeParseJSON(savedSubmitted, false));
+
+      const savedPage = localStorage.getItem(`civil_quiz_page_nec`);
+      setCurrentPage(savedPage ? parseInt(savedPage, 10) : 1);
+    } else if (activeMode === "chapter") {
       const savedSelections = localStorage.getItem(`civil_quiz_selections_ch_${activeChapter}`);
       setUserSelections(safeParseJSON(savedSelections, {}));
 
@@ -371,8 +399,9 @@ export default function App() {
   }, [activeChapter, activeSetId, activeExtraId, activeFastTrackChapter, activeMode]);
 
   // Handler to switch between any of the three custom databases with safety warnings
-  const handleResourceSwitch = (mode: "chapter" | "set" | "extra" | "fasttrack", value: any) => {
+  const handleResourceSwitch = (mode: "nec" | "chapter" | "set" | "extra" | "fasttrack", value: any) => {
     if (activeMode === mode) {
+      if (mode === "nec") return;
       if (mode === "chapter" && activeChapter === Number(value)) return;
       if (mode === "set" && activeSetId === value) return;
       if (mode === "extra" && activeExtraId === value) return;
@@ -390,7 +419,12 @@ export default function App() {
       } else if (mode === "fasttrack") {
         setActiveFastTrackChapter(Number(value));
       }
-      // Automatically transition to the practice tab if on overview and selecting set or extra questions or fasttrack
+      
+      if (mode === "nec") {
+        setSelectedSubTarget(true);
+      }
+
+      // Automatically transition to the practice tab if on overview and selecting set or extra questions or fasttrack or nec
       if (mode !== "chapter" && activeTab === "overview") {
         setActiveTab("practice");
       }
@@ -412,10 +446,20 @@ export default function App() {
 
 
 
+  // Calculate total Fast Track questions across all topics dynamically
+  const totalFastTrackCount = useMemo(() => {
+    return Object.entries(fasttrackData).reduce((sum, [chId, questionsList]) => {
+      const count = Number(chId) === 2 ? 168 : (questionsList?.length || 0);
+      return sum + count;
+    }, 0);
+  }, []);
+
   // Load questions for the active resource (chapter, practice set, or extra question set)
   const questions = useMemo(() => {
     let originalQuestions: Question[] = [];
-    if (activeMode === "chapter") {
+    if (activeMode === "nec") {
+      originalQuestions = necModelQuestions;
+    } else if (activeMode === "chapter") {
       originalQuestions = chaptersData[activeChapter] || [];
     } else if (activeMode === "set") {
       const chosenSet = practiceSets.find(s => s.id === activeSetId);
@@ -454,7 +498,9 @@ export default function App() {
     if (isQuizSubmitted) return;
     const updated = { ...userSelections, [qId]: optionKey };
     setUserSelections(updated);
-    if (activeMode === "chapter") {
+    if (activeMode === "nec") {
+      localStorage.setItem(`civil_quiz_selections_nec`, JSON.stringify(updated));
+    } else if (activeMode === "chapter") {
       localStorage.setItem(`civil_quiz_selections_ch_${activeChapter}`, JSON.stringify(updated));
     } else if (activeMode === "set") {
       localStorage.setItem(`civil_quiz_selections_set_${activeSetId}`, JSON.stringify(updated));
@@ -468,7 +514,9 @@ export default function App() {
   // Count active bookmarked questions
   const activeChapterBookmarksCount = useMemo(() => {
     return questions.filter(q => {
-      const bookmarkKey = activeMode === "chapter" 
+      const bookmarkKey = activeMode === "nec"
+        ? `nec-${q.id}`
+        : activeMode === "chapter" 
         ? `${activeChapter}-${q.id}` 
         : activeMode === "set" 
         ? `${activeSetId}-${q.id}`
@@ -493,7 +541,9 @@ export default function App() {
       } else if (statusFilter === "unanswered") {
         matchesStatus = !selection;
       } else if (statusFilter === "bookmarked") {
-        const bookmarkKey = activeMode === "chapter" 
+        const bookmarkKey = activeMode === "nec"
+          ? `nec-${q.id}`
+          : activeMode === "chapter" 
           ? `${activeChapter}-${q.id}` 
           : activeMode === "set" 
           ? `${activeSetId}-${q.id}`
@@ -660,7 +710,9 @@ export default function App() {
         `Warning: You have only selected ${selectionCount} out of ${totalInPool} answers. Unanswered questions will count as incorrect. Proceed to evaluate?`,
         () => {
           setIsQuizSubmitted(true);
-          if (activeMode === "chapter") {
+          if (activeMode === "nec") {
+            localStorage.setItem(`civil_quiz_submitted_nec`, JSON.stringify(true));
+          } else if (activeMode === "chapter") {
             localStorage.setItem(`civil_quiz_submitted_ch_${activeChapter}`, JSON.stringify(true));
           } else if (activeMode === "set") {
             localStorage.setItem(`civil_quiz_submitted_set_${activeSetId}`, JSON.stringify(true));
@@ -680,7 +732,9 @@ export default function App() {
         "Are you sure you want to finish and submit this exam session? Answers will be locked and graded instantly.",
         () => {
           setIsQuizSubmitted(true);
-          if (activeMode === "chapter") {
+          if (activeMode === "nec") {
+            localStorage.setItem(`civil_quiz_submitted_nec`, JSON.stringify(true));
+          } else if (activeMode === "chapter") {
             localStorage.setItem(`civil_quiz_submitted_ch_${activeChapter}`, JSON.stringify(true));
           } else if (activeMode === "set") {
             localStorage.setItem(`civil_quiz_submitted_set_${activeSetId}`, JSON.stringify(true));
@@ -699,7 +753,9 @@ export default function App() {
 
   // Reset chapter or practice set progress
   const handleResetCurrentChapter = () => {
-    const resourceName = activeMode === "chapter"
+    const resourceName = activeMode === "nec"
+      ? "NEC Civil Model Question"
+      : activeMode === "chapter"
       ? (chaptersList.find(c => c.id === activeChapter)?.name || `Chapter ${activeChapter}`)
       : activeMode === "set"
       ? (practiceSets.find(s => s.id === activeSetId)?.name || "Practice Set")
@@ -712,7 +768,10 @@ export default function App() {
       () => {
         setUserSelections({});
         setIsQuizSubmitted(false);
-        if (activeMode === "chapter") {
+        if (activeMode === "nec") {
+          localStorage.removeItem(`civil_quiz_selections_nec`);
+          localStorage.removeItem(`civil_quiz_submitted_nec`);
+        } else if (activeMode === "chapter") {
           localStorage.removeItem(`civil_quiz_selections_ch_${activeChapter}`);
           localStorage.removeItem(`civil_quiz_submitted_ch_${activeChapter}`);
         } else if (activeMode === "set") {
@@ -738,6 +797,9 @@ export default function App() {
       "CRITICAL RESET: Clear All Progress",
       "This clears answers, grades, submissions, and page navigation logs across ALL chapters, practice sets, extra question sets, and fast track MCQs. This action is irreversible. Are you sure you want to do this?",
       () => {
+        localStorage.removeItem(`civil_quiz_selections_nec`);
+        localStorage.removeItem(`civil_quiz_submitted_nec`);
+        localStorage.removeItem(`civil_quiz_page_nec`);
         chaptersList.forEach((ch) => {
           localStorage.removeItem(`civil_quiz_selections_ch_${ch.id}`);
           localStorage.removeItem(`civil_quiz_submitted_ch_${ch.id}`);
@@ -833,7 +895,9 @@ export default function App() {
     
     // Clear active staged answers as required
     setUserSelections({});
-    if (activeMode === "chapter") {
+    if (activeMode === "nec") {
+      localStorage.removeItem(`civil_quiz_selections_nec`);
+    } else if (activeMode === "chapter") {
       localStorage.removeItem(`civil_quiz_selections_ch_${activeChapter}`);
     } else if (activeMode === "set") {
       localStorage.removeItem(`civil_quiz_selections_set_${activeSetId}`);
@@ -852,7 +916,9 @@ export default function App() {
 
   // Persist page number positioning when currentPage changes
   useEffect(() => {
-    if (activeMode === "chapter") {
+    if (activeMode === "nec") {
+      localStorage.setItem(`civil_quiz_page_nec`, currentPage.toString());
+    } else if (activeMode === "chapter") {
       localStorage.setItem(`civil_quiz_page_ch_${activeChapter}`, currentPage.toString());
     } else if (activeMode === "set") {
       localStorage.setItem(`civil_quiz_page_set_${activeSetId}`, currentPage.toString());
@@ -891,6 +957,7 @@ export default function App() {
     const idx = filteredQuestions.findIndex((q) => q.id === qId);
     if (idx !== -1) {
       const targetPage = Math.floor(idx / itemsPerPage) + 1;
+      isJumpingRef.current = true;
       setCurrentPage(targetPage);
       setTimeout(() => {
         const el = document.getElementById(`q-${qId}`);
@@ -912,6 +979,7 @@ export default function App() {
             setTimeout(() => {
               const unfilteredIdx = questions.findIndex(q => q.id === qId);
               const targetPage = Math.floor(unfilteredIdx / itemsPerPage) + 1;
+              isJumpingRef.current = true;
               setCurrentPage(targetPage);
               setTimeout(() => {
                 const el = document.getElementById(`q-${qId}`);
@@ -1045,7 +1113,7 @@ export default function App() {
                       </div>
                       
                       <div className="font-display font-semibold text-base leading-snug mb-5 text-[#0E1A2B]">
-                        {demoQuestions[demoIndex].text}
+                        <LatexText text={demoQuestions[demoIndex].text} />
                       </div>
                       
                       <div className="flex flex-col gap-2.5">
@@ -1078,7 +1146,7 @@ export default function App() {
                               }`}>
                                 {key.toUpperCase()}
                               </span>
-                              <span>{optText}</span>
+                              <span><LatexText text={optText} /></span>
                             </button>
                           );
                         })}
@@ -1131,18 +1199,40 @@ export default function App() {
               <div className="max-w-[1180px] mx-auto px-6">
                 <div className="max-w-2xl mb-12">
                   <span className="font-mono text-xs tracking-widest text-[#5BCBEE] uppercase block mb-3">Diagnostic Pathways</span>
-                  <h2 className="font-display font-bold text-2xl md:text-3xl text-[#F4EFE3] mb-4">Four pathways. Built for precision.</h2>
+                  <h2 className="font-display font-bold text-2xl md:text-3xl text-[#F4EFE3] mb-4">Five pathways. Built for precision.</h2>
                   <p className="text-[#92A2B5] text-sm md:text-base font-sans">Everything is laid out like an official civil construction drawing set — direct, structured, and complete.</p>
                 </div>
                 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+                  {/* Card 0: NEC Model Question */}
+                  <motion.div
+                    whileHover={{ y: -4, borderColor: "rgba(91, 203, 238, 0.6)" }}
+                    onClick={() => selectPathway("nec")}
+                    className="bg-[#15263C] border border-[#5BCBEE]/20 rounded-lg p-6 cursor-pointer group transition-all duration-300 relative flex flex-col justify-between min-h-[270px] shadow-lg"
+                  >
+                    <span className="absolute top-6 right-6 font-mono text-xs text-[#5E7186]">01</span>
+                    <div>
+                      <div className="w-10 h-10 bg-[#0E1A2B] text-emerald-400 rounded border border-emerald-400/30 flex items-center justify-center mb-6 group-hover:bg-emerald-400 group-hover:text-[#0E1A2B] transition-all duration-300">
+                        <Award className="w-5 h-5" />
+                      </div>
+                      <h3 className="font-display font-bold text-base text-[#F4EFE3] mb-2 group-hover:text-[#5BCBEE] transition-colors">NEC Model Question</h3>
+                      <p className="text-xs text-[#92A2B5] leading-relaxed font-sans">
+                        Full-length (100 MCQs) official Nepal Engineering Council (NEC) Civil Engineering Registration Examination model paper.
+                      </p>
+                    </div>
+                    <div className="mt-6 flex items-center gap-1.5 text-xs font-bold text-emerald-400 font-mono">
+                      <span>Launch Model Paper</span>
+                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </motion.div>
+
                   {/* Card 1: Subject-wise Practice */}
                   <motion.div
                     whileHover={{ y: -4, borderColor: "rgba(91, 203, 238, 0.6)" }}
                     onClick={() => selectPathway("chapter")}
                     className="bg-[#15263C] border border-[#5BCBEE]/20 rounded-lg p-6 cursor-pointer group transition-all duration-300 relative flex flex-col justify-between min-h-[270px] shadow-lg"
                   >
-                    <span className="absolute top-6 right-6 font-mono text-xs text-[#5E7186]">01</span>
+                    <span className="absolute top-6 right-6 font-mono text-xs text-[#5E7186]">02</span>
                     <div>
                       <div className="w-10 h-10 bg-[#0E1A2B] text-[#5BCBEE] rounded border border-[#5BCBEE]/30 flex items-center justify-center mb-6 group-hover:bg-[#5BCBEE] group-hover:text-[#0E1A2B] transition-all duration-300">
                         <BookOpen className="w-5 h-5" />
@@ -1164,14 +1254,14 @@ export default function App() {
                     onClick={() => selectPathway("fasttrack")}
                     className="bg-[#15263C] border border-[#5BCBEE]/20 rounded-lg p-6 cursor-pointer group transition-all duration-300 relative flex flex-col justify-between min-h-[270px] shadow-lg"
                   >
-                    <span className="absolute top-6 right-6 font-mono text-xs text-[#5E7186]">02</span>
+                    <span className="absolute top-6 right-6 font-mono text-xs text-[#5E7186]">03</span>
                     <div>
                       <div className="w-10 h-10 bg-[#0E1A2B] text-[#E8743B] rounded border border-[#E8743B]/30 flex items-center justify-center mb-6 group-hover:bg-[#E8743B] group-hover:text-[#0E1A2B] transition-all duration-300">
                         <Sparkles className="w-5 h-5" />
                       </div>
                       <h3 className="font-display font-bold text-base text-[#F4EFE3] mb-2 group-hover:text-[#E8743B] transition-colors">Fast Track MCQs</h3>
                       <p className="text-xs text-[#92A2B5] leading-relaxed font-sans">
-                        Accelerate with 552 high-yield MCQs categorized across 10 vital topics for swift preparation.
+                        Accelerate with {totalFastTrackCount} high-yield MCQs categorized across 10 vital topics for swift preparation.
                       </p>
                     </div>
                     <div className="mt-6 flex items-center gap-1.5 text-xs font-bold text-[#E8743B] font-mono">
@@ -1186,7 +1276,7 @@ export default function App() {
                     onClick={() => selectPathway("set")}
                     className="bg-[#15263C] border border-[#5BCBEE]/20 rounded-lg p-6 cursor-pointer group transition-all duration-300 relative flex flex-col justify-between min-h-[270px] shadow-lg"
                   >
-                    <span className="absolute top-6 right-6 font-mono text-xs text-[#5E7186]">03</span>
+                    <span className="absolute top-6 right-6 font-mono text-xs text-[#5E7186]">04</span>
                     <div>
                       <div className="w-10 h-10 bg-[#0E1A2B] text-[#5BCBEE] rounded border border-[#5BCBEE]/30 flex items-center justify-center mb-6 group-hover:bg-[#5BCBEE] group-hover:text-[#0E1A2B] transition-all duration-300">
                         <Layers className="w-5 h-5" />
@@ -1208,7 +1298,7 @@ export default function App() {
                     onClick={() => selectPathway("extra")}
                     className="bg-[#15263C] border border-[#5BCBEE]/20 rounded-lg p-6 cursor-pointer group transition-all duration-300 relative flex flex-col justify-between min-h-[270px] shadow-lg"
                   >
-                    <span className="absolute top-6 right-6 font-mono text-xs text-[#5E7186]">04</span>
+                    <span className="absolute top-6 right-6 font-mono text-xs text-[#5E7186]">05</span>
                     <div>
                       <div className="w-10 h-10 bg-[#0E1A2B] text-[#5BCBEE] rounded border border-[#5BCBEE]/30 flex items-center justify-center mb-6 group-hover:bg-[#5BCBEE] group-hover:text-[#0E1A2B] transition-all duration-300">
                         <FileText className="w-5 h-5" />
@@ -1350,7 +1440,7 @@ export default function App() {
               {activeMode === "fasttrack" && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {fasttrackChaptersList.map((ch) => {
-                    const qCount = fasttrackData[ch.id]?.length || 0;
+                    const qCount = ch.id === 2 ? 168 : (fasttrackData[ch.id]?.length || 0);
                     return (
                       <motion.div
                         key={ch.id}
@@ -1583,12 +1673,36 @@ export default function App() {
                       <span className="w-1.5 h-1.5 rounded-full bg-[#5BCBEE] animate-ping"></span>
                       <span className="text-[#92A2B5]">Current Database:</span>
                       <span className="text-[#5BCBEE] uppercase tracking-wider">
-                        {activeMode === "chapter" ? "📚 Chapter Practice" : activeMode === "fasttrack" ? "⚡ Fast Track MCQs" : activeMode === "set" ? "📝 Practice Sets" : "✨ Extra Questions"}
+                        {activeMode === "nec" ? "🏆 NEC Model Question" : activeMode === "chapter" ? "📚 Chapter Practice" : activeMode === "fasttrack" ? "⚡ Fast Track MCQs" : activeMode === "set" ? "📝 Practice Sets" : "✨ Extra Questions"}
                       </span>
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+                    {/* 0. NEC Model Question Selector */}
+                    <div 
+                      onClick={() => handleResourceSwitch("nec", null)}
+                      className={`p-4 rounded-xl border transition-all duration-200 flex flex-col gap-2 cursor-pointer hover:scale-[1.01] active:scale-[0.99] ${
+                        activeMode === "nec"
+                          ? "bg-[#0E1A2B]/85 border-[#5BCBEE] shadow-md shadow-[#5BCBEE]/5"
+                          : "bg-[#0E1A2B]/30 border-[#5BCBEE]/10 opacity-60 hover:opacity-95 text-[#92A2B5]"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <label className="text-[11px] font-bold text-[#F4EFE3] uppercase tracking-wider flex items-center gap-1.5 cursor-pointer">
+                          <span>🏆 NEC Model Question</span>
+                        </label>
+                        {activeMode === "nec" && (
+                          <span className="text-[9px] font-extrabold uppercase bg-[#5BCBEE]/25 text-[#5BCBEE] px-1.5 py-0.5 rounded-md border border-[#5BCBEE]/40">
+                            Active
+                          </span>
+                        )}
+                      </div>
+                      <div className="text-xs font-semibold py-2 px-3 bg-[#0E1A2B]/80 text-[#F4EFE3] rounded-xl border border-[#5BCBEE]/10 text-center font-mono">
+                        100 Official MCQs
+                      </div>
+                    </div>
+
                     {/* 1. Chapter Practice Dropdown */}
                     <div 
                       onClick={() => handleResourceSwitch("chapter", activeChapter)}
@@ -1963,7 +2077,9 @@ export default function App() {
                 <div className="flex items-center gap-2 max-w-full overflow-hidden">
                   <BookOpenCheck className="w-4 h-4 text-[#5BCBEE] flex-shrink-0" />
                   <span className="text-xs sm:text-sm font-bold text-[#F4EFE3] font-display truncate">
-                    {activeMode === "chapter" ? (
+                    {activeMode === "nec" ? (
+                      `🏆 NEC Model Question: Civil Engineering Registration exam`
+                    ) : activeMode === "chapter" ? (
                       `Ch ${activeChapter}: ${chaptersList.find(c => c.id === activeChapter)?.name.replace(/Chapter \d+:\s*/, "")}`
                     ) : activeMode === "fasttrack" ? (
                       `Topic ${activeFastTrackChapter}: ${fasttrackChaptersList.find(c => c.id === activeFastTrackChapter)?.name}`
@@ -2088,7 +2204,9 @@ export default function App() {
                         const currentSelection = userSelections[q.id];
                         const hasSelected = !!currentSelection;
                         const isCorrect = currentSelection === q.answer;
-                        const bookmarkKey = activeMode === "chapter" 
+                        const bookmarkKey = activeMode === "nec"
+                          ? `nec-${q.id}`
+                          : activeMode === "chapter" 
                           ? `${activeChapter}-${q.id}` 
                           : activeMode === "set" 
                           ? `${activeSetId}-${q.id}`
@@ -2099,7 +2217,7 @@ export default function App() {
 
                         return (
                           <motion.div
-                            key={`${activeMode}-${activeMode === "chapter" ? activeChapter : activeMode === "set" ? activeSetId : activeMode === "extra" ? activeExtraId : activeFastTrackChapter}-${q.id}`}
+                            key={`${activeMode}-${activeMode === "nec" ? "nec" : activeMode === "chapter" ? activeChapter : activeMode === "set" ? activeSetId : activeMode === "extra" ? activeExtraId : activeFastTrackChapter}-${q.id}`}
                             id={`q-${q.id}`}
                             initial={{ opacity: 0, y: 15 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -2116,7 +2234,9 @@ export default function App() {
                                 <button
                                   id={`bookmark-btn-${q.id}`}
                                   onClick={() => toggleBookmark(
-                                    activeMode === "chapter" 
+                                    activeMode === "nec"
+                                      ? "nec"
+                                      : activeMode === "chapter" 
                                       ? activeChapter 
                                       : activeMode === "set" 
                                       ? activeSetId 
@@ -2159,7 +2279,7 @@ export default function App() {
 
                             {/* Full-Width Question Body Text */}
                             <h3 className="text-[14px] sm:text-[15px] font-semibold text-[#F4EFE3] leading-relaxed font-display w-full mb-4">
-                              {q.text}
+                              <LatexText text={q.text} />
                             </h3>
 
                             {/* Options Buttons Stack */}
@@ -2203,7 +2323,7 @@ export default function App() {
                                     <span className={`w-6 h-6 rounded-full border flex items-center justify-center font-bold text-[10px] mr-2.5 flex-shrink-0 transition duration-150 ${prefixClass}`}>
                                       {String.fromCharCode(65 + index)}
                                     </span>
-                                    <span className="leading-relaxed">{value}</span>
+                                    <span className="leading-relaxed"><LatexText text={value} /></span>
                                     
                                     {isQuizSubmitted && isThisCorrect && (
                                       <Check className="w-4 h-4 text-emerald-400 ml-auto flex-shrink-0" />
