@@ -23,3 +23,23 @@
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 0, 0, 0.3);
 }
+
+/* Blueprint Grid Backdrop with Radial Depth */
+.blueprint-bg {
+  position: relative;
+  background-color: #0E1A2B;
+  background-image:
+    linear-gradient(rgba(91, 203, 238, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(91, 203, 238, 0.08) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+.blueprint-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 75% 50%, transparent 10%, #0E1A2B 85%);
+  pointer-events: none;
+  z-index: 1;
+}
+

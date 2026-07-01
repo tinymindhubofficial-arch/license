@@ -1,0 +1,2018 @@
+[
+  {
+    "id": 1,
+    "text": "If the length of footing is very larger than that of width, the type of footing used is ......",
+    "options": {
+      "a": "spread footing",
+      "b": "strip footing",
+      "c": "strap footing",
+      "d": "pile foundation"
+    },
+    "answer": "b",
+    "tag": "Foundations"
+  },
+  {
+    "id": 2,
+    "text": "The water content of soil is defined as the ratio of .................",
+    "options": {
+      "a": "volume of water to volume of given soil",
+      "b": "volume of water to volume of voids in",
+      "c": "weight of water to weight of air in voids",
+      "d": "weight of water to weight of solids of given mass of soil"
+    },
+    "answer": "d",
+    "tag": "Soil Properties"
+  },
+  {
+    "id": 3,
+    "text": "Meaning of SC in soil classification?",
+    "options": {
+      "a": "Soil with plastic fines",
+      "b": "Sand with plastic fines",
+      "c": "Sand with inorganic fines",
+      "d": "Sand with common fines"
+    },
+    "answer": "b",
+    "tag": "Soil Classification"
+  },
+  {
+    "id": 4,
+    "text": "The ratio of the volume of water present in a given soil mass to the total volume of its voids, is known as",
+    "options": {
+      "a": "porosity",
+      "b": "void ratio",
+      "c": "percentage voids",
+      "d": "degree of saturation"
+    },
+    "answer": "d",
+    "tag": "Soil Properties"
+  },
+  {
+    "id": 5,
+    "text": "What is the type of soil which have PI below A-line?",
+    "options": {
+      "a": "Organic",
+      "b": "High plasticity",
+      "c": "Low plasticity",
+      "d": "All types"
+    },
+    "answer": "d",
+    "tag": "Soil Classification"
+  },
+  {
+    "id": 6,
+    "text": "The aggregate containing moisture in pores and having its surface dry, is known as",
+    "options": {
+      "a": "moist aggregates",
+      "b": "very dry aggregates",
+      "c": "dry aggregates",
+      "d": "saturated surface dry aggregate"
+    },
+    "answer": "d",
+    "tag": "Aggregates"
+  },
+  {
+    "id": 7,
+    "text": "The maximum water content at which a reduction in water content does not cause a decrease in volume of a soil mass, is known as",
+    "options": {
+      "a": "liquid limit",
+      "b": "plastic limit",
+      "c": "shrinkage limit",
+      "d": "permeability limit"
+    },
+    "answer": "c",
+    "tag": "Soil Limits"
+  },
+  {
+    "id": 8,
+    "text": "Soil of Kathmandu valley is",
+    "options": {
+      "a": "black cotton",
+      "b": "organic",
+      "c": "sandy",
+      "d": "both (a) and (b)"
+    },
+    "answer": "d",
+    "tag": "Regional Soils"
+  },
+  {
+    "id": 9,
+    "text": "What is the sieve size in mm for an aggregate to be a fine-grained aggregate if it retains on it?",
+    "options": {
+      "a": "75 microns",
+      "b": "2.36 mm",
+      "c": "4.75 mm",
+      "d": "20 microns"
+    },
+    "answer": "a",
+    "tag": "Soil Sieve"
+  },
+  {
+    "id": 10,
+    "text": "Which of the following is correct?",
+    "options": {
+      "a": "1+n = 1/(1+e)",
+      "b": "1-n = 1/(1+e)",
+      "c": "n = 1/(1+e)",
+      "d": "n = 1/e"
+    },
+    "answer": "b",
+    "tag": "Soil Relationships"
+  },
+  {
+    "id": 11,
+    "text": "Coefficient of uniformity is",
+    "options": {
+      "a": "D10/D60",
+      "b": "D60/D10",
+      "c": "D30²/D60×D30",
+      "d": "D60×D30/D30²"
+    },
+    "answer": "b",
+    "tag": "Soil Gradation"
+  },
+  {
+    "id": 12,
+    "text": "What is the value of the coefficient of uniformity for well-graded sand?",
+    "options": {
+      "a": ">4",
+      "b": ">6",
+      "c": "1 to 3",
+      "d": "> 10"
+    },
+    "answer": "b",
+    "tag": "Soil Gradation"
+  },
+  {
+    "id": 13,
+    "text": "The coefficient of curvature for well graded soil lies between",
+    "options": {
+      "a": "1 to 2",
+      "b": "1 to 3",
+      "c": "3 to 5",
+      "d": "5 to 7"
+    },
+    "answer": "b",
+    "tag": "Soil Gradation"
+  },
+  {
+    "id": 14,
+    "text": "Soil exists in how many states?",
+    "options": {
+      "a": "1",
+      "b": "2",
+      "c": "3",
+      "d": "4"
+    },
+    "answer": "d",
+    "tag": "Soil States"
+  },
+  {
+    "id": 15,
+    "text": "A moist soil sample weighing 108 g has a volume of 60 cc. If water content is 25% and value of G=2.52, the void ratio is",
+    "options": {
+      "a": "0.55",
+      "b": "0.65",
+      "c": "0.75",
+      "d": "0.8"
+    },
+    "answer": "c",
+    "tag": "Soil Calculations"
+  },
+  {
+    "id": 16,
+    "text": "Find the porosity if specific gravity is 2.6 and water content is 45% for fully saturated condition of soil?",
+    "options": {
+      "a": "0.5",
+      "b": "0.55",
+      "c": "0.6",
+      "d": "0.65"
+    },
+    "answer": "b",
+    "tag": "Soil Calculations"
+  },
+  {
+    "id": 17,
+    "text": "The weight of a pycnometer containing 400 g sand and water full to the top is 2150 g. The weight of pycnometer full of clean water is 1950 g. If specific gravity of the soil is 2.5, the water content is",
+    "options": {
+      "a": "0.05",
+      "b": "0.1",
+      "c": "0.15",
+      "d": "0.2"
+    },
+    "answer": "d",
+    "tag": "Soil Water Content"
+  },
+  {
+    "id": 18,
+    "text": "The maximum size of grain silt is about",
+    "options": {
+      "a": "0.075 mm",
+      "b": "0.2 mm",
+      "c": "2 mm",
+      "d": "4.75 mm"
+    },
+    "answer": "a",
+    "tag": "Soil Grain Size"
+  },
+  {
+    "id": 19,
+    "text": "Core cutter method is used to measure",
+    "options": {
+      "a": "specific gravity",
+      "b": "in-situ density",
+      "c": "permeability",
+      "d": "cohesion"
+    },
+    "answer": "b",
+    "tag": "In-situ Testing"
+  },
+  {
+    "id": 20,
+    "text": "To achieve a void ratio equal to the water content with soil specific gravity, the desirable condition would be ........",
+    "options": {
+      "a": "dry",
+      "b": "fully saturated",
+      "c": "partially saturated",
+      "d": "none of the above"
+    },
+    "answer": "b",
+    "tag": "Soil Saturated State"
+  },
+  {
+    "id": 21,
+    "text": "Sands of zone I are........",
+    "options": {
+      "a": "coarse sand",
+      "b": "medium sand",
+      "c": "medium to fine sand",
+      "d": "fine sand"
+    },
+    "answer": "a",
+    "tag": "Sand Zoning"
+  },
+  {
+    "id": 22,
+    "text": "Which of the following is correct formula for dry density?",
+    "options": {
+      "a": "Gγw / (1+e)",
+      "b": "γb / (1+w)",
+      "c": "(1-na)Gγw / (1+wG)",
+      "d": "All of the above"
+    },
+    "answer": "d",
+    "tag": "Dry Density Formula"
+  },
+  {
+    "id": 23,
+    "text": "If specific gravity of soil is 1.527 then find specific weight.",
+    "options": {
+      "a": "15270 N/m³",
+      "b": "1527 N/cm³",
+      "c": "14980 N/m³",
+      "d": "1498 N/cm³"
+    },
+    "answer": "c",
+    "tag": "Soil Specific Weight"
+  },
+  {
+    "id": 24,
+    "text": "The sieve size of 75 micrometers is typically used to distinguish",
+    "options": {
+      "a": "silt from clay",
+      "b": "sand from silt",
+      "c": "gravel from sand",
+      "d": "clay from organic matter"
+    },
+    "answer": "b",
+    "tag": "Soil Classification"
+  },
+  {
+    "id": 25,
+    "text": "Density bottle method is used to measure",
+    "options": {
+      "a": "moisture content of soil",
+      "b": "specific gravity of soil",
+      "c": "density of air",
+      "d": "none of the above"
+    },
+    "answer": "b",
+    "tag": "Soil Gravity"
+  },
+  {
+    "id": 26,
+    "text": "In light compaction, the weight of the rammer recommended for standard proctor test is",
+    "options": {
+      "a": "2.0 kg",
+      "b": "2.4 kg",
+      "c": "2.6 kg",
+      "d": "4.9 kg"
+    },
+    "answer": "c",
+    "tag": "Compaction"
+  },
+  {
+    "id": 27,
+    "text": "What is the formula for seepage discharge in flow net?",
+    "options": {
+      "a": "q = khNf/Nd",
+      "b": "q = khNd/Nf",
+      "c": "q = kh",
+      "d": "q = kNf/Nd"
+    },
+    "answer": "a",
+    "tag": "Seepage"
+  },
+  {
+    "id": 28,
+    "text": "Relative compaction is defined as",
+    "options": {
+      "a": "γd.max / γd",
+      "b": "γd / γd.max",
+      "c": "γd / γd.min",
+      "d": "γd.min / γd"
+    },
+    "answer": "b",
+    "tag": "Compaction"
+  },
+  {
+    "id": 29,
+    "text": "Which roller is used for compacting clayey soils?",
+    "options": {
+      "a": "Vibratory",
+      "b": "Smooth wheeled",
+      "c": "Sheep footed",
+      "d": "Pneumatic tyred"
+    },
+    "answer": "c",
+    "tag": "Compaction"
+  },
+  {
+    "id": 30,
+    "text": "Which of the following has greater fineness modulus?",
+    "options": {
+      "a": "Clay",
+      "b": "Fine sand",
+      "c": "Medium sand",
+      "d": "Coarse sand"
+    },
+    "answer": "d",
+    "tag": "Fineness Modulus"
+  },
+  {
+    "id": 31,
+    "text": "Falling head permeability test can be used for",
+    "options": {
+      "a": "coarse-grained soil",
+      "b": "less permeable soil",
+      "c": "clayey soil",
+      "d": "all of the mentioned"
+    },
+    "answer": "b",
+    "tag": "Permeability"
+  },
+  {
+    "id": 32,
+    "text": "The constant head permeability test can be used for.",
+    "options": {
+      "a": "coarse grained soil",
+      "b": "fine grainded soil",
+      "c": "less permeable soil",
+      "d": "both (b) and (c)"
+    },
+    "answer": "a",
+    "tag": "Permeability"
+  },
+  {
+    "id": 33,
+    "text": "The soil which has been acted upon by stress greater than present stress is called",
+    "options": {
+      "a": "undeconsolidated",
+      "b": "over consolidated",
+      "c": "preconsolidated",
+      "d": "normal consolidated"
+    },
+    "answer": "b",
+    "tag": "Consolidation"
+  },
+  {
+    "id": 34,
+    "text": "The coefficient of compressibility of soil, is the ratio of",
+    "options": {
+      "a": "stress to strain",
+      "b": "strain to stress",
+      "c": "stress to settlement",
+      "d": "rate of loading to that of settlement"
+    },
+    "answer": "b",
+    "tag": "Consolidation"
+  },
+  {
+    "id": 35,
+    "text": "Critical hydraulic gardient is formed if",
+    "options": {
+      "a": "seepage is upward",
+      "b": "flow is upward",
+      "c": "effective stress is zero",
+      "d": "all of the above"
+    },
+    "answer": "d",
+    "tag": "Hydraulic Gradient"
+  },
+  {
+    "id": 36,
+    "text": "Consolidation settlement is calculated for",
+    "options": {
+      "a": "sand layer and when WT is far below",
+      "b": "sand layer with WT below the base of footing",
+      "c": "clay layer with WT at the ground surface",
+      "d": "none of the above"
+    },
+    "answer": "c",
+    "tag": "Consolidation"
+  },
+  {
+    "id": 37,
+    "text": "The immediate settlement can be computed from the expression, based on .............",
+    "options": {
+      "a": "pressure distribution",
+      "b": "theory of plasticity",
+      "c": "theory of elasticity",
+      "d": "terzaghi's analysis"
+    },
+    "answer": "c",
+    "tag": "Settlement"
+  },
+  {
+    "id": 38,
+    "text": "A clay is ......... if it has been subjected to a pressure in excess of its present pressure.",
+    "options": {
+      "a": "post consolidated",
+      "b": "normally consolidated",
+      "c": "over consolidated",
+      "d": "any of the above"
+    },
+    "answer": "c",
+    "tag": "Consolidation"
+  },
+  {
+    "id": 39,
+    "text": "The direction of seepage water",
+    "options": {
+      "a": "perpendicular to the equipotential line",
+      "b": "perpendicular to the streamline",
+      "c": "parallel to the equipotential line",
+      "d": "along the direction of gravity"
+    },
+    "answer": "a",
+    "tag": "Seepage"
+  },
+  {
+    "id": 40,
+    "text": "Compaction is a process in which change in volume due to",
+    "options": {
+      "a": "removal of water",
+      "b": "removal of air",
+      "c": "removal of soil particles",
+      "d": "all of the above"
+    },
+    "answer": "b",
+    "tag": "Compaction"
+  },
+  {
+    "id": 41,
+    "text": "Compaction depends on",
+    "options": {
+      "a": "number of repetitions",
+      "b": "weight of roller",
+      "c": "speed of roller",
+      "d": "all of the above"
+    },
+    "answer": "d",
+    "tag": "Compaction"
+  },
+  {
+    "id": 42,
+    "text": "The factor of safety for infinite slope with steady seepage is",
+    "options": {
+      "a": "more than dry slope",
+      "b": "equal to dry slope",
+      "c": "approx. half of the dry slope",
+      "d": "none of the above"
+    },
+    "answer": "c",
+    "tag": "Slope Stability"
+  },
+  {
+    "id": 43,
+    "text": "On wetting, cohesive soils",
+    "options": {
+      "a": "loose permeability",
+      "b": "gain shear strength",
+      "c": "loose elasticity",
+      "d": "decrease their shear strength"
+    },
+    "answer": "d",
+    "tag": "Soil Behavior"
+  },
+  {
+    "id": 44,
+    "text": "What is the meaning of bulking of sand?",
+    "options": {
+      "a": "Increase in volume of sand due to moisture absorption.",
+      "b": "Increase in weight of sand due to moisture absorption",
+      "c": "Increase in mass of sand due to moisture absorption",
+      "d": "Increase in strength of sand due to moisture absorption"
+    },
+    "answer": "a",
+    "tag": "Sand Bulking"
+  },
+  {
+    "id": 45,
+    "text": "Arrange the following regarding the coefficient of cohesion:",
+    "options": {
+      "a": "Hard clay < Dense sand > Medium clay > Soft clay",
+      "b": "Hard clay > Dense sand > Medium clay > Soft clay",
+      "c": "Medium clay > Dense sand > Hard clay > Soft clay",
+      "d": "Dense sand > Medium clay > Hard clay > Soft clay"
+    },
+    "answer": "b",
+    "tag": "Soil Cohesion"
+  },
+  {
+    "id": 46,
+    "text": "Consolidation settlement occurs due to",
+    "options": {
+      "a": "expulsion of air voids",
+      "b": "expulsion of water voids",
+      "c": "both (a) and (b)",
+      "d": "readjustment of soil molecules"
+    },
+    "answer": "b",
+    "tag": "Consolidation"
+  },
+  {
+    "id": 47,
+    "text": "What would be the effect on effective stress if water table is above the GL?",
+    "options": {
+      "a": "Decreases",
+      "b": "Increases",
+      "c": "Remains constant",
+      "d": "Cannot be said exactly"
+    },
+    "answer": "c",
+    "tag": "Effective Stress"
+  },
+  {
+    "id": 48,
+    "text": "The Oedometer is used for",
+    "options": {
+      "a": "compaction",
+      "b": "consolidation",
+      "c": "permeability",
+      "d": "void ratio"
+    },
+    "answer": "b",
+    "tag": "Consolidation"
+  },
+  {
+    "id": 49,
+    "text": "Cm is also called",
+    "options": {
+      "a": "cohesion value of soil",
+      "b": "applied shear stress",
+      "c": "direct stress on soil",
+      "d": "shear strength of soil"
+    },
+    "answer": "b",
+    "tag": "Soil Mechanics"
+  },
+  {
+    "id": 50,
+    "text": "The ratio of settlement at any time 't' to the final settlement, is known as",
+    "options": {
+      "a": "co-efficient of consolidation",
+      "b": "degree of consolidation",
+      "c": "consolidation index",
+      "d": "settlement ratio"
+    },
+    "answer": "b",
+    "tag": "Consolidation"
+  },
+  {
+    "id": 51,
+    "text": "Water is flowing at a rate of 0.04 m³/s in a soil sample with a thickness of 12 m and cross-sectional area of 50 m². If the coefficient of permeability is 1.6×10⁻³ m/s, what is the seepage pressure?",
+    "options": {
+      "a": "50.76 kN/m²",
+      "b": "52.34 kN/m²",
+      "c": "55.34 kN/m²",
+      "d": "58.86 kN/m²"
+    },
+    "answer": "d",
+    "tag": "Seepage"
+  },
+  {
+    "id": 52,
+    "text": "The void ratio of a soil is 0.68 and specific gravity is 2.68. The critical gradient for quick sand condition is",
+    "options": {
+      "a": "1.5",
+      "b": "1",
+      "c": "2",
+      "d": "0"
+    },
+    "answer": "b",
+    "tag": "Quick Sand"
+  },
+  {
+    "id": 53,
+    "text": "The densification of a soil by means of mechanical manipulation is called",
+    "options": {
+      "a": "compressibility",
+      "b": "soil stabilization",
+      "c": "compression",
+      "d": "compaction"
+    },
+    "answer": "d",
+    "tag": "Compaction"
+  },
+  {
+    "id": 54,
+    "text": "The seepage pressure in a gravity dam can be controlled with",
+    "options": {
+      "a": "installing a drainage gallery",
+      "b": "using pressure relief wells",
+      "c": "constructing an upstream impervious blanket",
+      "d": "all of the above"
+    },
+    "answer": "d",
+    "tag": "Seepage Control"
+  },
+  {
+    "id": 55,
+    "text": "What is the primary effect of applying a surcharge pressure on a soil layer?",
+    "options": {
+      "a": "Decreases the effective stress",
+      "b": "Increases the effective stress",
+      "c": "Has no effect on the effective stress",
+      "d": "Decreases the pore water pressure"
+    },
+    "answer": "b",
+    "tag": "Effective Stress"
+  },
+  {
+    "id": 56,
+    "text": "Which of the following is NOT a factor that affects compaction?",
+    "options": {
+      "a": "Method of compaction",
+      "b": "Texture of soil",
+      "c": "Addition of admixtures",
+      "d": "Water content"
+    },
+    "answer": "b",
+    "tag": "Compaction"
+  },
+  {
+    "id": 57,
+    "text": "Which of the following cannot be obtained by using un-drained test?",
+    "options": {
+      "a": "Effective stress failure envelope",
+      "b": "Shear strength",
+      "c": "sensitivity",
+      "d": "All of the mentioned"
+    },
+    "answer": "a",
+    "tag": "Soil Shear Strength"
+  },
+  {
+    "id": 58,
+    "text": "The gradual decrease in volume of soil on application of load due to expulsion of air is called?",
+    "options": {
+      "a": "Collapse",
+      "b": "Consolidation",
+      "c": "Shrinkage",
+      "d": "Compaction"
+    },
+    "answer": "d",
+    "tag": "Compaction"
+  },
+  {
+    "id": 59,
+    "text": "The compression index of soil",
+    "options": {
+      "a": "increases with increase in the liquid limit",
+      "b": "is a dimensionless parameter",
+      "c": "slope of the linear portion of pressure-void ratio curve on a semi log plot",
+      "d": "all of the above"
+    },
+    "answer": "d",
+    "tag": "Consolidation"
+  },
+  {
+    "id": 60,
+    "text": "Mohr's circle is a graphical representation of plane stress problems showing",
+    "options": {
+      "a": "maximum shear stress",
+      "b": "minimum shear stress",
+      "c": "minimum normal stress",
+      "d": "maximum normal stress"
+    },
+    "answer": "a",
+    "tag": "Stress Analysis"
+  },
+  {
+    "id": 61,
+    "text": "What is the typical height of a soil sample used in an oedometer test?",
+    "options": {
+      "a": "20 mm",
+      "b": "25 mm",
+      "c": "50 mm",
+      "d": "100 mm"
+    },
+    "answer": "a",
+    "tag": "Consolidation"
+  },
+  {
+    "id": 62,
+    "text": "A soil has a discharge velocity of 6×10⁻⁷ and void ratio of 0.5, what is the seepage velocity?",
+    "options": {
+      "a": "3×10⁻⁷ m/s",
+      "b": "6×10⁻⁷ m/s",
+      "c": "12×10⁻⁷ m/s",
+      "d": "18×10⁻⁷ m/s"
+    },
+    "answer": "d",
+    "tag": "Seepage Velocity"
+  },
+  {
+    "id": 63,
+    "text": "Which of the following is NOT a limitation of plate load test?",
+    "options": {
+      "a": "It is not truly applicable for clayey soils as it does not give ultimate settlement.",
+      "b": "It is not practicable to provide a reaction of more than 250 kN.",
+      "c": "The test can be performed for any level of water table below the footing.",
+      "d": "The plate load test does not truly represent the actual conditions if the soil is not homogenous and isotropic to a large depth."
+    },
+    "answer": "c",
+    "tag": "Foundation Testing"
+  },
+  {
+    "id": 64,
+    "text": "Determine the magnitude of the deviator stress if a sample having major principal stress of 188 kN/m² was tested in a triaxial apparatus with a confining pressure of 60 kN/m².",
+    "options": {
+      "a": "188 kN/m²",
+      "b": "248 kN/m²",
+      "c": "128 kN/m²",
+      "d": "60 kN/m²"
+    },
+    "answer": "c",
+    "tag": "Triaxial Testing"
+  },
+  {
+    "id": 65,
+    "text": "The pressure exerted by the fluids in a pore to its surrounding soil mass is",
+    "options": {
+      "a": "effective pressure",
+      "b": "pore pressure",
+      "c": "total pressure",
+      "d": "lateral pressure"
+    },
+    "answer": "b",
+    "tag": "Pore Pressure"
+  },
+  {
+    "id": 66,
+    "text": "Stresses within a soil mass due to its own weight are known as",
+    "options": {
+      "a": "shear stress",
+      "b": "geostatic stress",
+      "c": "normal stress",
+      "d": "principal stress"
+    },
+    "answer": "b",
+    "tag": "Geostatic Stress"
+  },
+  {
+    "id": 67,
+    "text": "The circle obtained from two dimensional stress system is known as ...",
+    "options": {
+      "a": "principal stress circle",
+      "b": "Mohr circle",
+      "c": "shearing stress circle",
+      "d": "none of the mentioned"
+    },
+    "answer": "b",
+    "tag": "Stress Analysis"
+  },
+  {
+    "id": 68,
+    "text": "In Terzaghi bearing capacity theory, the correction should be done for water table upto",
+    "options": {
+      "a": "base of footing",
+      "b": "B depth below the footing",
+      "c": "B/2 depth below the footing",
+      "d": "2B depth below the footing"
+    },
+    "answer": "b",
+    "tag": "Bearing Capacity"
+  },
+  {
+    "id": 70,
+    "text": "The permeability of a soil sample depends upon",
+    "options": {
+      "a": "size of the particles",
+      "b": "shape of the particles",
+      "c": "void ratio",
+      "d": "all of the above"
+    },
+    "answer": "d",
+    "tag": "Permeability"
+  },
+  {
+    "id": 71,
+    "text": "In plate load test, the ultimate bearing capacity of clayey foundation is calculated as .......",
+    "options": {
+      "a": "Qu(f) = Qu(p)",
+      "b": "2Qu(f) = Qu(p)",
+      "c": "Qu(f) = 2Qu(p)",
+      "d": "Qu(f) = Qu(p) × Bf/Bp"
+    },
+    "answer": "a",
+    "tag": "Bearing Capacity"
+  },
+  {
+    "id": 72,
+    "text": "The relationship between major principal stress and normal stress from two-dimensional stress system is given by",
+    "options": {
+      "a": "(σx+σy)/2 + √[((σx+σy)/2)² + τxy²]",
+      "b": "(σx+σy)/2 - √[((σx+σy)/2)² + τxy²]",
+      "c": "(σx+σy)/2 + √[((σx-σy)/2)² + τxy²]",
+      "d": "(σx+σy)/2 - √[((σx-σy)/2)² + τxy²]"
+    },
+    "answer": "c",
+    "tag": "Stress Analysis"
+  },
+  {
+    "id": 73,
+    "text": "The critical gradient of the seepage of water in a soil medium is (Where G= specific gravity of soil and e= void ratio)",
+    "options": {
+      "a": "(1-G)/(1+e)",
+      "b": "(G-1)/(1+e)",
+      "c": "(1+e)/(1-G)",
+      "d": "(1+e)/(G-2)"
+    },
+    "answer": "c",
+    "tag": "Seepage"
+  },
+  {
+    "id": 74,
+    "text": "In plate load test, the ultimate bearing capacity for foundation in cohesion less soil is..............",
+    "options": {
+      "a": "qu(f) = qu(p) × Bf/Bp",
+      "b": "qu(f) = qu(p) × Bp/Bf",
+      "c": "qu(f) = qu(p) × (Bf/Bp)²",
+      "d": "qu(f) = qu(p) × (Bp/Bf)²"
+    },
+    "answer": "a",
+    "tag": "Bearing Capacity"
+  },
+  {
+    "id": 75,
+    "text": "In the unconfined compression test, the corrected area of cross section (Ac) at any strain can be calculated by (Ao = Original area of cross section, E = Strain)",
+    "options": {
+      "a": "Ac = Ao / (1-E)",
+      "b": "Ac = Ao × (1-E)",
+      "c": "Ac = Ao",
+      "d": "none of the above"
+    },
+    "answer": "a",
+    "tag": "Soil Shear Strength"
+  },
+  {
+    "id": 76,
+    "text": "Which of the following has the minimum compressibility?",
+    "options": {
+      "a": "Water at room temperature",
+      "b": "Air at room temperature",
+      "c": "Oxygen at room temperature",
+      "d": "Nitrogen at room temperature"
+    },
+    "answer": "a",
+    "tag": "Compressibility"
+  },
+  {
+    "id": 77,
+    "text": "What is the formula for shear strength from vane shear test?",
+    "options": {
+      "a": "S = T / [πD²(H/2 + D/3)]",
+      "b": "S = T / [πD²(H/2 + D/6)]",
+      "c": "S = T / [πD²(H/4 + D/6)]",
+      "d": "S = T / [πD²(H/4 + D/3)]"
+    },
+    "answer": "b",
+    "tag": "Vane Shear Test"
+  },
+  {
+    "id": 78,
+    "text": "Shear strength of cohesionless soil doesn't depend on",
+    "options": {
+      "a": "rate of loading",
+      "b": "stress history",
+      "c": "confining pressure",
+      "d": "force"
+    },
+    "answer": "b",
+    "tag": "Soil Shear Strength"
+  },
+  {
+    "id": 79,
+    "text": "The angle subtended by rigid cone below foundation with respect to horizontal is",
+    "options": {
+      "a": "0",
+      "b": "45°",
+      "c": "45°+θ/2",
+      "d": "45°-θ/2"
+    },
+    "answer": "c",
+    "tag": "Foundations"
+  },
+  {
+    "id": 80,
+    "text": "The X and Y-axis of Mohr's circle represent",
+    "options": {
+      "a": "normal stress and shear stress",
+      "b": "shear stress and normal stress",
+      "c": "principal normal stress and principal shear stress",
+      "d": "principal shear stress and principal normal stress"
+    },
+    "answer": "a",
+    "tag": "Stress Analysis"
+  },
+  {
+    "id": 81,
+    "text": "The shear strength of plastic undrained clay depends upon",
+    "options": {
+      "a": "internal friction",
+      "b": "cohesion",
+      "c": "internal friction and cohesion",
+      "d": "unit weight of clay"
+    },
+    "answer": "b",
+    "tag": "Soil Shear Strength"
+  },
+  {
+    "id": 82,
+    "text": "The neutral stress in a soil mass is",
+    "options": {
+      "a": "force per neutral area",
+      "b": "force per effective area",
+      "c": "stress taken up by the pore water",
+      "d": "stress taken up by solid particles"
+    },
+    "answer": "c",
+    "tag": "Pore Pressure"
+  },
+  {
+    "id": 83,
+    "text": "For testing a saturated clay for shear strength, the test recommended, is",
+    "options": {
+      "a": "direct shear test",
+      "b": "tri-axial compression test",
+      "c": "unconfined compression test",
+      "d": "all of the above"
+    },
+    "answer": "c",
+    "tag": "Soil Shear Strength"
+  },
+  {
+    "id": 84,
+    "text": "A dry specimen is put through a tri-axial test, it cell pressure = 150 KPa and deviator stress at the failure = 100 KPa then angle of internal friction?",
+    "options": {
+      "a": "30 degree",
+      "b": "60 degree",
+      "c": "45 degree",
+      "d": "90 degree"
+    },
+    "answer": "a",
+    "tag": "Soil Friction Angle"
+  },
+  {
+    "id": 85,
+    "text": "An angle α in the physical element is represented on Mohr's circle.",
+    "options": {
+      "a": "2α",
+      "b": "3α",
+      "c": "4α",
+      "d": "α"
+    },
+    "answer": "a",
+    "tag": "Stress Analysis"
+  },
+  {
+    "id": 86,
+    "text": "Bearing stress is 180 kN/m³, unit weight = 20 kN/m³, internal angle of friction = 30 degree then according to Rankine's theory what is the min depth of foundation?",
+    "options": {
+      "a": "1 m",
+      "b": "0.8 m",
+      "c": "2 m",
+      "d": "0.5 m"
+    },
+    "answer": "a",
+    "tag": "Bearing Capacity"
+  },
+  {
+    "id": 87,
+    "text": "Formula for area ratio is",
+    "options": {
+      "a": "[(D2² - D1²) / D1²] × 100",
+      "b": "[(D1² - D2²) / D1²] × 100",
+      "c": "[(D2² - D1²) / D2²] × 100",
+      "d": "[(D1² - D2²) / D2²] × 100"
+    },
+    "answer": "a",
+    "tag": "Soil Exploration"
+  },
+  {
+    "id": 88,
+    "text": "In geotechnical engineering, a triaxial shear test is typically conducted to determine the shear strength of which of the following soil types?",
+    "options": {
+      "a": "Fine sand",
+      "b": "Coarse sand",
+      "c": "Shingle",
+      "d": "Gravel"
+    },
+    "answer": "a",
+    "tag": "Triaxial Testing"
+  },
+  {
+    "id": 89,
+    "text": "Unconfined compressive strength test is used in which of the following type of soil?",
+    "options": {
+      "a": "Sandy",
+      "b": "Clay",
+      "c": "Saturated clay",
+      "d": "gravel"
+    },
+    "answer": "c",
+    "tag": "Soil Shear Strength"
+  },
+  {
+    "id": 90,
+    "text": "Dilatancy correction for SPT N value is applied to",
+    "options": {
+      "a": "fine silty dry sand",
+      "b": "saturated gravel",
+      "c": "dry clays",
+      "d": "fine silty saturated sand"
+    },
+    "answer": "d",
+    "tag": "In-situ Testing"
+  },
+  {
+    "id": 91,
+    "text": "Which of the following is an assumption made in Bishop's theory of slope stability analysis?",
+    "options": {
+      "a": "The failure surface is assumed to be non-circular.",
+      "b": "The inter-slice forces are neglected entirely.",
+      "c": "The soil mass is divided into horizontal layers.",
+      "d": "Moment equilibrium is considered around the center of the circular arc."
+    },
+    "answer": "d",
+    "tag": "Slope Stability"
+  },
+  {
+    "id": 92,
+    "text": "An infinite slope is made with sand having an internal friction angle of 36°. What should be the maximum slope angle for a factor of safety of 1.5.",
+    "options": {
+      "a": "54°",
+      "b": "36°",
+      "c": "26°",
+      "d": "24°"
+    },
+    "answer": "c",
+    "tag": "Slope Stability"
+  },
+  {
+    "id": 94,
+    "text": "All the following are the assumptions made in Terzaghi's theory of consolidation EXCEPT:",
+    "options": {
+      "a": "The coefficient of permeability of soil varies at all points during the entire period of consolidation",
+      "b": "The soil is fully saturated",
+      "c": "The soil is homogeneous and isotropic",
+      "d": "Darcy's law is valid throughout the consolidation process"
+    },
+    "answer": "a",
+    "tag": "Consolidation"
+  },
+  {
+    "id": 95,
+    "text": "Coulomb's equation for shear strength is given by [where, c-unit cohesion s-shear strength σ-total stress φ-angle of shearing resistance]",
+    "options": {
+      "a": "c = s + σ tan φ",
+      "b": "s = σ + c tan φ",
+      "c": "s = σ - c tan φ",
+      "d": "c = s - σ tan φ"
+    },
+    "answer": "d",
+    "tag": "Soil Shear Strength"
+  },
+  {
+    "id": 96,
+    "text": "Which type of roller should be selected to have effective compaction of the coarse grained soil?",
+    "options": {
+      "a": "Sheep foot roller",
+      "b": "Smooth wheeled roller",
+      "c": "Vibratory roller",
+      "d": "Pneumatic tyre roller"
+    },
+    "answer": "c",
+    "tag": "Compaction"
+  },
+  {
+    "id": 97,
+    "text": "Which of the following doesn't contribute to the stability of a slope?",
+    "options": {
+      "a": "Surface drainage",
+      "b": "Sub-surface drainage",
+      "c": "Retaining wall",
+      "d": "Increased slope angle"
+    },
+    "answer": "d",
+    "tag": "Slope Stability"
+  },
+  {
+    "id": 98,
+    "text": "When drainage is permitted throughout the triaxial test, it is known as",
+    "options": {
+      "a": "CD test",
+      "b": "CU test",
+      "c": "UC test",
+      "d": "UU test"
+    },
+    "answer": "a",
+    "tag": "Triaxial Testing"
+  },
+  {
+    "id": 99,
+    "text": "The radius of the Mohr's circle represents",
+    "options": {
+      "a": "minimum shear stress",
+      "b": "minimum normal stress",
+      "c": "maximum shear stress",
+      "d": "maximum normal stress"
+    },
+    "answer": "c",
+    "tag": "Stress Analysis"
+  },
+  {
+    "id": 100,
+    "text": "In compaction of each layer of soil thickness should be",
+    "options": {
+      "a": "150 mm",
+      "b": "100 mm",
+      "c": "200 mm",
+      "d": "250 mm"
+    },
+    "answer": "a",
+    "tag": "Compaction"
+  },
+  {
+    "id": 101,
+    "text": "The best suited material for stabilization of black cotton soils is",
+    "options": {
+      "a": "sodium silicate",
+      "b": "calcium chloride",
+      "c": "hydrated lime",
+      "d": "bitumen"
+    },
+    "answer": "c",
+    "tag": "Soil Stabilization"
+  },
+  {
+    "id": 102,
+    "text": "Based on the assumptions of Rankine's theory, the soil mass is",
+    "options": {
+      "a": "stratified",
+      "b": "submerged",
+      "c": "homogeneous",
+      "d": "all of the mentioned"
+    },
+    "answer": "c",
+    "tag": "Lateral Earth Pressure"
+  },
+  {
+    "id": 103,
+    "text": "The depth of exploration is independent of",
+    "options": {
+      "a": "size of structure",
+      "b": "type of structure",
+      "c": "type of boring",
+      "d": "load of structure"
+    },
+    "answer": "b",
+    "tag": "Soil Exploration"
+  },
+  {
+    "id": 104,
+    "text": "What is the relation of active earth pressure in cohesive soil?",
+    "options": {
+      "a": "Ka×σz - 2C√Ka",
+      "b": "Ka×σz + 2C√Ka",
+      "c": "Ka×σz - C√Ka",
+      "d": "Ka×σz - C√Ka"
+    },
+    "answer": "a",
+    "tag": "Lateral Earth Pressure"
+  },
+  {
+    "id": 105,
+    "text": "Pick up the correct statement from the following:",
+    "options": {
+      "a": "Failure plane carries maximum shear stress",
+      "b": "Failure plane does not carry maximum shear stress",
+      "c": "Failure plane carries shear stress equal to maximum shear stress",
+      "d": "None of the above"
+    },
+    "answer": "b",
+    "tag": "Soil Shear Strength"
+  },
+  {
+    "id": 106,
+    "text": "Cullman Graph is used in",
+    "options": {
+      "a": "column wedge theory",
+      "b": "Rankine theory",
+      "c": "Cullman theory",
+      "d": "all of the above"
+    },
+    "answer": "a",
+    "tag": "Lateral Earth Pressure"
+  },
+  {
+    "id": 107,
+    "text": "The active earth pressure of a soil is defined as the lateral pressure exerted by soil",
+    "options": {
+      "a": "when it is at rest",
+      "b": "when the retaining wall has no movement relative to the back fill",
+      "c": "when the retaining wall tends to move away from the back fill",
+      "d": "when the retaining wall moves into the soil"
+    },
+    "answer": "c",
+    "tag": "Lateral Earth Pressure"
+  },
+  {
+    "id": 108,
+    "text": "What is the formula for Active earth pressure coefficient?",
+    "options": {
+      "a": "(1+sin φ)/(1-sin φ)",
+      "b": "(1-sin φ)/(1+sin φ)",
+      "c": "(1+sin² φ)/(1-sin² φ)",
+      "d": "(1-sin² φ)/(1+sin² φ)"
+    },
+    "answer": "b",
+    "tag": "Lateral Earth Pressure"
+  },
+  {
+    "id": 109,
+    "text": "Calculate the active pressure intensity when the backfill has a unit weight of 18 kN/m³, a wall height of 6 m, an angle of internal friction of 30°, and a surcharge of 36 kN/m².",
+    "options": {
+      "a": "45 kN/m²",
+      "b": "75 kN/m²",
+      "c": "48 kN/m²",
+      "d": "78 kN/m²"
+    },
+    "answer": "c",
+    "tag": "Lateral Earth Pressure"
+  },
+  {
+    "id": 110,
+    "text": "The maximum shear stress on a Mohr's circle is equal to",
+    "options": {
+      "a": "(σ1+σ3)/2",
+      "b": "(σ1-σ3)/2",
+      "c": "(σ1+σ3)/3",
+      "d": "σ1-σ3"
+    },
+    "answer": "b",
+    "tag": "Stress Analysis"
+  },
+  {
+    "id": 111,
+    "text": "A foundation can be termed as \"fully compensated\" when the total weight of the excavated soil is equal to ......",
+    "options": {
+      "a": "25% of building weight",
+      "b": "50% of building weight",
+      "c": "100% of building weight",
+      "d": "two times of building weight"
+    },
+    "answer": "c",
+    "tag": "Foundations"
+  },
+  {
+    "id": 112,
+    "text": "The smooth surface of retaining wall is assumed by",
+    "options": {
+      "a": "coulomb theory",
+      "b": "rankine theory",
+      "c": "both (a) and (b)",
+      "d": "none of the above"
+    },
+    "answer": "b",
+    "tag": "Lateral Earth Pressure"
+  },
+  {
+    "id": 113,
+    "text": "If poisons ratio of a soil is 0.4, its coefficient of earth pressure at rest is",
+    "options": {
+      "a": "0.5",
+      "b": "0.67",
+      "c": "0.33",
+      "d": "1"
+    },
+    "answer": "b",
+    "tag": "Lateral Earth Pressure"
+  },
+  {
+    "id": 114,
+    "text": "The coefficient of passive earth pressure is",
+    "options": {
+      "a": "Kp = (1+sin φ)/(1-sin φ)",
+      "b": "Kp = (1-sin φ)/(1+sin φ)",
+      "c": "Kp = 1-sin φ",
+      "d": "Kp = (1+sin² φ)/(1-sin² φ)"
+    },
+    "answer": "a",
+    "tag": "Lateral Earth Pressure"
+  },
+  {
+    "id": 115,
+    "text": "Which of the following is the indirect method of soil Exploration? Direct exploration test indirectly done?",
+    "options": {
+      "a": "Auger boring",
+      "b": "Rotary boring",
+      "c": "Open excavation",
+      "d": "Electrical resistivity"
+    },
+    "answer": "d",
+    "tag": "Soil Exploration"
+  },
+  {
+    "id": 116,
+    "text": "The parameter φ in coulomb's equation \"S=c+σ tan φ\" represents",
+    "options": {
+      "a": "angle of internal friction",
+      "b": "angle of slope",
+      "c": "none of the mentioned",
+      "d": "all of the mentioned"
+    },
+    "answer": "a",
+    "tag": "Soil Shear Strength"
+  },
+  {
+    "id": 117,
+    "text": "The coefficient of active earth pressure is",
+    "options": {
+      "a": "Ka = (1+sin φ)/(1-sin φ)",
+      "b": "Ka = (1-sin φ)/(1+sin φ)",
+      "c": "Ka = 1-sin φ",
+      "d": "none of the above"
+    },
+    "answer": "b",
+    "tag": "Lateral Earth Pressure"
+  },
+  {
+    "id": 118,
+    "text": "When do strap footings are used in the foundation?",
+    "options": {
+      "a": "To transfer the load of an isolated column",
+      "b": "Distance between the columns is long",
+      "c": "Two column loads are unequal",
+      "d": "All of the mentioned"
+    },
+    "answer": "b",
+    "tag": "Foundations"
+  },
+  {
+    "id": 119,
+    "text": "Mat is a type of",
+    "options": {
+      "a": "shallow foundation",
+      "b": "deep foundation",
+      "c": "both (a) and (b)",
+      "d": "none of the above"
+    },
+    "answer": "a",
+    "tag": "Foundations"
+  },
+  {
+    "id": 120,
+    "text": "Pile foundation is which of the following?",
+    "options": {
+      "a": "shallow",
+      "b": "deep",
+      "c": "shallow and deep",
+      "d": "open foundation"
+    },
+    "answer": "b",
+    "tag": "Foundations"
+  },
+  {
+    "id": 121,
+    "text": "Which foundation is constructed in group?",
+    "options": {
+      "a": "Pile",
+      "b": "Pier",
+      "c": "Well",
+      "d": "Caisson"
+    },
+    "answer": "a",
+    "tag": "Foundations"
+  },
+  {
+    "id": 122,
+    "text": "Gross area of footing is dependent on",
+    "options": {
+      "a": "load from superstructure",
+      "b": "bearing capacity of soil",
+      "c": "type of soil",
+      "d": "all of the above"
+    },
+    "answer": "d",
+    "tag": "Foundations"
+  },
+  {
+    "id": 123,
+    "text": "Mat foundation is provided when",
+    "options": {
+      "a": "heavy load has to be transferred",
+      "b": "isolated footing covers more than 50% area",
+      "c": "weak soil",
+      "d": "all of the above"
+    },
+    "answer": "d",
+    "tag": "Foundations"
+  },
+  {
+    "id": 124,
+    "text": "Which of the following is not among the common types of Mat foundation?",
+    "options": {
+      "a": "Flat plate type",
+      "b": "Box structures",
+      "c": "Mats on piles",
+      "d": "Double flat plate thickened"
+    },
+    "answer": "d",
+    "tag": "Foundations"
+  },
+  {
+    "id": 125,
+    "text": "If there are 2 or more columns in a foundation, then what is the name of foundation?",
+    "options": {
+      "a": "Combined footing",
+      "b": "Mat foundation",
+      "c": "Raft footing",
+      "d": "Pile foundation"
+    },
+    "answer": "a",
+    "tag": "Foundations"
+  },
+  {
+    "id": 126,
+    "text": "How much minimum depth below soil, footing is provided?",
+    "options": {
+      "a": "400 mm",
+      "b": "500 mm",
+      "c": "600 mm",
+      "d": "300 mm"
+    },
+    "answer": "b",
+    "tag": "Foundations"
+  },
+  {
+    "id": 127,
+    "text": "The quantum of water contained in the soil pores, which cannot be extracted by gravity drainage, is called",
+    "options": {
+      "a": "capillary water",
+      "b": "pellicular water",
+      "c": "hygroscopic water",
+      "d": "none of the above"
+    },
+    "answer": "b",
+    "tag": "Capillarity"
+  },
+  {
+    "id": 128,
+    "text": "The .........type of footing is preferred if two nearby separate footings are about to overlap.",
+    "options": {
+      "a": "spread footing",
+      "b": "raft footing",
+      "c": "combined footing",
+      "d": "eccentric footing"
+    },
+    "answer": "c",
+    "tag": "Foundations"
+  },
+  {
+    "id": 129,
+    "text": "The minimum depth of foundation in clayey soil is",
+    "options": {
+      "a": "0.5 m",
+      "b": "0.7 m",
+      "c": "0.9 m",
+      "d": "1.2 m"
+    },
+    "answer": "c",
+    "tag": "Foundations"
+  },
+  {
+    "id": 130,
+    "text": "The type of footing used when the two columns carry equal loads is",
+    "options": {
+      "a": "trapezoidal",
+      "b": "raft",
+      "c": "rectangle",
+      "d": "strap"
+    },
+    "answer": "c",
+    "tag": "Foundations"
+  },
+  {
+    "id": 131,
+    "text": "The open foundation is used for",
+    "options": {
+      "a": "sky scrapper",
+      "b": "bridge",
+      "c": "residential building",
+      "d": "runway"
+    },
+    "answer": "b",
+    "tag": "Foundations"
+  },
+  {
+    "id": 132,
+    "text": "The scour depth, frost depth, top soil determines",
+    "options": {
+      "a": "type of foundation",
+      "b": "size of foundation",
+      "c": "depth of foundation",
+      "d": "all of the above"
+    },
+    "answer": "c",
+    "tag": "Foundations"
+  },
+  {
+    "id": 133,
+    "text": "As per IS code, what is the maximum permissible settlement for isolated foundation on sand?",
+    "options": {
+      "a": "40 mm",
+      "b": "10 mm",
+      "c": "20 mm",
+      "d": "60 mm"
+    },
+    "answer": "a",
+    "tag": "Foundations"
+  },
+  {
+    "id": 134,
+    "text": "The minimum depth of footing upto ground level is",
+    "options": {
+      "a": "500 mm",
+      "b": "1000 mm",
+      "c": "1500 mm",
+      "d": "2000 mm"
+    },
+    "answer": "a",
+    "tag": "Foundations"
+  },
+  {
+    "id": 135,
+    "text": "If the raft foundation rests on weak soil, the pressure distribution is",
+    "options": {
+      "a": "relatively in small area near column",
+      "b": "to the subsoil in larger areas",
+      "c": "tends to be uniform",
+      "d": "none of the these"
+    },
+    "answer": "c",
+    "tag": "Foundations"
+  },
+  {
+    "id": 136,
+    "text": "The number of pier required for column is",
+    "options": {
+      "a": "3",
+      "b": "2",
+      "c": "1",
+      "d": "4"
+    },
+    "answer": "a",
+    "tag": "Foundations"
+  },
+  {
+    "id": 137,
+    "text": "For purely cohesive soil, the bearing capacity is given by which of the following equations?",
+    "options": {
+      "a": "qf = 5.7 c + σ",
+      "b": "qf = c + σ",
+      "c": "qf = 5.7 c",
+      "d": "All of the above"
+    },
+    "answer": "a",
+    "tag": "Bearing Capacity"
+  },
+  {
+    "id": 138,
+    "text": "Which of the following is not assumptions of Terzaghi's bearing capacity theory?",
+    "options": {
+      "a": "Base of the footing is smooth",
+      "b": "Depth of foundation is less than or equal to its width",
+      "c": "Load applied in vertical and non-eccentric",
+      "d": "Soil is isotropic and homogenous"
+    },
+    "answer": "a",
+    "tag": "Bearing Capacity"
+  },
+  {
+    "id": 139,
+    "text": "Soft rocks bearing capacity",
+    "options": {
+      "a": "440 kN/m²",
+      "b": "880 kN/m²",
+      "c": "1620 kN/m²",
+      "d": "3240 kN/m²"
+    },
+    "answer": "a",
+    "tag": "Bearing Capacity"
+  },
+  {
+    "id": 140,
+    "text": "Bearing capacity is calculated front.........",
+    "options": {
+      "a": "SPT value",
+      "b": "pile load test",
+      "c": "shear strength parameter",
+      "d": "all of the above"
+    },
+    "answer": "d",
+    "tag": "Bearing Capacity"
+  },
+  {
+    "id": 141,
+    "text": "Bearing capacity of square footing is",
+    "options": {
+      "a": "Qu = cNc + γD Nq + 0.5γ B Nγ",
+      "b": "Qu = 1.3cNc + γD Nq + 0.4γ B Nγ",
+      "c": "Qu = 1.3cNc + γD Nq + 0.3γ B Nγ",
+      "d": "Qu = 1.3cNc + γD Nq + 0.5γ B Nγ"
+    },
+    "answer": "b",
+    "tag": "Bearing Capacity"
+  },
+  {
+    "id": 142,
+    "text": "Bearing capacity formula for cohesionless soil from the plate load test",
+    "options": {
+      "a": "Bf/Bp × Qu(p)",
+      "b": "Bp/Bf × Qu(p)",
+      "c": "Qu(p)",
+      "d": "2Qu(p)"
+    },
+    "answer": "a",
+    "tag": "Bearing Capacity"
+  },
+  {
+    "id": 143,
+    "text": "Bearing capacity of soil does not depend on Rw1, Rw2",
+    "options": {
+      "a": "B depth below foundation",
+      "b": "below foundation",
+      "c": "below GL",
+      "d": "D depth below foundation"
+    },
+    "answer": "a",
+    "tag": "Bearing Capacity"
+  },
+  {
+    "id": 144,
+    "text": "Bearing capacity of soft clay in kPa is",
+    "options": {
+      "a": "50",
+      "b": "100",
+      "c": "150",
+      "d": "200"
+    },
+    "answer": "a",
+    "tag": "Bearing Capacity"
+  },
+  {
+    "id": 145,
+    "text": "Bearing capacity of a soil depends upon",
+    "options": {
+      "a": "grain size of the soil",
+      "b": "size of the footing",
+      "c": "shape of the footing",
+      "d": "all of the above"
+    },
+    "answer": "d",
+    "tag": "Bearing Capacity"
+  },
+  {
+    "id": 146,
+    "text": "Bearing capacity of circular footing is calculated as",
+    "options": {
+      "a": "Qu = cNc + qNq + 0.5γNγ",
+      "b": "Qu = 1.3cNc + qNq + 0.5γNγ",
+      "c": "Qu = 1.3cNc + qNq + 0.4γNγ",
+      "d": "Qu = 1.3cNc + qNq + 0.3γNγ"
+    },
+    "answer": "d",
+    "tag": "Bearing Capacity"
+  },
+  {
+    "id": 147,
+    "text": "Dynamic cone depth upto 3 is",
+    "options": {
+      "a": "BNc / 1.5",
+      "b": "BNc / 2.5",
+      "c": "BNc / 3.5",
+      "d": "none of the above"
+    },
+    "answer": "c",
+    "tag": "In-situ Testing"
+  },
+  {
+    "id": 148,
+    "text": "For a foundation, the allowable bearing pressure depends",
+    "options": {
+      "a": "on both net safe bearing capacity and net safe settlement pressure of soil",
+      "b": "on the allowable settlement of soil only",
+      "c": "neither on the ultimate bearing capacity of soil nor the allowable settlement only",
+      "d": "on the ultimate bearing capacity of soil only"
+    },
+    "answer": "a",
+    "tag": "Bearing Capacity"
+  },
+  {
+    "id": 149,
+    "text": "In CBR test, the size of the cylindrical plunger is",
+    "options": {
+      "a": "25 mm diameter",
+      "b": "50 mm diameter",
+      "c": "100 mm diameter",
+      "d": "150 mm diameter"
+    },
+    "answer": "b",
+    "tag": "Pavement"
+  },
+  {
+    "id": 150,
+    "text": "Which of the following is not the requirement of a sampler?",
+    "options": {
+      "a": "Area ratio",
+      "b": "Outside clearance ratio",
+      "c": "Inside clearance ratio",
+      "d": "Flow rate ratio"
+    },
+    "answer": "d",
+    "tag": "Soil Exploration"
+  },
+  {
+    "id": 151,
+    "text": "Which of the following gives actual description of bi-axial test?",
+    "options": {
+      "a": "It's used in very precision work.",
+      "b": "It is very economical.",
+      "c": "Handling of and sampling of soil is easy.",
+      "d": "Shear strength cannot be determined."
+    },
+    "answer": "d",
+    "tag": "Soil Shear Strength"
+  },
+  {
+    "id": 152,
+    "text": "For a sandy soil. the angle of internal friction is 30°. If the major principal stress is 50 kN/m² at failure, then the corresponding minor principal stress will be",
+    "options": {
+      "a": "12.2",
+      "b": "16.66",
+      "c": "20.8",
+      "d": "27.2"
+    },
+    "answer": "b",
+    "tag": "Soil Shear Strength"
+  },
+  {
+    "id": 153,
+    "text": "The angle between a principle plane and plane of maximum shear is",
+    "options": {
+      "a": "30° and 90°",
+      "b": "45° and 135°",
+      "c": "60° and 120°",
+      "d": "45° and 60°"
+    },
+    "answer": "b",
+    "tag": "Stress Analysis"
+  },
+  {
+    "id": 154,
+    "text": "In a consolidation test, when the load is changed from 0 kN/m² to 100 kN/m², then the void ratio changes from 0.80 to 0.60. The coefficient of compressibility will be",
+    "options": {
+      "a": "0.002 m²/kN",
+      "b": "0.003 m²/kN",
+      "c": "0.001 m²/kN",
+      "d": "0.004 m²/kN"
+    },
+    "answer": "d",
+    "tag": "Consolidation"
+  },
+  {
+    "id": 155,
+    "text": "The Terzaghi's ultimate bearing capacity formula of rectangular footing is",
+    "options": {
+      "a": "qu = cNc + qNq + 0.5 BγNγ",
+      "b": "qu = 1.3cNc + qNq + 0.4 BγNγ",
+      "c": "qu = (1+0.3B/L)cNc + qNq + (1-0.2B/L)BγNγ",
+      "d": "qu = (1+0.3B/L)cNc + qNq + 0.5(1-0.2B/L)BγNγ"
+    },
+    "answer": "d",
+    "tag": "Bearing Capacity"
+  },
+  {
+    "id": 156,
+    "text": "What does not contribute to unstable slope?",
+    "options": {
+      "a": "Surface drainage",
+      "b": "Sub-surface drainage",
+      "c": "Retaining wall",
+      "d": "Mapping of slope"
+    },
+    "answer": "d",
+    "tag": "Slope Stability"
+  },
+  {
+    "id": 157,
+    "text": "In Taylors stability number, Sn = Cm / γH, the term Cm is",
+    "options": {
+      "a": "maximum cohesion",
+      "b": "minimum cohesion",
+      "c": "mobilized cohesion",
+      "d": "unit cohesion"
+    },
+    "answer": "c",
+    "tag": "Slope Stability"
+  },
+  {
+    "id": 158,
+    "text": "Find radius of relative stiffness for a 20 cm slab with E=3×10⁵ kg/cm² and poisson's ratio = 0.15 over subgrade of modulus 5 kg/cm³.",
+    "options": {
+      "a": "35 cm",
+      "b": "71 cm",
+      "c": "79 cm",
+      "d": "113 cm"
+    },
+    "answer": "c",
+    "tag": "Pavement"
+  },
+  {
+    "id": 159,
+    "text": "In a strained material, the principal stresses in the X and Y directions respectively are 100 N/mm² (Tensile) and 60 N/mm² (Compressive). On an inclined plane, the normal to which makes an angle of 30° to the X-axis, the major principal stress, in N/mm², would be",
+    "options": {
+      "a": "60",
+      "b": "20",
+      "c": "-20",
+      "d": "80"
+    },
+    "answer": "a",
+    "tag": "Stress Analysis"
+  },
+  {
+    "id": 160,
+    "text": "According to Unified Soil Classification System (USCS), the symbol \"SC\" represents",
+    "options": {
+      "a": "sandy clay",
+      "b": "clayey sand",
+      "c": "silty sand",
+      "d": "sand with plastic silt"
+    },
+    "answer": "b",
+    "tag": "Soil Classification"
+  },
+  {
+    "id": 162,
+    "text": "The bulk density of aggregates does not depend upon",
+    "options": {
+      "a": "size and shape of aggregates",
+      "b": "specific gravity of aggregates",
+      "c": "grading of aggregates",
+      "d": "size and shape of the container"
+    },
+    "answer": "d",
+    "tag": "Aggregates"
+  },
+  {
+    "id": 163,
+    "text": "Based on MIP method, Nepal is divided on zone",
+    "options": {
+      "a": "4",
+      "b": "5",
+      "c": "6",
+      "d": "7"
+    },
+    "answer": "d",
+    "tag": "Seismic"
+  },
+  {
+    "id": 164,
+    "text": "Pore pressure developed in the tri axial test can be measured by",
+    "options": {
+      "a": "bishop's apparatus",
+      "b": "pore pressure apparatus",
+      "c": "Terzaghi's apparatus",
+      "d": "Mohr's apparatus"
+    },
+    "answer": "a",
+    "tag": "Triaxial Testing"
+  },
+  {
+    "id": 165,
+    "text": "A soil sampler has inner and outer radius of 74 mm and 78 mm respectively. The area ratio of the sampler is [in %]?",
+    "options": {
+      "a": "10%",
+      "b": "15%",
+      "c": "11.1%",
+      "d": "8%"
+    },
+    "answer": "c",
+    "tag": "Soil Exploration"
+  },
+  {
+    "id": 166,
+    "text": "For same soil, the effect of modified Proctor to that of standard Proctor test is to",
+    "options": {
+      "a": "increase OMC and decrease maximum dry density",
+      "b": "increase maximum dry density and decrease OMC",
+      "c": "increase both OMC and maximum dry density",
+      "d": "decrease both OMC and maximum dry density"
+    },
+    "answer": "b",
+    "tag": "Compaction"
+  },
+  {
+    "id": 167,
+    "text": "Relative compaction depends upon",
+    "options": {
+      "a": "type of soil",
+      "b": "water content of soil",
+      "c": "none of the mentioned",
+      "d": "all of the mentioned"
+    },
+    "answer": "a",
+    "tag": "Compaction"
+  },
+  {
+    "id": 168,
+    "text": "Darcy law is valid for",
+    "options": {
+      "a": "fully saturated soils",
+      "b": "partially saturated soils",
+      "c": "fully saturated soil and steady flow",
+      "d": "fully saturated soil and unsteady flow"
+    },
+    "answer": "c",
+    "tag": "Permeability"
+  },
+  {
+    "id": 169,
+    "text": "An object weighs 50 N in water and 80 N in an oil of relative density 0.80. Its volume in litres is",
+    "options": {
+      "a": "15.3",
+      "b": "60",
+      "c": "30.6",
+      "d": "50"
+    },
+    "answer": "a",
+    "tag": "Fluid Mechanics"
+  },
+  {
+    "id": 170,
+    "text": "What is the maximum permissible settlement for isolated foundation on clay as per I.S. code?",
+    "options": {
+      "a": "20 mm",
+      "b": "100 mm",
+      "c": "65 mm",
+      "d": "40 mm"
+    },
+    "answer": "c",
+    "tag": "Foundations"
+  },
+  {
+    "id": 171,
+    "text": "Which is not stage of soil exploration?",
+    "options": {
+      "a": "Direct method",
+      "b": "Preliminary",
+      "c": "Detailed",
+      "d": "Exploration during construction"
+    },
+    "answer": "d",
+    "tag": "Soil Exploration"
+  }
+]

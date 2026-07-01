@@ -1,6 +1,8 @@
 {
-  "name": "Civil Engineering Practice",
+  "name": "Remix: Civil Engineering Practice",
   "description": "A comprehensive 10-chapter Single Page Application Exam Practice Portal for Civil Engineering with dynamic matrix navigation, status filters, sandboxed local persistence, and instant visual grading.",
   "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }
